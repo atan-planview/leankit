@@ -1,0 +1,42 @@
+{% set attr = attr is defined ? { class: '' } | merge(attr) : { class: '' } %}
+{% set disabled = disabled is defined ? disabled : false %}
+{% set fluid = fluid is defined ? fluid : false %}
+{% set invalid = invalid is defined ? invalid : false %}
+{% set modifiers = modifiers is defined ? modifiers : [] %}
+{% set type = type is defined ? type : 'submit' %}
+{% set type = href is defined ? 'anchor' : type %}
+
+{% set defaultClass = 'c-button' %}
+{% if fluid %}
+  {% set defaultClass = defaultClass ~ ' c-button--fluid' %}
+{% endif %}
+{% for item in modifiers %}
+  {% set defaultClass = defaultClass ~ ' c-button--' ~ item %}
+{% endfor %}
+{% if disabled %}
+  {% set defaultClass = defaultClass ~ ' is-disabled js-is-disabled' %}
+{% endif %}
+{% if invalid %}
+  {% set defaultClass = defaultClass ~ ' is-invalid' %}
+{% endif %}
+
+{% if type == 'anchor' %}
+  <a href="{{ href | default('#') }}"
+{% else %}
+  <button type="{{ type }}"
+{% endif %}
+
+  {% for key,value in attr %}
+    {{ key }}="{% if key == 'class' %}{{ defaultClass }} {% endif %}{{ value }}"
+  {% endfor %}
+
+  {% if type != 'anchor' and disabled %}
+    disabled
+  {% endif %}
+>
+  {{ label }}
+{% if type == 'anchor' %}
+  </a>
+{% else %}
+  </button>
+{% endif %}

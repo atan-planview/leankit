@@ -1,0 +1,90 @@
+@include component('testimonial') {
+  padding-top: ms(3);
+  max-width: 880px;
+
+  @include modifier('fluid') {
+    max-width: none;
+    width: 100%;
+  }
+
+  @include element('author') {
+    color: $brand-green;
+    display: block;
+    font-size: ms(5);
+    font-weight: $medium-weight;
+    letter-spacing: 3.5px;
+    line-height: 1.125;
+    margin-bottom: ms(-6);
+    text-transform: uppercase;
+    font-style: normal;
+  }
+
+  @include element('coin') {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -#{ms(8)};
+    width: #{ms(8) * 2};
+  }
+
+  @include element('header') {
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    @include small-tablet {
+      flex-wrap: nowrap;
+      justify-content: space-between;
+    }
+  }
+
+  @include element('inner') {
+    background: white;
+    border: 1px solid $light-gray;
+    border-radius: 10px;
+    padding: ms(8);
+    padding-top: 0;
+  }
+
+  @include element('logo') {
+    text-align: center;
+
+    @include small-tablet {
+      text-align: right;
+    }
+  }
+
+  @include element('meta') {
+    width: 100%;
+
+    @include small-tablet {
+      padding-right: ms();
+    }
+  }
+
+  @include element('position') {
+    color: $dark-gray;
+    font-size: ms(-2);
+    font-weight: $regular-weight;
+    letter-spacing: .25px;
+    line-height: 1.5;
+  }
+
+  @include element('quote') {
+    font-size: ms(2);
+    font-weight: $regular-weight;
+    letter-spacing: 2px;
+    line-height: 1.5;
+    margin-bottom: ms(6);
+
+    em,
+    i {
+      font-weight: $semibold-weight;
+    }
+
+    @include tablet {
+      font-size: ms(4);
+    }
+  }
+}

@@ -1,0 +1,79 @@
+.c-zub-hero {
+  background-position: 0 center;
+  background-size: cover;
+  color: #fff;
+  min-height: 315px;
+  padding: 2em 0;
+}
+.c-zub-hero__heading {
+  font-weight: 500;
+  margin-bottom: .2em;
+  margin-top: 0;
+  text-align: center;
+}
+.c-zub-hero__inner {
+  margin: 0 auto;
+  width: 90%;
+}
+.c-zub-hero__subheading {
+  font-size: 0.9em;
+  line-height: 1.5;
+  text-align: center;
+}
+@media screen and (min-width: 440px) {
+  .c-zub-hero {
+    background-position: 37% center;
+  }
+  .c-zub-hero__inner {
+    padding-right: 30%;
+  }
+}
+@media screen and (min-width: 560px) {
+  .c-zub-hero {
+    background-position: 57% center;
+  }
+  .c-zub-hero__inner {
+    padding-right: 44%;
+  }
+}
+@include tablet {
+  .c-zub-hero {
+    background-position: 100% center;
+  }
+  .c-zub-hero__inner {
+    padding-right: 40%;
+  }
+}
+@include medium-desktop {
+  .c-zub-hero__header {
+    display: inline-block;
+    margin-right: 25px;
+    vertical-align: middle;
+    width: 275px;
+  }
+  .c-zub-hero__heading {
+    text-align: left;
+  }
+  .c-zub-hero__subheading {
+    text-align: left;
+  }
+  .c-zub-hero {
+    background-position: center top;
+  }
+  .c-zub-hero__inner {
+    margin-top: 1.5em;
+    padding-right: 27%;
+    text-align: center;
+    width: 78%;
+  }
+}
+@media screen and (min-width: 1230px) {
+  .c-zub-hero__header {
+    width: 465px;
+  }
+  .c-zub-hero__inner {
+    margin-top: 3.5em;
+    padding-right: 30%;
+    width: 85%;
+  }
+}

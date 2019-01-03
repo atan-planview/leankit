@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  {# Learn Section #}
+  {% set learningCenter = craft.entries.section('learningCenter')
+    .order('dateUpdated desc').limit(null) %}
+  {% for entry in learningCenter %}
+    {% if entry.type != 'link' %}
+      <url>
+          <loc>{{ entry.url }}</loc>
+          <lastmod>{{ entry.dateUpdated.w3c() }}</lastmod>
+          <priority>0.5</priority>
+          <changefreq>weekly</changefreq>
+      </url>
+    {% endif %}
+  {% endfor %}
+
+</urlset>

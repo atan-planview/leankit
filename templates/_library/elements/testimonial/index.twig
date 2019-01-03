@@ -1,0 +1,58 @@
+{% set attr = attr is defined ? { class: '' } | merge(attr) : { class: '' } %}
+{% set fluid = fluid is defined ? fluid : false %}
+{% set modifiers = modifiers is defined ? modifiers : [] %}
+
+{% set defaultClass = 'c-testimonial' %}
+{% if fluid %}
+  {% set defaultClass = defaultClass ~ ' c-testimonial--fluid' %}
+{% endif %}
+{% for item in modifiers %}
+  {% set defaultClass = defaultClass ~ ' c-testimonial--' ~ item %}
+{% endfor %}
+
+<article
+  {% for key,value in attr %}
+    {{ key }}="{% if key == 'class' %}{{ defaultClass }} {% endif %}{{ value }}"
+  {% endfor %}
+>
+  <div class="c-testimonial__inner">
+    <img
+      src="{{ craft.config.cdnBaseUrl }}/assets/images/icons/quote_coin_green.svg"
+      alt="Quote Mark"
+      class="c-testimonial__coin"
+    >
+    <div class="c-testimonial__copy">
+      <p class="c-testimonial__quote">
+        {{ quote|trim|striptags('<strong><b><u><em><i><a>')|raw }}
+      </p>
+      <header class="c-testimonial__header">
+        <div class="c-testimonial__meta">
+          <cite class="c-testimonial__author">{{ author }}</cite>
+          <div class="c-testimonial__position">
+            {% if role is defined %}
+              {{ role }}{% if company is defined %}, {% endif %}
+            {% endif %}
+            {% if company is defined %}
+              {{ company }}
+            {% endif %}
+          </div>{# /.c-testimonial__position #}
+        </div>{# /.c-testimonial__meta #}
+        <div class="c-testimonial__logo">
+          {% if logo.limit is defined %}
+            {% for image in logo.limit(1) %}
+                <img
+                  src="{{ image | retinafy }}"
+                  alt="{{ company | default('') }}"
+                >
+            {% endfor %}
+          {% else %}
+              <img
+                src="{{ logo }}"
+                alt="{{ company | default('') }}"
+              >
+          {% endif %}
+        </div>{# /.c-testimonial__logo #}
+      </header>
+    </div>{# /.c-testimonial__copy #}
+  </div>
+</article>

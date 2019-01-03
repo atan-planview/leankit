@@ -1,0 +1,135 @@
+{% extends '_layout' %}
+{% import '_macros' as macros %}
+
+{% set bodyClass = 'case-study' %}
+
+{% block content %}
+  <main role="main">
+    <section class="case-study-leaderboard global-leaderboard">
+      <div class="o-container o-container--narrow">
+        <h1 class="c-cs-heading">
+          <div class="c-cs-heading__logo">
+            {{ macros.customerLogo(entry.customerProfile.first(), 'white') }}
+            <span class="u-visuallyhidden">{{ entry.title }}</span>
+          </div>{# /.c-cs-heading__logo #}
+          <div class="c-cs-heading__text">
+            Case Study
+          </div>{# /.c-cs-heading__text #}
+        </h1>{# /.c-cs-heading #}
+      </div>{# /.o-container--narrow #}
+    </section>{# /.case-study-leaderboard #}
+    <section class="case-study__body global-content">
+      <div class="module">
+
+        <div class="global-content--single-column">
+          <div class="case-study__body__intro">{{ entry.csIntro }}</div>
+
+          <div class="case-study__body__profile">
+            <h2>Customer Profile</h2>
+
+            {{ entry.csHighlightsIntro }}
+
+            <div class="case-study__body__highlights">
+              {% if craft.request.isLivePreview %}
+                {% set blockData = entry.csHighlights %}
+              {% else %}
+                {% set blockData = entry.csHighlights.find({
+                  with: ['highlight:icon']
+                }) %}
+              {% endif %}
+
+              {% for block in blockData %}
+                {% if block.type == "highlight" %}
+                  <div class="case-study__body__highlights__item">
+                    <div class="case-study__body__highlights__item__icon">
+                      <img src="{{ craft.imager.transformImage(block.icon[0] ?? null, {
+                          width: 60
+                        }) }}">
+                    </div>
+                    {% if block.caption is not empty %}
+                      <div class="case-study__body__highlights__item__text">
+                       {{ block.caption }}
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>{# /.case-study__body__highlights #}
+
+            <div class="case-study__body__interviewee">
+              {{ entry.csInterviewee }}
+            </div>
+          </div>{# /.case-study__body__profile #}
+
+          <div class="case-study__body__qa">
+
+            {% if craft.request.isLivePreview %}
+              {% set rowData = entry.csInterview %}
+            {% else %}
+              {% set rowData = entry.csInterview.find({
+                with: ['answer.image:image']
+              }) %}
+            {% endif %}
+
+            {% for row in rowData %}
+
+              <hr class="case-study__body__qa__spacer">
+
+              <div class="case-study__body__qa_q">
+                {{ row.question }}
+              </div>{# /.case-study__body__qa_q #}
+
+              <div class="case-study__body__qa_a">
+
+                {% for block in row.answer %}
+                    {% if block.type == 'text' %}
+                      {{ block.text }}
+                    {% elseif block.type == 'image' %}
+                      <div class="case-study__body__img--plus-caption">
+                        {% if block.position == 'full' or block.position == 'right' %}
+                          <div class="{{ block.position }}">
+                        {% endif %}
+                        <img
+                          src="{{ craft.imager.transformImage(block.image[0] ?? null, {
+                            width: 671
+                          }) }}"
+                          alt="{{ block.altAttr }}"
+                          {% if block.titleAttr is not empty %}
+                            title="{{ block.titleAttr }}"
+                          {% endif %}
+                        >
+                        {% if block.caption is not empty %}
+                          <div class="img-caption global-image-caption">
+                            {{ block.caption }}
+                          </div>
+                        {% endif %}
+                        {% if block.position == 'full' or block.position == 'right' %}
+                          </div>
+                        {% endif %}
+                      </div>
+                    {% elseif block.type == 'blockquote' %}
+                      <blockquote>
+                        {{ block.text|striptags('<strong><b><u><em><i>')|raw }}
+                      </blockquote>
+                    {% endif %}
+                {% endfor %}
+
+              </div>{# /.case-study__body__qa_a #}
+
+            {% endfor %}
+
+            <div class="case-study__body__attribute">
+              {% if entry.csClosing is not empty %}
+                {{ entry.csClosing }}
+              {% else %}
+                <p class="attribute">Thanks {{ entry.title }}, for sharing your story with us!</p>
+              {% endif %}
+            </div>
+
+          </div>{# /.case-study__body__qa #}
+
+        </div>{# /.global-content--single-column #}
+      </div>{# /.module #}
+    </section>{# /.case-study__body global-content #}
+  </main>
+{% endblock content %}

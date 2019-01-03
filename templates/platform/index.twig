@@ -1,0 +1,88 @@
+{% extends '_layout' %}
+
+{% set bodyClass = 'platform platform_index' %}
+
+{% block content %}
+  <main role="main">
+    <section class='product-section-navigation global-section-navigation'>
+      <div class='module'>
+        <div class='product-section-navigation__container'>
+          <div class='product-section-navigation__title'>
+            <h2>Product</h2>
+          </div>
+          <div class='product-section-navigation__links'>
+            <ul>
+              <li><a href="/product/">Overview</a></li>
+              <li><a href="/platform/">Platform</a></li>
+              <li><a href="/platform/integrate/">Integrations</a></li>
+              <li><a href="/product-demo/">Demo</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class='platform-leaderboard global-leaderboard'>
+      <div class='module'>
+        <div class='platform-leaderboard__container global-leaderboard__container'>
+          <h1>An Enterprise-Class Platform for Scaling Lean</h1>
+          <p>Our flexible, secure platform lets you connect LeanKit with other tools and applications, creating a software ecosystem that makes it easier to visualize, manage and execute your work.</p>
+        </div>
+      </div>
+    </section>
+    <section class='platform-value-prop platform-value-prop--integrate'>
+      <div class='module'>
+        <div class='platform-value-prop__container'>
+          <h3>Integrate with Other Systems</h3>
+          <p>
+            Create a consolidated view of your work and eliminate duplicate data entry by integrating LeanKit with your existing tools and applications. Fully-automated, bi-directional synchronization keeps information flowing between teams to speed up delivery. Our integration hub lets you easily integrate LeanKit with ALM and business applications, including JIRA, ServiceNow, TFS, CA Agile Central, VersionOne, and more.
+          </p>
+          <div class='platform-value-prop__cta'>
+            <a href='/platform/integrate/'>Learn More About Integrations</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class='platform-value-prop platform-value-prop--scale'>
+      <div class='module'>
+        <div class='platform-value-prop__container'>
+          <h3>Scale LeanKit On Demand</h3>
+          <p>
+            LeanKit's cloud-based architecture provides the highest levels of performance, reliability and availability. Our enterprise-grade platform is built to scale with you as your needs grow. LeanKit runs on Microsoft Azure - a hyper-scale cloud platform that meets the most comprehensive security, privacy and regulatory standards. If your organization prefers a dedicated environment, a private cloud option is also available.
+          </p>
+          <div class='platform-value-prop__cta'>
+            <a href='{{ conf.cdnBaseUrl }}/media/LeanKit_PrivateCloudDatasheet.pdf'>Learn About Private Cloud [PDF]</a>
+          </div>
+        </div>
+        <div class='platform-value-prop__image'>
+          <img src='{{ craft.config.cdnBaseUrl }}/assets/images/product/cloud_graphic.svg'>
+        </div>
+      </div>
+    </section>
+    <section class='platform-value-prop platform-value-prop--safeguard'>
+      <div class='module'>
+        <div class='platform-value-prop__container'>
+          <h3>Safeguard Your Organization's Data</h3>
+          <p>
+            When you invest in LeanKit, you can trust that your data is safe. We utilize the latest industry standards to implement the highest levels of physical, network, server, and application security. Best-of-breed data redundancy measures and stringent information security policies ensure the integrity of your data. Our infrastructure and certified data centers have passed security audits applied at top financial service, healthcare, and government institutions around the world.
+          </p>
+          <div class='platform-value-prop__cta'>
+            <a href='{{ conf.cdnBaseUrl }}/media/leankit-security.pdf'>Learn More about Safeguards [PDF]</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class='platform-value-prop platform-value-prop--api'>
+      <div class='module'>
+        <div class='platform-value-prop__container'>
+          <h3>Open API</h3>
+          <p>
+            LeanKit’s open API lets you create, update and retrieve data from your LeanKit account. This enables you to gather the information you need to satisfy specific reporting requirements, create integrations with other systems, automate tasks and much more. Documentation, open-source clients, and example applications are available for a number of programming languages to enable easy developer access.
+          </p>
+          <div class='platform-value-prop__cta'>
+            <a href='https://support.leankit.com/hc/en-us/sections/200668393-LeanKit-API-Application-Programming-Interface-' target='_blank'>Use Our Open Source API</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock content %}

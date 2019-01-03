@@ -1,0 +1,13 @@
+/*
+ * Container to pad and separate elements.
+ */
+
+@include object('island') {
+  margin-bottom: ms(1);
+  padding: ms(3);
+
+  & > :last-child{
+    /* Remove the margin from the last child of a boxed off area so that we don’t end up with compounded margin/padding spacings. */
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,128 @@
+{% extends '_layout' %}
+
+{% set bodyClass = 'single single-post single-format-standard leankit-blog' %}
+{% set feeds = [
+  {
+    'title': "Press Feed | #{siteName}",
+    'uri': 'press/feed/',
+    'rel': 'home'
+  }
+] %}
+{% set sharing = {
+  'category': 'Press'
+} %}
+
+{% includeCssFile 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' %}
+{% includeCssFile 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.css' %}
+{% includeCssFile 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials-theme-flat.css' %}
+
+{% set myCss %}
+  {% include 'press/_legacy-style' %}
+{% endset %}
+{% includeCss myCss %}
+
+{% includeJsFile 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js' %}
+{% set myJs %}
+  $("#share").jsSocials({
+    showLabel: false,
+    showCount: false,
+    shares: ["twitter", "googleplus", "linkedin", "facebook", "pocket", "email"]
+  });
+{% endset %}
+{% includeJs myJs %}
+
+{% block content %}
+  <section class='global-section-navigation'>
+    <div class='module'>
+      <div class='global-section-navigation__container'>
+        <div class='global-section-navigation__title'>
+          <h2>Press</h2>
+        </div>
+      </div>
+    </div>
+  </section>{# /.global-section-navigation #}
+
+  <div class='module'>
+    <div class='seo-main-content__container global-content global-content--single-column'>
+
+      <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
+
+          <article class="blog-post post type-post status-publish format-standard hentry category-uncategorized">
+            <header class="entry-header">
+              <h1 class="blog-post-title">{{ entry.title }}</h1>
+            </header><!-- .entry-header -->
+
+            <div class="entry-content">
+
+              {% for block in entry.featuredImage %}
+                {% if block.type == "image" %}
+                  {% set image = block.image.first() %}
+                    <p>
+                      <img
+                        src="{{ image | retinafy('large') }}"
+                        alt="{{ block.altAttr }}"
+                        {% if block.titleAttr is not empty %}
+                          title="{{ block.titleAttr }}"
+                        {% endif %}
+                        class="aligncenter size-full"
+                      >
+                    </p>
+                {% endif %}
+              {% endfor %}
+
+              {% if entry.subhead|length %}
+                <h4>{{ entry.subhead|striptags('<strong><b><u><em><i>')|raw }}</h4>
+              {% endif %}
+
+              <p>
+                <strong>
+                  {{ entry.prLocation|default('NASHVILLE, Tenn.') }}, {{ entry.postDate|date('M. j, Y') }}
+                </strong>
+
+                &mdash;
+
+                {{ entry.intro|striptags('<strong><b><u><em><i><a>')|raw }}
+              </p>
+
+              {% for block in entry.prBody %}
+                {% if block.type == "heading" %}
+                  <{{ block.headingLevel }}>
+                    {{ block.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+                  </{{ block.headingLevel }}>
+                {% elseif block.type == "text" %}
+                  {{ block.text }}
+                {% endif %}
+              {% endfor %}
+
+              {% for block in entry.relatedCompanies %}
+                {% if block.type == "company" %}
+                  <h4>About {{ block.companyName }}</h4>
+                    {{ block.body }}
+                {% endif %}
+              {% endfor %}
+
+              <h4>Contact</h4>
+
+              {% for contact in entry.prContacts %}
+                <p>
+                  {{ contact.name }} | {{ contact.prRole }}<br>
+                  {{ contact.prPhoneNumber }}<br>
+                  <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+                </p>
+              {% endfor %}
+
+              <div class="c-social-share">
+                <h3 class="c-social-share__heading">Like this post? Share it:</h3>
+                <div id="share"></div>
+              </div>
+
+            </div>{# /.entry-content #}
+
+          </article>{# /.blog-post #}
+
+        </main>{# /#main #}
+      </div>{# /#primary #}
+    </div>
+  </div>{# /.module #}
+{% endblock content %}

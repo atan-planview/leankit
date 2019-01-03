@@ -1,0 +1,60 @@
+{% macro inlineSvg(image, opts) %}
+  {% if image.mimeType == 'image/svg+xml' and opts.recolor is defined %}
+    <span
+      class="{{ opts.attr.class | default('') }} u-svg-{{ opts.recolor }}"
+    >
+      {{ craft.inlin.er(
+        image.url | replace(craft.config.environmentVariables.baseUrl, '')
+      ) | raw }}
+    </span>
+  {% else %}
+    <img
+      {% if image.mimeType == 'image/svg+xml' %}
+        src="{{ image.url }}"
+      {% else %}
+        src="{{ image | retinafy(opts.transform ?? null) }}"
+      {% endif %}
+      class="{{ opts.attr.class | default('') }}"
+      alt="{{ opts.attr.alt | default('') }}"
+      title="{{ opts.attr.title | default('') }}"
+    >
+  {% endif %}
+{% endmacro %}
+
+{% macro customerLogo(profile, color) %}
+  {% import _self as macros %}
+
+  {% if color|default(null) == 'white'  %}
+    {% set image = profile.reversedOneColorLogo[0]
+      |default(profile.oneColorLogo[0]
+        |default(profile.primaryLogo[0])
+      )
+    %}
+  {% elseif color|default(null) == 'black' %}
+    {% set image = profile.oneColorLogo[0]
+        |default(profile.primaryLogo[0])
+    %}
+  {% else %}
+    {% set image = profile.primaryLogo[0] %}
+  {% endif %}
+
+  {{ macros.inlineSvg(
+    image,
+    {
+      attr: {
+        alt: profile.title
+      },
+      recolor: color,
+      transform: 'medium'
+    }
+  ) }}
+  <span class="u-visuallyhidden">{{ profile.title }}</span>
+{% endmacro %}
+
+{% macro excerpt(content, wordLength) %}
+  {% if content | striptags | split(" ") | length > wordLength %}
+    {{ content | striptags | split(" ") | slice(0, wordLength) | join(" ") | raw }}&hellip;
+  {% else %}
+    {{ content }}
+  {% endif %}
+{% endmacro %}

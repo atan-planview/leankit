@@ -1,0 +1,270 @@
+{% extends '_layout' %}
+{% block pageStyle %}
+<link href="{{ conf.cdnBaseUrl }}/assets/build/css/pricing-form.css?ver=2" rel="stylesheet" type="text/css">
+{% endblock %}
+{% set myCss %}
+  
+{% endset %}
+{% includeCss myCss %}
+
+{% set myJs %}
+  $(document).ready(function() {
+    $('.popup-with-form').magnificPopup({
+      type: 'inline',
+      preloader: false,
+      focus: '#name',
+
+      // When elemened is focused, some mobile browsers in some cases zoom in
+      // It looks not nice, so we disable it:
+      callbacks: {
+        beforeOpen: function() {
+          if($(window).width() < 700) {
+            this.st.focus = false;
+          } else {
+            this.st.focus = '#name';
+          }
+          $('header, main').css('filter', 'blur(2px)');
+        },
+        close: function(){
+          $('header, main').css('filter', 'none');
+        }
+      }
+    });
+  });
+{% endset %}
+{% includeJs myJs %}
+
+{% set bodyClass = 'pricing pricing_index' %}
+
+{% block content %}
+  <main role="main">
+    <section class='pricing-leaderboard global-leaderboard'>
+      <div class='module'>
+        <div class='pricing-leaderboard__container global-leaderboard__container'>
+          <h1>
+            Deliver Customer Value Faster
+          </h1>
+          <p>With software and services that scale with your business</p>
+        </div>
+      </div>
+    </section>
+    <section class='pricing-tables global-content'>
+      <div class='module'>
+        <div class='pricing-tables__container'>
+          <ul class='pricing-tables__package pricing-tables__package--plan2'>
+            <li class='plan-name'>Select</li>
+            <li class='price'><strong>$19</strong><br />per user / month<br /> <small><em>billed annually</em></small></li>
+            <li class="plan-button">
+              {% include '_library/elements/button' with {
+                  href: '/free-trial/',
+                  label: 'Try it free!',
+                  modifiers: [
+                      'small'
+                  ]
+              } %}
+            </li>
+            <li class='plan-description'>Teams implementing Lean and Agile</li>
+            <li class='feature-intro'>What you get:</li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Unlimited Boards
+                <span class='more-info-tooltip__tip'>Create unlimited kanban boards to help you visualize and manage any type of work and workflow in your organization.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Flexible Layout
+                <span class='more-info-tooltip__tip'>Use vertical lanes and sublanes to visualize each step in your workflow and horizontal swimlanes to represent parallel processes on the same board.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Board Templates
+                <span class='more-info-tooltip__tip'>Get started quickly with our growing library of templates that help you easily create your first board or gather inspiration for a new workflow process.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Collaboration Tools
+                <span class='more-info-tooltip__tip'>Communicate about work items using the comments tab within each card and notify team members of updates using @mentions.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Cycle Time Report
+                <span class='more-info-tooltip__tip'>Discover the average time it takes for work to flow from any stage in your process to any other stage, start-to-finish or any subset in between.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Lean Metrics & Reports
+                <span class='more-info-tooltip__tip'>Identify opportunities for improvement using Lean metrics such as cumulative flow, work distribution, process efficiency, and process control.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Lane Policies & WIP Limits
+                <span class='more-info-tooltip__tip'>Establish lane policies to ensure process consistency across your team and use WIP limits to improve your flow of work.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Work Item Breakdown
+                <span class='more-info-tooltip__tip'>Break down work as granularly as you need by connecting interdependent work items on the same board and one other board. See how smaller work items tie into larger initiatives and track overall progress more easily with rollup visibility.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Filtered Work Views
+                <span class='more-info-tooltip__tip'>Filter board views by user, due date, card type, card tag, priority, blockers, staleness, and custom icons to highlight specific items.</span>
+              </span>
+            </li>
+            <li class='blank'>&nbsp;</li>
+            <li class='blank'>&nbsp;</li>
+          </ul>
+          <ul class='pricing-tables__package pricing-tables__package--plan3'>
+            <li class="recommended-ribbon"><span>Recommended</span></li>
+            <li class='plan-name'>Advanced</li>
+            <li class='price'><strong>$32</strong><br />per user / month<br /><small><em>billed annually</em></small></li>
+            <li class="plan-button">
+              {% include '_library/elements/button' with {
+                  attr: {
+                    class: 'popup-with-form',
+                    "data-effect": 'mfp-move-horizontal'
+                  },
+                  href: '#test-form',
+                  label: 'Contact Us',
+                  modifiers: [
+                      'primary'
+                  ]
+              } %}
+            </li>
+            <li class='plan-description'>Multiple teams scaling Lean and Agile</li>
+            <li class='feature-intro'>Everything in Select <em>plus</em>:</li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Multi-Team Work Distribution
+                <span class='more-info-tooltip__tip'>Break down and distribute work across multiple teams, keeping your work items connected. Visualize parent-child relationships in a single view, regardless of board, and see a rollup status of progress and potential issues.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Advanced Reporting
+                <span class='more-info-tooltip__tip'>Access your LeanKit data in your business intelligence tool of choice to meet your organization's unique reporting needs.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Integrations
+                <span class='more-info-tooltip__tip'>Connect LeanKit with your existing enterprise tools and applications via our integration hub.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Custom Fields
+                <span class='more-info-tooltip__tip'>Tailor LeanKit to meet the needs of your business by capturing additional information in custom card fields that are unique to your organization or team.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Reader Licenses
+                <span class='more-info-tooltip__tip'>Give stakeholders the ability to view specific boards and respond to email notifications. 5 reader licenses included with every 50 user licenses purchased.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Enhanced Security
+                <span class='more-info-tooltip__tip'>Enhance your security options with the ability to set strong password control, account lock policies, and other granular security settings.</span>
+              </span>
+            </li>
+          </ul>
+          <ul class='pricing-tables__package pricing-tables__package--plan4'>
+            <li class='plan-name'>Enterprise</li>
+            <li class='price'><strong>Custom</strong><br />&nbsp;<br /><small><em>contact sales for a quote</em></small></li>
+            <li class="plan-button">
+              {% include '_library/elements/button' with {
+                  attr: {
+                    class: 'popup-with-form',
+                    "data-effect": 'mfp-move-horizontal'
+                  },
+                  href: '#test-form',
+                  label: 'Contact Us',
+                  modifiers: [
+                      'small'
+                  ]
+              } %}
+            </li>
+            <li class='plan-description'>Enterprises that need portfolio management or advanced security</li>
+            <li class='feature-intro'>Everything in Advanced <em>plus</em>:</li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Portfolio Management Integration
+                {#<span class='more-info-tooltip__tip'>Need Tooltip.</span>#}
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Single Sign-on and User Provisioning API
+                <span class='more-info-tooltip__tip'>Integrate with your SAML based SSO tool to support single sign-on and improve user management capabilities.</span>
+              </span>
+            </li>
+            <li class='feature'>
+              <span class='more-info-tooltip more-info-tooltip--text'>
+                Private Cloud available
+                <span class='more-info-tooltip__tip'>Enhance the speed and security of your company's LeanKit account by creating a private cloud that isolates your data from other customer data.</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class='try-leankit-cta'>
+      <div class='module'>
+        <div class='try-leankit-cta__button'>
+          <a class='lite-edition__cta' href='/compare-editions/' onclick="ga('send', 'event', 'In Page', 'From Pricing', 'In-Page-Compare-Editions-CTA - Bottom Button');" title='Compare Editions'>
+            <span class='trial'>View LeanKit's Full Feature List</span>
+            <small>Compare all Editions in detail</small>
+          </a>
+          <span>
+            or
+          </span>
+          <a class='try-leankit__cta' href='https://leankit.com/get-leankit/' onclick="ga('send', 'event', 'In Page', 'From Pricing', 'In-Page-Trial-CTA - Bottom Button');" title='Get LeanKit'>
+            <span class='trial'>Free Trial for Business Users</span>
+            <small>Get all Select Edition Features for 30 days</small>
+          </a>
+        </div>
+        <div class='try-leankit__info'>
+          <p>
+            No credit card or obligation required. Purchase LeanKit within the application at any time during your 30-day trial.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="//app-ab22.marketo.com/js/forms2/js/forms2.min.js"></script>
+  <div id="test-form" class="mfp-hide white-popup-block">
+    <script>
+      MktoForms2.loadForm("//app-ab22.marketo.com", "456-QCH-520", 1929, function(form){
+        var SFscript = document.createElement('script');
+        SFscript.setAttribute('src','//cdn.reachforce.com/SmartForms.js');
+        SFscript.setAttribute('data-token','351');
+        document.head.appendChild(SFscript);  
+        form.onSuccess(function(values, followUpUrl) {
+          $('#RFLoadingFrame, #RFBlockFrame').hide();
+          $('#formContainer').html('<h4>Thank you, your request has been received.<h4>');
+          return false;
+      });
+      });
+    </script>
+    <div id="formContainer">
+      <h3>Get a custom quote</h3>
+      <form id="mktoForm_1929"></form>
+      <div class="mktoText" id="formColumnPrivacy">
+        <p class="formFooter">By submitting this form you agree to our <a href="https://www.planview.com/legal/privacy-statement/" title="Privacy Policy" target="_blank">Privacy Policy.</a></p>
+        <p class="formFooter">All Data Subject Access Requests (DSARs) must be submitted through the Planview DSAR portal located <a href="https://app-eu.onetrust.com/app/#/webform/722e3c00-70f6-425c-b619-f0a700b4ce7f" target="_blank">here</a>. Requests submitted through this form will not be processed.</p>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+{% block globalFooterSubscription %}{% endblock globalFooterSubscription %}

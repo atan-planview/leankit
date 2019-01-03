@@ -1,0 +1,124 @@
+{% extends '_layout' %}
+
+{% set excerptLength = 60 %}
+{% set bodyClass = 'home blog leankit-blog' %}
+{% set feeds = [
+  {
+    'title': "Press Feed | #{siteName}",
+    'uri': 'press/feed/'
+  }
+] %}
+
+{% includeCssFile 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' %}
+{% includeCssFile 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.css' %}
+{% includeCssFile 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials-theme-flat.css' %}
+
+{% set myCss %}
+  {% include 'press/_legacy-style' %}
+{% endset %}
+{% includeCss myCss %}
+
+{% block content %}
+  <section class='global-section-navigation'>
+    <div class='module'>
+      <div class='global-section-navigation__container'>
+        <div class='global-section-navigation__title'>
+          <h2>Press</h2>
+        </div>
+      </div>
+    </div>
+  </section>{# /.global-section-navigation #}
+
+  <div class='module'>
+    <div class='seo-main-content__container global-content global-content--single-column'>
+
+      <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
+
+          {% for entry in craft.entries({
+            section: 'pressReleases',
+            limit: 10,
+            with: [
+              'pdf',
+              ['featuredImage.image:image', { withTransforms: ['large'] }]
+            ]
+          }) %}
+
+            <article class="blog-post post type-post status-publish format-standard hentry category-uncategorized">
+
+              <header class="entry-header">
+
+                {% for pdf in entry.pressReleasePdf.kind('pdf') %}
+                  <div class="content-download">
+                    <a href="{{ pdf.getUrl() }}" target="_blank">Download Press Release as PDF</a>
+                  </div>
+                {% endfor %}
+
+                <h3 class="press-release-title">
+                  <a href="{{ entry.url }}" rel="bookmark">{{ entry.title }}</a>
+                </h3>
+
+              </header>
+
+                <div class="entry-summary">
+
+                {% set featuredImageBlock = entry.featuredImage[0] ?? null %}
+                {% if featuredImageBlock %}
+                  <p>
+                    <img
+                      src="{{ featuredImageBlock.image[0] | retinafy('large') }}"
+                      alt="{{ featuredImageBlock.altAttr }}"
+                      {% if featuredImageBlock.titleAttr is not empty %}
+                        title="{{ featuredImageBlock.titleAttr }}"
+                      {% endif %}
+                      class="aligncenter size-full"
+                    >
+                  </p>
+                {% endif %}
+
+                  {% if entry.subhead|length %}
+                    <h4>{{ entry.subhead|striptags('<strong><b><u><em><i>')|raw }}</h4>
+                  {% endif %}
+
+                  <p>
+                    <strong>
+                      {{ entry.prLocation|default('NASHVILLE, Tenn.') }}, {{ entry.postDate|date('M. j, Y') }}
+                      {% if entry.prWireService != '' %}
+                        /{{ entry.prWireService.label }}/
+                      {% endif %}
+                    </strong>
+
+                    &mdash;
+
+                    {% if entry.intro|length %}
+                      {{ entry.intro|striptags('<strong><b><u><em><i><a>')|raw }}
+                    {% else %}
+                      {% set excerpt = entry.prBody.type('text').first().text %}
+                      {% if excerpt | striptags | split(" ") | length > excerptLength %}
+                        {{ excerpt | replace({'</p><p>': ' '}) | striptags('<strong><b><u><em><i>') | split(" ") | slice(0, excerptLength) | join(" ") | raw }}&hellip;
+                      {% else %}
+                        {{ excerpt }}
+                      {% endif %}
+                    {% endif %}
+                  </p>
+                  <a href="{{ entry.url }}" class="more-link">
+                    <span class="meta-nav btn btn-primary">Continue Reading</span>
+                  </a>
+                </div>
+
+            </article>
+
+            {% if not loop.last %}
+              <hr>
+            {% endif %}
+
+            {# TODO: Add pagination when posts near 10+ #}
+
+          {% endfor %}
+
+        </main>{# /#main #}
+      </div>{# /#primary #}
+
+    </div>{# /.seo-main-content__container #}
+  </div>{# /.module #}
+{% endblock content %}

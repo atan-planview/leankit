@@ -1,0 +1,181 @@
+{% extends 'styleguide/_layout' %}
+
+{% set seomaticMeta = seomaticMeta | merge({
+  'seoTitle': 'Compositions',
+  'robots': 'noindex, nofollow',
+}) %}
+
+{% block content %}
+  <div class="o-container">
+    <h2 class="h-beta">Compositions</h2>
+
+    <h3 class="h-gamma">Image Grid</h3>
+
+    <h4 class="h-delta">x1</h4>
+
+    {% set igSizes = [
+      {
+        w: 600,
+        h: 600
+      }
+    ] %}
+
+    <div class="c-image-grid">
+      <div class="c-image-grid__inner">
+        {% for size in igSizes %}
+          <div class="c-image-grid__item">
+            {% include '_library/elements/imgfig' with {
+                alt: "There's Nothing Here",
+                caption: 'This is a caption with an <a href="https://google.com">HTML link</a>. Duis a libero et orci vehicula sollicitudin. Proin pharetra lacus dictum nisl auctor semper. Fusce ut tempor quam.',
+                fluid: true,
+                src: "https://placehold.it/#{size.w}x#{size.h}",
+                title: 'Placeholder Image'
+            } %}
+          </div>{# /.c-image-grid__item #}
+        {% endfor %}
+      </div>{# /.c-image-grid__inner #}
+    </div>{# /.c-image-grid #}
+
+    <h4 class="h-delta">x2</h4>
+
+    {% set igSizes = [
+      {
+        w: 600,
+        h: 600
+      },
+      {
+        w: 600,
+        h: 300
+      }
+    ] %}
+
+    <div class="c-image-grid">
+      <div class="c-image-grid__inner">
+        {% for size in igSizes %}
+          <div class="c-image-grid__item">
+            {% include '_library/elements/imgfig' with {
+                alt: "There's Nothing Here",
+                caption: 'This is a caption with an <a href="https://google.com">HTML link</a>. Duis a libero et orci vehicula sollicitudin. Proin pharetra lacus dictum nisl auctor semper. Fusce ut tempor quam.',
+                fluid: true,
+                src: "https://placehold.it/#{size.w}x#{size.h}",
+                title: 'Placeholder Image'
+            } %}
+          </div>{# /.c-image-grid__item #}
+        {% endfor %}
+      </div>{# /.c-image-grid__inner #}
+    </div>{# /.c-image-grid #}
+
+    <h4 class="h-delta">x3</h4>
+
+    {% set igSizes = [
+      {
+        w: 600,
+        h: 600
+      },
+      {
+        w: 600,
+        h: 300
+      },
+      {
+        w: 600,
+        h: 900
+      }
+    ] %}
+
+    <div class="c-image-grid">
+      <div class="c-image-grid__inner">
+        {% for size in igSizes %}
+          <div class="c-image-grid__item">
+            {% include '_library/elements/imgfig' with {
+                alt: "There's Nothing Here",
+                caption: 'This is a caption with an <a href="https://google.com">HTML link</a>. Duis a libero et orci vehicula sollicitudin. Proin pharetra lacus dictum nisl auctor semper. Fusce ut tempor quam.',
+                fluid: true,
+                src: "https://placehold.it/#{size.w}x#{size.h}",
+                title: 'Placeholder Image'
+            } %}
+          </div>{# /.c-image-grid__item #}
+        {% endfor %}
+      </div>{# /.c-image-grid__inner #}
+    </div>{# /.c-image-grid #}
+
+    <h4 class="h-delta">x4</h4>
+
+    {% set igSizes = [
+      {
+        w: 600,
+        h: 600
+      },
+      {
+        w: 600,
+        h: 300
+      },
+      {
+        w: 600,
+        h: 900
+      },
+      {
+        w: 600,
+        h: 700
+      }
+    ] %}
+
+    <div class="c-image-grid">
+      <div class="c-image-grid__inner">
+        {% for size in igSizes %}
+          <div class="c-image-grid__item">
+            {% include '_library/elements/imgfig' with {
+                alt: "There's Nothing Here",
+                caption: 'This is a caption with an <a href="https://google.com">HTML link</a>. Duis a libero et orci vehicula sollicitudin. Proin pharetra lacus dictum nisl auctor semper. Fusce ut tempor quam.',
+                fluid: true,
+                src: "https://placehold.it/#{size.w}x#{size.h}",
+                title: 'Placeholder Image'
+            } %}
+          </div>{# /.c-image-grid__item #}
+        {% endfor %}
+      </div>{# /.c-image-grid__inner #}
+    </div>{# /.c-image-grid #}
+
+    <h4 class="h-delta">x5</h4>
+
+    {% set igSizes = [
+      {
+        w: 600,
+        h: 600
+      },
+      {
+        w: 600,
+        h: 300
+      },
+      {
+        w: 600,
+        h: 900
+      },
+      {
+        w: 600,
+        h: 700
+      },
+      {
+        w: 600,
+        h: 300
+      }
+    ] %}
+
+    <div class="c-image-grid">
+      <div class="c-image-grid__inner">
+        {% for size in igSizes %}
+          <div class="c-image-grid__item">
+            {% include '_library/elements/imgfig' with {
+                alt: "There's Nothing Here",
+                caption: 'This is a caption with an <a href="https://google.com">HTML link</a>. Duis a libero et orci vehicula sollicitudin. Proin pharetra lacus dictum nisl auctor semper. Fusce ut tempor quam.',
+                fluid: true,
+                src: "https://placehold.it/#{size.w}x#{size.h}",
+                title: 'Placeholder Image'
+            } %}
+          </div>{# /.c-image-grid__item #}
+        {% endfor %}
+      </div>{# /.c-image-grid__inner #}
+    </div>{# /.c-image-grid #}
+
+  </div>{# /.o-container #}
+
+{% endblock content %}

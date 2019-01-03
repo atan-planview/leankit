@@ -1,0 +1,24 @@
+/*
+ * A horizontal list of navigation elements
+ * (e.g. nav bar, horizontal list of logos, breadcrumbs).
+ */
+
+@include object('hnav') {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  @include element('item') {
+    display: inline-block;
+    margin-left: ms(0);
+    zoom: 1;
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
+  @include element('link') {
+    display: inline-block;
+    zoom: 1;
+  }
+}

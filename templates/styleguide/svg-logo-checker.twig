@@ -1,0 +1,156 @@
+{% spaceless %}
+
+{% set seomaticMeta = seomaticMeta | merge({
+  'seoTitle': 'SVG Logo Checker',
+  'robots': 'noindex, nofollow',
+}) %}
+
+{% set myCss %}
+  body {
+    background-color: {{ craft.request.getQuery('color') | default('gray') }};
+  }
+  .box-container {
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .box {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  .border {
+    border: 2px solid GoldenRod;
+  }
+  img {
+    display: block;
+    width: 200px;
+  }
+{% endset %}
+
+{% includeCss myCss %}
+
+{% set conf = craft.config %}
+{% set entry = entry is defined ? entry : conf.entryDefaults %}
+{% set sharing = sharing is defined ? sharing : {} %}
+
+
+{# Require login if in production. #}
+{% if
+  conf.env == 'prod' and
+  (not currentUser or not currentUser.can('accessCp'))
+%}
+  {% exit 404 %}
+{% endif %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3" name="viewport">
+
+  {% set seomaticTemplatePath = '_seo_meta' %} {% hook 'seomaticRender' %}
+
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ conf.cdnBaseUrl }}/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="{{ conf.cdnBaseUrl }}/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="{{ conf.cdnBaseUrl }}/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="{{ conf.cdnBaseUrl }}/manifest.json">
+  <link rel="mask-icon" href="{{ conf.cdnBaseUrl }}/safari-pinned-tab.svg" color="#96C93D">
+  <meta name="theme-color" content="#272b24">
+
+  <link href="https://cloud.typography.com/6972354/770768/css/fonts.css" rel="stylesheet" type="text/css">
+  <link href="{{ conf.cdnBaseUrl }}/assets/build/css/all.min.{{ conf.cssVersion }}.css" rel="stylesheet" type="text/css">
+  {{ getHeadHtml() }}
+</head>
+
+<body>
+
+<div class="o-container">
+  <header>
+    <h1 class="h-alpha">SVG Logo Checker</h1>
+  </header>
+</div>{# /.o-container #}
+
+<div class="o-container">
+  <br>
+
+  <ul class="o-hnav">
+    <li class="o-hnav__item">
+      <strong>Change background color:</strong>
+    </li>
+    <li class="o-hnav__item">
+      <a href="?color=azure" class="o-hnav__link">Azure</a>
+    </li>
+    <li class="o-hnav__item">
+      <a href="?color=gray" class="o-hnav__link">Gray</a>
+    </li>
+  </ul>
+
+  <br>
+
+  <p>This tool shows all SVG logos in the <strong>Customer Logos</strong> asset source (and applicable subfolders) in <a href="/opry/assets/">Craft's Assets</a>, allowing us to do some quick quality control.</p>
+
+  <p>Specs: All logos must have <strong>zero</strong> whitespace around the edges and be transparent except in places where the logo itself requires the background to be filled in (as with the Emma logo).</p><br>
+
+  <main role="main">
+    <h2 class="h-gamma">Primary</h2>
+    <div class="box-container">
+      {% for image in craft.assets
+        .kind('image')
+        .sourceId(4)
+      %}
+        {% if image.mimeType == "image/svg+xml" %}
+          <div class="box">
+            <span class="border">
+              <img src="{{ image.url }}">
+            </span>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>{# /.box-container #}<br>
+
+    <h2 class="h-gamma">Single Color (Black Variant)</h2>
+    <p>If primary (usually full-color) logos have elements that cannot automatically be converted to single color versions (like the Emma and REA Group logos above), you must also include a black version.</p>
+    <div class="box-container">
+      {% for image in craft.assets
+        .kind('image')
+        .sourceId(4)
+        .folderId(15)
+      %}
+        {% if image.mimeType == "image/svg+xml" %}
+          <div class="box">
+            <span class="border">
+              <img src="{{ image.url }}">
+            </span>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>{# /.box-container #}<br>
+
+    <h2 class="h-gamma">Single Color (White Variant)</h2>
+    <p>If black logos appear larger when converted to white (<a href="https://artplusmarketing.com/a-designers-guide-to-creating-logo-files-ab91f05c72c4#dfd2" target="_blank">the irradiation phenomenon</a>), you should include a white version as well.</p>
+    <div class="box-container">
+      {% for image in craft.assets
+        .kind('image')
+        .sourceId(4)
+        .folderId(13)
+      %}
+        {% if image.mimeType == "image/svg+xml" %}
+          <div class="box">
+            <span class="border">
+              <img src="{{ image.url }}">
+            </span>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>{# /.box-container #}<br>
+  </main>
+</div>
+
+</body>
+
+</html>
+{% endspaceless %}

@@ -1,0 +1,157 @@
+{% extends 'styleguide/_layout' %}
+
+{% set seomaticMeta = seomaticMeta | merge({
+  'seoTitle': 'Layouts',
+  'robots': 'noindex, nofollow',
+}) %}
+
+{% block content %}
+  <div class="o-container">
+    <h2 class="h-beta">Layouts</h2>
+  </div>{# /.o-container #}
+
+  <div class="o-container">
+    <div class="o-island" style="background-color: gray; color: white;">
+      <h2 class="h-beta">Container</h2>
+      <code>.o-container</code>
+    </div>
+  </div>{# /.o-container #}
+
+  <div class="o-container o-container--narrow">
+    <div class="o-island" style="background-color: gray; color: white;">
+      <h2 class="h-beta">Narrow Container</h2>
+      <code>.o-container--narrow</code>
+    </div>
+  </div>{# /.o-container--narrow #}
+
+  <div class="o-container o-container--wide">
+    <div class="o-island" style="background-color: gray; color: white;">
+      <h2 class="h-beta">Wide Container</h2>
+      <code>.o-container--wide</code>
+    </div>
+  </div>{# /.o-container--wide #}
+
+  <div class="o-container">
+
+    <div class="o-island c-sg-example">
+      <div class="c-sg-example__heading">Horizontal Nav</div>
+      <code>.o-hnav</code>
+
+      <ul class="o-hnav">
+        <li class="o-hnav__item">
+          <a href="#" class="o-hnav__link">Link 1</a>
+        </li>
+        <li class="o-hnav__item">
+          <a href="#" class="o-hnav__link">Link 2</a>
+        </li>
+        <li class="o-hnav__item">
+          <a href="#" class="o-hnav__link">Link 3</a>
+        </li>
+      </ul>
+    </div>{# /.c-sg-example #}
+
+    <div class="o-island c-sg-example">
+      <div class="c-sg-example__heading">Vertical Nav</div>
+      <code>.o-vnav</code>
+
+      <ul class="o-vnav">
+        <li class="o-vnav__item">
+          <a href="#" class="o-vnav__link">Link 1</a>
+        </li>
+        <li class="o-vnav__item">
+          <a href="#" class="o-vnav__link">Link 2</a>
+        </li>
+        <li class="o-vnav__item">
+          <a href="#" class="o-vnav__link">Link 3</a>
+        </li>
+      </ul>
+    </div>{# /.c-sg-example #}
+
+    <h3 class="h-gamma">Flag Object</h3>
+
+    <div class="o-island c-sg-example">
+      <div class="c-sg-example__heading">Flag Object (Standard)</div>
+      <code>.o-flag</code>
+
+      <div class="o-flag">
+          <div class="o-flag__figure">
+              <img src="https://placehold.it/150x150">
+          </div>
+          <div class="o-flag__body">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus est et porttitor hendrerit. Nullam lacinia felis vel condimentum suscipit. Integer porttitor rhoncus ligula, quis efficitur libero.</p>
+          </div>
+      </div>
+    </div>{# /.c-sg-example #}
+
+    <div class="o-island c-sg-example">
+      <div class="c-sg-example__heading">Flag Object (Aligned Top)</div>
+      <code>.o-flag--top</code>
+
+      <div class="o-flag o-flag--top">
+          <div class="o-flag__figure">
+              <img src="https://placehold.it/150x150">
+          </div>
+          <div class="o-flag__body">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus est et porttitor hendrerit. Nullam lacinia felis vel condimentum suscipit. Integer porttitor rhoncus ligula, quis efficitur libero.</p>
+          </div>
+      </div>
+    </div>{# /.c-sg-example #}
+
+    <div class="o-island c-sg-example">
+      <div class="c-sg-example__heading">Flag Object (Aligned Bottom)</div>
+      <code>.o-flag--bottom</code>
+
+      <div class="o-flag o-flag--bottom">
+          <div class="o-flag__figure">
+              <img src="https://placehold.it/150x150">
+          </div>
+          <div class="o-flag__body">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus est et porttitor hendrerit. Nullam lacinia felis vel condimentum suscipit. Integer porttitor rhoncus ligula, quis efficitur libero.</p>
+          </div>
+      </div>
+    </div>{# /.c-sg-example #}
+
+    <div class="o-island c-sg-example">
+      <div class="c-sg-example__heading">Flag Object (Reversed)</div>
+      <code>.o-flag--rev</code>
+
+      <div class="o-flag o-flag--rev">
+          <div class="o-flag__figure">
+              <img src="https://placehold.it/150x150">
+          </div>
+          <div class="o-flag__body">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus est et porttitor hendrerit. Nullam lacinia felis vel condimentum suscipit. Integer porttitor rhoncus ligula, quis efficitur libero.</p>
+          </div>
+      </div>
+    </div>{# /.c-sg-example #}
+
+    <div class="o-island c-sg-example">
+      <div class="c-sg-example__heading">Flag Object (Responsive)</div>
+      <code>.o-flag--responsive</code>
+
+      <div class="o-flag o-flag--responsive">
+          <div class="o-flag__figure">
+              <img src="https://placehold.it/150x150">
+          </div>
+          <div class="o-flag__body">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus est et porttitor hendrerit. Nullam lacinia felis vel condimentum suscipit. Integer porttitor rhoncus ligula, quis efficitur libero.</p>
+          </div>
+      </div>
+    </div>{# /.c-sg-example #}
+
+    <div class="o-island c-sg-example">
+      <div class="c-sg-example__heading">Flag Object (Responsive Big Image)</div>
+      <code>.o-flag--responsive</code>
+
+      <div class="o-flag o-flag--responsive">
+          <div class="o-flag__figure">
+              <img src="https://placehold.it/550x550">
+          </div>
+          <div class="o-flag__body">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dapibus est et porttitor hendrerit. Nullam lacinia felis vel condimentum suscipit. Integer porttitor rhoncus ligula, quis efficitur libero.</p>
+          </div>
+      </div>
+    </div>{# /.c-sg-example #}
+
+  </div>{# /.o-container #}<br>
+{% endblock content %}

@@ -1,0 +1,81 @@
+{% set rating = block('rating')|trim %}
+
+{% if rating is not empty %}
+  <style>
+    .global-testimonial__blockquote:before {
+      content: "";
+      background: url(//leankit.com/eloqua/images/reviewStars_{{ rating|default('5') }}.svg) top left no-repeat;
+      height: 40px;
+      width: 130px;
+      background-size: 130px 30px;
+      color: #96c93d;
+      display: block;
+      font-size: 1em;
+      font-weight: 700;
+      margin: 0 auto;
+      line-height: 1;
+    }
+
+    .global-testimonial__heading {
+      color: #000;
+      text-transform: uppercase;
+      font-size: 16.32px;
+      font-weight: bold;
+      margin-bottom: .5em;
+    }
+
+    .global-testimonial__quote {
+      display: block;
+      float: none;
+      font-size: .85em;
+    }
+
+    .global-testimonial__quote p:before {
+      content: open-quote;
+    }
+
+    .global-testimonial__quote p:after {
+      content: close-quote;
+    }
+
+    .global-testimonial__attribution__name {
+      color: #faa331;
+    }
+  </style>
+{% endif %}
+
+<div class="global-testimonial">
+  <div class="global-testimonial__container">
+    <div class="global-testimonial__blockquote">
+      <div class="global-testimonial__heading">
+        {{ block('heading')|trim|striptags('<strong><b><u><em><i>')|raw }}
+      </div>
+      <div class="global-testimonial__quote">
+        {{ block('quote') }}
+      </div>
+    </div>
+    <div class="global-testimonial__attribution">
+      <div class="global-testimonial__attribution__name">
+        <span>{{ block('authorName')|trim }}</span>
+      </div>
+      <div class="global-testimonial__attribution__att-title">
+        {% set authorJobTitle = block('authorJobTitle')|trim %}
+        {% set authorCompany = block('authorCompany')|trim %}
+        {% set authorCompanyUrl = block('authorCompanyUrl')|trim %}
+        <span>
+        {% if authorJobTitle is not empty %}
+          {{ authorJobTitle }}
+        {% endif %}
+        {% if authorCompany is not empty %}
+          <br>
+          {% if authorCompanyUrl %}
+            at <a href="{{ authorCompanyUrl }}">{{ authorCompany }}</a>
+          {% else %}
+            at {{ authorCompany }}
+          {% endif %}
+        {% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

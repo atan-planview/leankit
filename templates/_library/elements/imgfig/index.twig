@@ -1,0 +1,46 @@
+{% set attr = attr is defined ? { class: '' } | merge(attr) : { class: '' } %}
+{% set centeredCaption = centeredCaption is defined ? centeredCaption : false %}
+{% set fluid = fluid is defined ? fluid : false %}
+{% set modifiers = modifiers is defined ? modifiers : [] %}
+
+{% set defaultClass = 'c-imgfig' %}
+{% if fluid %}
+  {% set defaultClass = defaultClass ~ ' c-imgfig--fluid' %}
+{% endif %}
+{% for item in modifiers %}
+  {% set defaultClass = defaultClass ~ ' c-imgfig--' ~ item %}
+{% endfor %}
+
+<figure
+  {% for key,value in attr %}
+    {{ key }}="{% if key == 'class' %}{{ defaultClass }} {% endif %}{{ value }}"
+  {% endfor %}
+>
+  {% if src is iterable %}
+      <img
+        {% if transform is defined %}
+          src="{{ src[0] | retinafy(transform) }}"
+        {% else %}
+          src="{{ craft.imager.transformImage(src[0], {
+            width: 1600
+          }) }}"
+        {% endif %}
+        class="c-imgfig__image {{ imgClass|default('') }}"
+        alt="{{ alt|default('') }}"
+        title="{{ title|default('') }}"
+      >
+  {% else %}
+      <img
+        src="{{ src }}"
+        class="c-imgfig__image"
+        alt="{{ alt|default('') }}"
+        title="{{ title|default('') }}"
+      >
+  {% endif %}
+
+  {% if caption is defined and caption is not empty %}
+    <figcaption class="c-copy--caption c-imgfig__caption{% if centeredCaption %} u-centered-text{% endif %}">
+      {{ caption|striptags('<strong><b><u><em><i><a>')|raw }}
+    </figcaption>
+  {% endif %}
+</figure>

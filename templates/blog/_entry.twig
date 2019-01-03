@@ -1,0 +1,324 @@
+{% extends '_layout' %}
+{% import '_macros' as macros %}
+
+{# Manually set the rich social sharing images if they don't already exist. #}
+{% if entry.featuredImage is not empty %}
+  {% if seomaticMeta.seoImage is empty %}
+    {% set seomaticMeta = seomaticMeta | merge({
+      'seoImage': entry.featuredImage[0].image[0].getUrl('ogShare')
+    }) %}
+  {% endif %}
+  {% if seomaticMeta.og.image is empty %}
+    {% set seomaticMeta = seomaticMeta | merge({
+      'og': seomaticMeta.og | merge({
+        'image': entry.featuredImage[0].image[0].getUrl('ogShare')
+      })
+    }) %}
+  {% endif %}
+  {% if seomaticMeta.twitter.image is empty %}
+    {% set seomaticMeta = seomaticMeta | merge({
+      'twitter': seomaticMeta.twitter | merge({
+        'card': 'summary_large_image',
+        'image': entry.featuredImage[0].image[0].getUrl('twitterShare')
+      })
+    }) %}
+  {% endif %}
+{% endif %}
+
+{% set bodyClass = 'single single-post single-format-standard leankit-blog' %}
+{% set feeds = [
+  {
+    'title': "Blog Feed | #{siteName}",
+    'uri': 'blog/feed/',
+    'rel': 'home'
+  }
+] %}
+
+{% includeCssFile 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' %}
+{% includeCssFile 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.css' %}
+{% includeCssFile 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials-theme-flat.css' %}
+
+{% includeJsFile 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js' %}
+{% set myJs %}
+  $("#share").jsSocials({
+    showLabel: false,
+    showCount: false,
+    shares: ["twitter", "googleplus", "linkedin", "facebook", "pocket", "email"]
+  });
+{% endset %}
+{% includeJs myJs %}
+
+{% block content %}
+  <main>
+    {% include 'blog/_header' %}
+
+    <div class='module'>
+      <div class='seo-main-content__container global-content global-content--single-column'>
+
+        <div id="primary" class="content-area">
+
+          <main id="main" class="site-main" role="main">
+
+            <article class="blog-post post type-post status-publish format-standard has-post-thumbnail hentry category-webinars">
+              <header class="entry-header">
+                <h1 class="blog-post-title">{{ entry.title }}</h1>
+
+                <div class="blog-post-meta">
+                  <span class="blog-post-meta">
+                    <time class="entry-date published" datetime="{{ entry.postDate.iso8601() }}">
+                      {{ entry.postDate|date('F j, Y') }}
+                    </time>
+                    <time class="updated" datetime="{{ entry.dateUpdated.iso8601() }}">
+                    {{ entry.dateUpdated|date('F j, Y') }}
+                    </time>
+                    <span class="byline"> by <span class="author vcard"><a class="url fn n" href="{{ url('blog/author/'~entry.author.username) }}">{{ entry.author.fullName }}</a></span></span>
+                  </span>
+                </div>{# /.blog-post-meta #}
+              </header>{# /.entry-header #}
+
+              <div class="entry-content">
+                {% if entry.type == 'legacy' %}
+                  {{ entry.wordpressPostHtml|raw }}
+                {% else %}
+
+                {% set featuredImageBlock = entry.featuredImage[0] ?? null %}
+                {% if featuredImageBlock and featuredImageBlock.image %}
+                  <p>
+                    <img
+                      src="{{ featuredImageBlock.image[0] | retinafy('large') }}"
+                      alt="{{ featuredImageBlock.altAttr }}"
+                      {% if featuredImageBlock.titleAttr is not empty %}
+                        title="{{ featuredImageBlock.titleAttr }}"
+                      {% endif %}
+                      class="aligncenter size-full"
+                    >
+                  </p>
+                {% endif %}
+
+                  {% for block in entry.blogBody %}
+                    {% if block.type == "heading" %}
+                      <div class="s-content">
+                        <{{ block.headingLevel }}>
+                          {{ block.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+                        </{{ block.headingLevel }}>
+                      </div>{# /.s-content #}
+                    {% elseif block.type == "text" %}
+                      <div class="s-content">
+                        {{ block.text }}
+                      </div>{# /.s-content #}
+                    {% elseif block.type == "featuredText" %}
+                      <div class="s-content c-copy--feature">
+                        {{ block.text }}
+                      </div>{# /.c-copy--feature #}
+                    {% elseif block.type == "image" %}
+                      {% include '_library/elements/imgfig' with {
+                        attr: {
+                          class: 'c-figure c-figure--' ~ block.position
+                        },
+                        alt: block.altAttr,
+                        caption: block.caption,
+                        fluid: true,
+                        imgClass: 'c-figure__image',
+                        src: block.image,
+                        title: block.titleAttr,
+                        transform: 'large'
+                      } %}
+                    {% elseif block.type == "multiImage" %}
+                      <div class="c-image-grid c-multi-image">
+                        <div class="c-image-grid__inner">
+                          {% for row in block.images %}
+                            {% set el = { type: 'div', attr: '' } %}
+                            {% if row.resourceLink is not empty %}
+                              {% set el = {
+                                type: 'a',
+                                attr: "href='#{row.resourceLink.url}'"
+                              } %}
+                            {% endif %}
+                            <{{ el.type }} {{ el.attr|raw }} class="c-image-grid__item c-multi-image__item">
+                              {% include '_library/elements/imgfig' with {
+                                  alt: row.altAttr,
+                                  caption: row.caption,
+                                  fluid: true,
+                                  src: row.image,
+                                  title: row.titleAttr,
+                                  transform: block.sameAspectRatio ? 'recommendedReading' : null
+                              } %}
+                            </{{ el.type }}>{# /.c-image-grid__item #}
+                          {% endfor %}
+                        </div>{# /.c-image-grid__inner #}
+                      </div>{# /.c-image-grid #}
+                    {% elseif block.type == "video" %}
+                      <figure class="c-figure c-figure--{{ block.position }}{% if block.position == 'center' %} c-figure--narrow{% endif %}">
+                        <div class="o-video-embed">
+                          {% set video = craft.embedder.url(block.video, {
+                            max_width: 1920,
+                            max_height: 1080
+                          }) %}
+                          {{ video.embed_code }}
+                        </div>{# .o-video-embed #}
+                      </figure>
+                    {% endif %}
+                  {% endfor %}
+
+                {% endif %}
+
+                {% if entry.author.userBio is  empty %}
+                  <div style="margin: 50px 0; text-align:center;">
+                    {% include '_library/elements/button' with {
+                        href: 'https://leankit.com/get-leankit/',
+                        label: 'Try LeanKit Free!',
+                        modifiers: [
+                            'primary'
+                        ]
+                    } %}
+                  </div>
+                {% endif %}
+
+                <div class="c-social-share">
+                  <h3 class="c-social-share__heading">Like this post? Share it:</h3>
+                  <div id="share"></div>
+                </div>
+              </div>{# /.entry-content #}
+
+              {% if entry.author.userBio is not empty %}
+                <div class="author-profile clearfix">
+                  <img
+                    src="{{ entry.author.getPhotoUrl(150) }}"
+                    srcset="{{ entry.author.getPhotoUrl(150) }} 150w, {{ entry.author.getPhotoUrl(300) }} 300w"
+                    sizes="100vw"
+                    class="avatar avatar-150 photo"
+                    alt=""
+                    title=""
+                  >
+                  <div>
+                    <a href="{{ url('blog/author/'~entry.author.username) }}" class="author">
+                      {{ entry.author.fullName }}
+                    </a>
+                    {{ entry.author.userBio }}
+
+                    <div style="margin: 30px 0;">
+                      {% include '_library/elements/button' with {
+                          href: 'https://leankit.com/get-leankit/',
+                          label: 'Try LeanKit Free!',
+                          modifiers: [
+                              'primary'
+                          ]
+                      } %}
+                    </div>
+
+                  </div>
+                </div>{# /.author-profile #}
+              {% endif %}
+
+            </article>{# /.blog-post #}
+
+            {# <div id="disqus_thread"></div> #}
+            <script>
+              // var disqus_config = function () {
+              // this.page.url = '{{ seomaticMeta.canonicalUrl }}';  // Replace PAGE_URL with your page's canonical URL variable
+              // // this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+              // };
+
+              // (function() { // DON'T EDIT BELOW THIS LINE
+              // var d = document, s = d.createElement('script');
+              // s.src = 'https://leankit.disqus.com/embed.js';
+              // s.setAttribute('data-timestamp', +new Date());
+              // (d.head || d.body).appendChild(s);
+              // })();
+            </script>
+            {# <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript> #}
+
+          </main>{# /#main #}
+
+        </div>{# /#primary #}
+
+      </div>{# /.seo-main-content__container #}
+    </div>{# /.module #}
+
+  </main>
+
+  <section class="recommended">
+
+    <div class="module">
+
+      <header class="recommended__header">
+        <h4>Recommended Reading</h4>
+        <div class="blog-search clearfix">
+
+          {% include 'blog/_search-form' %}
+
+          <select name="category" class="js-link-dropdown">
+            <option value="" selected disabled>Browse by Category</option>
+            {% nav category in craft.categories.group('blog') %}
+              <option value="{{ category.url }}">{{ category.title }}</option>
+            {% endnav %}
+          </select>
+
+        </div>{# /.blog-search #}
+      </header>{# /.recommended__header #}
+
+      <div class="grid-3">
+
+        {% set recommendedReading = entry.recommendedBlogReading %}
+
+        {# Some fallback recommendations #}
+        {% if recommendedReading is empty %}
+          {% set recommendedReading = craft.entries.section('blog')
+            .limit(3)
+            .slug(
+              'welcome-to-the-new-lean',
+              'business-flow-watch-baton-not-runner',
+              'beat-the-transformation-odds'
+            ) %}
+        {% endif %}
+        {% for recommended in recommendedReading %}
+
+          <div class="col recommended__post">
+            <a href="{{ recommended.url }}">
+              {% set featuredImage = recommended.featuredImage.first() %}
+              {% set transformedImage = craft.imager.transformImage(
+                featuredImage.image.first(),
+                [
+                  { width: 470 },
+                  { width: 940 }
+                ]
+              ) %}
+              <img
+                src="{{ transformedImage[0].url }}"
+                srcset="{{ craft.imager.srcset(transformedImage) }}"
+                sizes="100vw"
+                alt="{{ featuredImage.altAttr }}"
+                title="{{ featuredImage.titleAttr }}"
+                class="attachment-post-thumbnail size-post-thumbnail wp-post-image"
+              >
+            </a> 
+
+            {% if recommended.blogCategories is iterable %}
+              <a href="{{ recommended.blogCategories.first().url }}" class="recommended__cat">
+                {{ recommended.blogCategories.first().title }}
+              </a>
+            {% endif %}
+
+            <h3>
+              <a href="{{ recommended.url }}">
+                {{ recommended.title }}
+              </a>
+            </h3>
+
+            <p>
+              {% if recommended.shortDescription is not empty %}
+                {{ macros.excerpt(recommended.shortDescription, 16) }}
+              {% else %}
+                {{ macros.excerpt(recommended.wordpressPostHtml, 16) }}
+              {% endif %}
+            </p>
+          </div>{# /.col recommended__post #}
+
+        {% endfor %}
+
+      </div>{# /.grid-3 #}
+
+    </div>{# /.module #}
+
+  </section>{# /.recommended #}
+{% endblock content %}

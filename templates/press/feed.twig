@@ -1,0 +1,83 @@
+{% header "Content-Type: application/rss+xml" %}
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+>
+  <channel>
+    <title>Press | {{ siteName }}</title>
+    <link>{{ siteUrl }}press/</link>
+    <atom:link href="{{ craft.request.url }}" rel="self" type="application/rss+xml" />
+    <description></description>
+    <language>en-us</language>
+    <pubDate>{{ now.rss }}</pubDate>
+    <lastBuildDate>{{ now.rss }}</lastBuildDate>
+
+    {% for entry in craft.entries.section('pressReleases').limit(10) %}
+      <item>
+        <title>{{ entry.title }}</title>
+        <link>{{ entry.url }}</link>
+        <pubDate>{{ entry.postDate.rss }}</pubDate>
+        <dc:creator><![CDATA[{{ entry.author.fullName }}]]></dc:creator>
+        <guid>{{ entry.url }}</guid>
+        <description><![CDATA[{% spaceless %}
+              {% for block in entry.featuredImage %}
+                {% if block.type == "image" %}
+                  {% set image = block.image.first() %}
+                    <p>
+                      <img
+                        src="{{ image.getUrl('large') }}"
+                        alt="{{ block.altAttr }}"
+                        {% if block.titleAttr is not empty %}
+                          title="{{ block.titleAttr }}"
+                        {% endif %}
+                      >
+                    </p>
+                {% endif %}
+              {% endfor %}
+
+              {% if entry.subhead|length %}
+                <h4>{{ entry.subhead|striptags('<strong><b><u><em><i>')|raw }}</h4>
+              {% endif %}
+
+              <p>
+                <strong>
+                  {{ entry.prLocation|default('NASHVILLE, Tenn.') }}, {{ entry.postDate|date('M. j, Y') }}
+                </strong>
+
+                &mdash;
+
+                {{ entry.intro|striptags('<strong><b><u><em><i><a>')|raw }}
+              </p>
+
+              {% for block in entry.prBody %}
+                {% if block.type == "heading" %}
+                  <{{ block.headingLevel }}>
+                    {{ block.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+                  </{{ block.headingLevel }}>
+                {% elseif block.type == "text" %}
+                  {{ block.text }}
+                {% endif %}
+              {% endfor %}
+
+              {% for block in entry.relatedCompanies %}
+                {% if block.type == "company" %}
+                  <h4>About {{ block.companyName }}</h4>
+                    {{ block.body }}
+                {% endif %}
+              {% endfor %}
+
+              <h4>Contact</h4>
+
+              {% for contact in entry.prContacts %}
+                <p>
+                  {{ contact.name }} | {{ contact.prRole }}<br>
+                  {{ contact.prPhoneNumber }}<br>
+                  <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+                </p>
+              {% endfor %}
+        {% endspaceless %}]]></description>
+      </item>
+    {% endfor %}
+  </channel>
+</rss>

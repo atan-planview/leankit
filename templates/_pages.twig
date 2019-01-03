@@ -1,0 +1,143 @@
+{% extends '_layout' %}
+
+{% block content %}
+  <main role="main" class="c-main{% if entry.heroImage|length %} c-main--flush-top{% endif %}">
+    {% if entry.heroImage|length %}
+      <header class="c-header">
+        {% include '_library/components/hero' with {
+          image: entry.heroImage,
+          heading: entry.heading|striptags('<strong><b><u><em><i><a>')|raw,
+          subhead: entry.subhead|striptags('<strong><b><u><em><i>')|raw
+        } %}
+      </header>{# /.c-header #}
+    {% else %}
+      <header class="o-container o-container--narrow c-header">
+        <h1 class="h-alpha c-header__heading">
+          {{ entry.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+        </h1>
+        {% if entry.subhead is not empty %}
+          <div class="c-copy--hero">
+            {{ entry.subhead|striptags('<strong><b><u><em><i>')|raw }}
+          </div>
+        {% endif %}
+      </header>{# /.c-header #}
+    {% endif %}
+    <section>
+
+      {% if craft.request.isLivePreview %}
+        {% set blockData = entry.pagesBody %}
+      {% else %}
+        {% set blockData = entry.pagesBody.find({
+          with: [
+            ['image:image', { withTransforms: ['large'] }],
+            ['multiImage:images.image', { withTransforms: ['recommendedReading'] }]
+          ]
+        }) %}
+      {% endif %}
+
+      {% for block in blockData %}
+        {% if block.type == "heading" %}
+          <div class="o-container o-container--narrow s-content">
+            <{{ block.headingLevel }}>
+              {{ block.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+            </{{ block.headingLevel }}>
+          </div>{# /.o-container #}
+        {% elseif block.type == "text" %}
+          <div class="o-container o-container--narrow s-content">
+            {{ block.text }}
+          </div>{# /.o-container #}
+        {% elseif block.type == "featuredText" %}
+          <div class="o-container o-container--narrow s-content c-copy--feature">
+            {{ block.text }}
+          </div>{# /.c-copy--feature #}
+        {% elseif block.type == "image" %}
+          <div class="o-container o-container--narrow">
+            {% include '_library/elements/imgfig' with {
+              attr: {
+                class: 'c-figure c-figure--' ~ block.position
+              },
+              alt: block.altAttr,
+              caption: block.caption,
+              fluid: true,
+              imgClass: 'c-figure__image',
+              src: block.image,
+              title: block.titleAttr,
+              transform: 'large'
+            } %}
+          </div>{# /.o-container #}
+        {% elseif block.type == "multiImage" %}
+          <div class="o-container o-container--narrow">
+            <div class="c-image-grid c-multi-image">
+              <div class="c-image-grid__inner">
+                {% for row in block.images %}
+                  {% set el = { type: 'div', attr: '' } %}
+                  {% if row.resourceLink is not empty %}
+                    {% set el = {
+                      type: 'a',
+                      attr: "href='#{row.resourceLink.url}'"
+                    } %}
+                  {% endif %}
+                  <{{ el.type }} {{ el.attr|raw }} class="c-image-grid__item c-multi-image__item">
+                    {% include '_library/elements/imgfig' with {
+                        alt: row.altAttr,
+                        caption: row.caption,
+                        fluid: true,
+                        src: row.image,
+                        title: row.titleAttr,
+                        transform: block.sameAspectRatio ? 'recommendedReading' : null
+                    } %}
+                  </{{ el.type }}>{# /.c-image-grid__item #}
+                {% endfor %}
+              </div>{# /.c-image-grid__inner #}
+            </div>{# /.c-image-grid #}
+          </div>{# /.o-container #}
+        {% elseif block.type == "video" %}
+          <div class="o-container o-container--narrow">
+            <figure class="c-figure c-figure--{{ block.position }}{% if block.position == 'center' %} c-figure--narrow{% endif %}">
+              <div class="o-video-embed">
+                {% set video = craft.embedder.url(block.video, {
+                  max_width: 1920,
+                  max_height: 1080
+                }) %}
+                {{ video.embed_code }}
+              </div>{# .o-video-embed #}
+            </figure>
+          </div>{# /.o-container #}
+        {% elseif block.type == "jobs" %}
+          <div class="o-container o-container--narrow s-content">
+            <style type="text/css">
+              .whr-date {display: none;}
+              .whr-location {display: none;}
+              .whr-code {display: none;}
+            </style>
+            <script src='https://www.workable.com/assets/embed.js' type='text/javascript'></script>
+            <script type='text/javascript' charset='utf-8'>
+            whr(document).ready(function(){
+            whr_embed(139324, {detail: 'titles', base: 'jobs', zoom: 'country', grouping: 'none'});
+            });
+            </script>
+            <div id="whr_embed_hook"></div>
+            {% set whrJs %}
+              {# Since we can't get a callback from whr_embed... #}
+              (function(){
+                var i = 0;
+                var intervalID = setInterval(function() {
+                  var $gaPosition = $(".whr-title a:contains('General Applications')").parents(".whr-item");
+                  if ($gaPosition.length) {
+                    window.clearInterval(intervalID);
+                    $gaPosition.remove();
+                  }
+                  if (++i === 30) {
+                    window.clearInterval(intervalID);
+                  }
+                }, 50);
+              })();
+            {% endset %}
+            {% includeJs whrJs %}
+          </div>{# /.o-container #}
+        {% endif %}
+      {% endfor %}
+
+    </section>{# /.s-content #}
+  </main>
+{% endblock content %}

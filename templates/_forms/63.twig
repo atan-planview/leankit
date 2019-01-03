@@ -1,0 +1,28 @@
+<script src="//app-ab22.marketo.com/js/forms2/js/forms2.min.js"></script>
+<script>
+  MktoForms2.loadForm("//app-ab22.marketo.com", "456-QCH-520", 1872, function(){
+    var SFscript = document.createElement('script');
+    SFscript.setAttribute('src','//cdn.reachforce.com/SmartForms.js');
+    SFscript.setAttribute('data-token','351');
+    document.head.appendChild(SFscript);  
+    var form = document.getElementById("mktoForm_1872"),
+        spinner = document.getElementById("spinner");
+    form.classList.add("fadeIn");
+    spinner.classList.add("hidden");
+  });
+
+  if(MktoForms2) {
+    MktoForms2.whenReady(function(n){
+        1872 === n.getId() && n.onSuccess(function(n) {
+              return location.href = "https://signup.leankit.com/accountsignup/begintrial?firstName=" + 
+              encodeURIComponent($.trim(n.FirstName)) + "&lastName=" + 
+              encodeURIComponent($.trim(n.LastName)) + "&company=" + 
+              encodeURIComponent($.trim(n.Company)) + "&emailAddress=" + 
+              encodeURIComponent($.trim(n.Email)) + "&trialType=Scaled&mkt=true", !1
+          })
+    });
+  }
+
+</script>
+<div id="spinner" class="loader">Loading...</div>
+<form id="mktoForm_1872"></form>

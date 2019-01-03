@@ -1,0 +1,98 @@
+{% extends '_layout' %}
+
+{% set bodyClass = 'training training_index' %}
+
+{% block content %}
+  <main role="main">
+    <section class='product-section-navigation global-section-navigation'>
+      <div class='module'>
+        <div class='product-section-navigation__container'>
+          <div class='product-section-navigation__title'>
+            <h2>Learn</h2>
+          </div>
+          <div class='product-section-navigation__links'>
+            <ul>
+              <li><a href="https://resources.leankit.com">Learning Center</a></li>
+              <li><a href="https://support.leankit.com/hc/en-us">Knowledge Base</a></li>
+              <li><a href="/training/">Training</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {% set blockData = entry.trainingBody %}
+
+    <section class='training-leaderboard global-leaderboard'>
+      <div class='module'>
+        <div class='training-leaderboard__container global-leaderboard__container'>
+          <h1>{{ entry.heading|trim|striptags('<strong><b><u><em><i>')|raw }}</h1>
+          {{ entry.shortDescription }}
+          <p>
+            {% for block in blockData %}
+              {% if block.type == "heading" %}
+                {% if not loop.first %}
+                  |
+                {% endif %}
+
+                <a href='#{{ block.heading|trim|striptags|kebab }}'>
+                  {{ block.heading|trim|striptags }}
+                </a>
+              {% endif %}
+            {% endfor %}
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class='training-content global-content'>
+      <div class='module'>
+        <div class='global-content--single-column'>
+
+          {% for block in blockData %}
+            {% switch block.type %}
+
+              {% case "heading" %}
+
+                <a name="{{ block.heading|trim|striptags|kebab }}" class="u-anchor"></a>
+                <h2>{{ block.heading|striptags('<strong><b><u><em><i><a>')|raw }}</h2>
+
+              {% case "session" %}
+
+                <h3 id="{{ block.sessionTitle|trim|striptags|kebab }}">
+                  {{ block.sessionTitle }}
+                </h3>
+                <p>
+                  <strong>Format:</strong> {{ block.format.label }}<br />
+                  <strong>For:</strong> {{ block.audience }}<br />
+                  <strong>Experience:</strong> {{ block.experienceRequired }}<br />
+                  <strong>Max Attendees:</strong> {{ block.maxAttendees }}<br />
+                  <strong>Length:</strong> {{ block.length }}<br />
+                  <strong>Description:</strong> {{ block.description|trim|slice(3)|raw }}
+                {# Kind of hacky, but the </p> here comes from the end of the description field data. The first <p> in that field data is sliced off. #}
+
+            {% endswitch %}
+          {% endfor %}
+
+          <br><br>
+        </div>
+      </div>
+    </section>
+    <section class='training-cta global-content'>
+      <div class='module'>
+        <div class='global-content--single-column'>
+          <h3 id="for-pricing-scheduling-or-more-information-email-a-leankit-product-specialist-today">For pricing, scheduling, or more information, <a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#115;&#097;&#108;&#101;&#115;&#064;&#108;&#101;&#097;&#110;&#107;&#105;&#116;&#046;&#099;&#111;&#109;&#063;&#115;&#117;&#098;&#106;&#101;&#099;&#116;&#061;&#076;&#101;&#097;&#110;&#075;&#105;&#116;&#037;&#050;&#048;&#080;&#114;&#111;&#100;&#117;&#099;&#116;&#037;&#050;&#048;&#084;&#114;&#097;&#105;&#110;&#105;&#110;&#103;&#037;&#050;&#048;&#073;&#110;&#113;&#117;&#105;&#114;&#121;">email</a> a LeanKit product specialist today.</h3>
+        </div>
+      </div>
+    </section>
+    <style>
+      .global-content h3 {
+        font-size: 1.2em
+      }
+      .global-content h4 {
+        font-size: 1em;
+        margin: 1.5em 0 .4em;
+        font-weight: 400;
+      }
+    </style>
+  </main>
+{% endblock content %}

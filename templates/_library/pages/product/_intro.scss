@@ -1,0 +1,20 @@
+@include component('product-intro') {
+  margin-bottom: ms(6);
+  text-align: center;
+
+  @include tablet {
+    margin-bottom: ms(9);
+  }
+
+  @include small-desktop {
+    margin-bottom: ms(10);
+  }
+
+  @include element('heading') {
+    font-size: ms(6);
+
+    @include tablet {
+      font-size: ms(9);
+    }
+  }
+}

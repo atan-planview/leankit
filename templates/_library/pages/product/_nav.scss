@@ -1,0 +1,45 @@
+@include component('product-nav') {
+  margin-bottom: ms(-6);
+  padding-top: ms(4);
+  text-align: center;
+
+  @include small-tablet {
+    margin-bottom: ms(3);
+    padding-top: ms(6);
+  }
+
+  @include medium-desktop {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: ms(-4);
+    padding-top: ms(3);
+    text-align: left;
+  }
+
+  @include element('heading') {
+    margin-bottom: 0;
+  }
+
+  @include element('item') {
+    margin-left: ms(6);
+  }
+
+  @include element('link') {
+    color: black;
+    font-size: ms(-2);
+    font-weight: $regular-weight;
+
+    &:focus,
+    &:hover,
+    &:active,
+    &:visited {
+      color: black;
+    }
+  }
+
+  @include element('nav') {
+    @media screen and (max-width: #{$medium-desktop - 1}) {
+      @include hide(true);
+    }
+  }
+}

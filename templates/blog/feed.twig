@@ -1,0 +1,43 @@
+{% header "Content-Type: application/rss+xml" %}
+{% import '_macros' as macros %}
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+>
+  <channel>
+    <title>Blog | {{ siteName }}</title>
+    <link>{{ siteUrl }}blog/</link>
+    <atom:link href="{{ craft.request.url }}" rel="self" type="application/rss+xml" />
+    <description></description>
+    <language>en-us</language>
+    <pubDate>{{ now.rss }}</pubDate>
+    <lastBuildDate>{{ now.rss }}</lastBuildDate>
+
+    {% for entry in craft.entries.section('blog').limit(1000) %}
+      <item>
+        <title>{{ entry.title }}</title>
+        <link>{{ entry.url }}</link>
+        <pubDate>{{ entry.postDate.rss }}</pubDate>
+        <dc:creator><![CDATA[{{ entry.author.fullName }}]]></dc:creator>
+        <guid>{{ entry.url }}</guid>
+        <description><![CDATA[{% spaceless %}
+              {% if entry.subhead|length %}
+                <h4>{{ entry.subhead|striptags('<strong><b><u><em><i>')|raw }}</h4>
+              {% endif %}
+
+              {% if entry.shortDescription is not empty %}
+                {{ entry.shortDescription }}
+              {% elseif entry.type == 'legacy' %}
+                <p>{{ macros.excerpt(entry.wordpressPostHtml, 60) }}</p>
+              {% else %}
+                {% set blogBodyBlock = entry.blogBody.type('text, featuredText').first() %}
+                {% if blogBodyBlock %}
+                    <p>{{ macros.excerpt(blogBodyBlock.text, 60) }}</p>
+                {% endif %}
+              {% endif %}
+        {% endspaceless %}]]></description>
+      </item>
+    {% endfor %}
+  </channel>
+</rss>

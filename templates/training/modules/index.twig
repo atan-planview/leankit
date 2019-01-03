@@ -1,0 +1,33 @@
+{% extends '_layout' %}
+
+{% block content %}
+  <main role="main" class="c-main">
+    <header class="o-container o-container--narrow c-header">
+      <h1 class="h-alpha c-header__heading">
+        LeanKit Training Modules
+      </h1>
+    </header>{# /.c-header #}
+    <section>
+
+      {% for entry in craft.entries.section('trainingModules') %}
+      <div class="o-container o-container--narrow">
+          <a href="{{ entry.url }}">
+            <h2 class="h-gamma">
+              {{ entry.title }}
+            </h2>
+          </a>
+
+          {{ entry.trainingModulesBody.type('text').first().text }}
+
+          <p>
+            <a href="{{ entry.url }}" class="c-copy--meta">
+              <b>Get started &gt;</b>
+            </a>
+          </p>
+          <br><br>
+        </div>{# /.o-container #}
+      {% endfor %}
+
+    </section>{# /.s-content #}
+  </main>
+{% endblock content %}

@@ -1,0 +1,34 @@
+/*
+ * Style Guide Example
+ */
+
+@include component('sg-example') {
+  $box-shadow-depth: ms(-14);
+
+  background-color: $lighter-gray;
+  border-radius: 12px;
+  margin-bottom: ms(1);
+  padding: ms(3) 0;
+
+  @include element('code') {
+    background-color: $dark-gray;
+    border-radius: 8px;
+    box-shadow: 0 -#{$box-shadow-depth} 0 $darker-gray;
+    color: white;
+    margin: 0;
+    overflow: scroll;
+    padding: ms(0);
+    position: relative;
+    top: $box-shadow-depth;
+  }
+
+  @include element('element') {
+    margin: ms(1) 0 ms(2);
+  }
+
+  @include element('heading') {
+    font-weight: bold;
+    margin-bottom: ms(-1);
+    text-transform: uppercase;
+  }
+}

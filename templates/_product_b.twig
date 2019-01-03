@@ -1,0 +1,229 @@
+{% extends '_layout' %}
+
+{% set myJs %}
+  $(document).ready(function() {
+    $('.open-popup-link').magnificPopup({
+      callbacks: {
+        beforeOpen: function() {
+           this.st.mainClass = this.st.el.attr('data-effect');
+        }
+      },
+      midClick: true,
+      removalDelay: 500,
+      type:'inline'
+    });
+  });
+{% endset %}
+{% includeJs myJs %}
+
+{% block content %}
+
+  <div class="o-container">
+    <div class="c-product-nav">
+      <h1 class="c-product-nav__heading h-delta">Product</h1>
+      <nav class="c-product-nav__nav">
+        <ul class="o-hnav">
+          <li class="o-hnav__item c-product-nav__item">
+            <a href="/product/" class="o-hnav__link c-product-nav__link">Overview</a>
+          </li>
+          <li class="o-hnav__item c-product-nav__item">
+            <a href="/platform/" class="o-hnav__link c-product-nav__link">Platform</a>
+          </li>
+          <li class="o-hnav__item c-product-nav__item">
+            <a href="/platform/integrate/" class="o-hnav__link c-product-nav__link">Integrations</a>
+          </li>
+          <li class="o-hnav__item c-product-nav__item">
+            <a href="/product-demo/" class="o-hnav__link c-product-nav__link">Demo</a>
+          </li>
+        </ul>
+      </nav>
+    </div>{# /.c-product-nav #}
+  </div>
+
+  {% include '_library/components/hero' with {
+    attr: {
+      class: 'c-product-hero'
+    },
+    image: entry.heroImage.first().url,
+    modifiers: [
+      'image-top'
+    ]
+  } %}
+
+  {#
+    Intro
+  #}
+  <div class="o-container o-container--narrow c-product-intro">
+    <h2 class="h-beta c-product-intro__heading">
+      {{ entry.heading|trim|striptags('<strong><b><u><em><i>')|raw }}
+    </h2>
+    <div class="c-copy--hero c-product-intro__copy">
+      {{ entry.intro|trim|striptags('<strong><b><u><em><i><a>')|raw }}
+    </div>
+  </div>
+
+  {#
+    Flags
+  #}
+
+  {% if craft.request.isLivePreview %}
+    {% set flagData = entry.productBody %}
+  {% else %}
+    {% set flagData = entry.productBody.find({
+      with: [
+        'image',
+        ['learnMoreText.image:image', { withTransforms: ['medium'] }]
+      ]
+    }) %}
+  {% endif %}
+
+  {% for flags in flagData %}
+    <div class="o-flag o-flag--top {% if flags.reversed %}o-flag--rev{% endif %} o-flag--responsive c-product-flag">
+      <div class="o-flag__figure c-product-flag__figure">
+        <div class="c-product-flag__figure-inner">
+          <img
+            src="{{ flags.image[0].url }}"
+            alt="{{ flags.imageAltAttr }}"
+            title="{{ flags.imageTitleAttr }}"
+          >
+        </div>
+      </div>
+      <div class="o-flag__body c-product-flag__body">
+        <div class="s-content c-product-flag__copy">
+          <h3 class="h-delta c-product-flag__heading">
+            {{ flags.heading|trim|striptags('<strong><b><u><em><i>')|raw }}
+          </h3>
+          {% for block in flags.text %}
+            {% if block.type == "subheading" %}
+              <h4 class="h-epsilon">{{ block.subheading|trim|striptags('<strong><b><u><em><i>')|raw }}</h4>
+            {% elseif block.type == "text" %}
+              {{ block.text }}
+            {% endif %}
+          {% endfor %}
+        </div>{# /.c-product-flag__copy #}
+
+        {% include '_library/elements/button' with {
+          attr: {
+            class: 'open-popup-link',
+            "data-effect": 'mfp-move-horizontal'
+          },
+          href: '#' ~ flags.heading|trim|striptags|kebab,
+          label: 'Learn More…'
+        } %}
+      </div>{# /.c-product-flag__body #}
+    </div>{# /.o-flag--responsive #}
+    <div
+      id="{{ flags.heading|trim|striptags|kebab }}"
+      class="mfp-popup--white mfp-with-anim mfp-hide s-content"
+    >
+      {% for block in flags.learnMoreText %}
+        {% if block.type == "heading" %}
+          <{{ block.headingLevel }}>{{ block.heading|striptags('<strong><b><u><em><i><a>')|raw }}</{{ block.headingLevel }}>
+        {% elseif block.type == "text" %}
+          {{ block.text }}
+        {% elseif block.type == "image" %}
+          {% include '_library/elements/imgfig' with {
+            attr: {
+              class: 'c-figure c-figure--' ~ block.position
+            },
+            alt: block.altAttr,
+            fluid: true,
+            imgClass: 'c-figure__image',
+            src: block.image,
+            title: block.titleAttr,
+            transform: 'medium'
+          } %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endfor %}
+
+  {#
+    Quote Block
+  #}
+  {% for testimonial in entry.testimonial %}
+    <div class="o-container o-container--narrow">
+      {% include '_library/elements/testimonial' with {
+        attr: {
+          class: 'c-product-testimonial'
+        },
+        author: testimonial.authorName,
+        company: testimonial.authorCompany,
+        fluid: true,
+        logo: testimonial.companyLogo,
+        quote: testimonial.body,
+        role: testimonial.authorJobTitle
+      } %}
+    </div>{# /.o-container--narrow #}
+  {% endfor %}
+
+  {#
+    "Solution for Enterprises" Block
+  #}
+  <div class="c-product-enterprise">
+    <div
+      class="c-product-enterprise__inner"
+      style="background-image: url('{{ craft.config.cdnBaseUrl }}/assets/images/product/solution.svg')"
+    >
+      <h3 class="h-beta c-product-enterprise__heading">
+        {{ entry.solutionForEnterprises.heading }}
+      </h3>
+
+      <div class="o-container">
+        <div class="c-product-enterprise__copy">
+          {{ entry.solutionForEnterprises.text }}
+        </div>
+
+        <div class="c-product-enterprise__buttons">
+          <div class="c-product-enterprise__btn-wrapper">
+            {% include '_library/elements/button' with {
+                attr: {
+                  class: 'c-product-enterprise__btn-int',
+                  target: entry.solutionForEnterprises.button1.target
+                },
+                href: entry.solutionForEnterprises.button1.url,
+                label: entry.solutionForEnterprises.button1.text,
+                modifiers: [
+                    'primary'
+                ]
+            } %}
+          </div>{# /.c-product-enterprise__btn-wrapper #}
+
+          <div class="c-product-enterprise__btn-wrapper">
+            {% include '_library/elements/button' with {
+                attr: {
+                  class: 'c-product-enterprise__btn-plt',
+                  target: entry.solutionForEnterprises.button2.target
+                },
+                href: entry.solutionForEnterprises.button2.url,
+                label: entry.solutionForEnterprises.button2.text,
+                modifiers: [
+                    'primary'
+                ]
+            } %}
+          </div>{# /.c-product-enterprise__btn-wrapper #}
+        </div>{# /.c-product-enterprise__buttons #}
+      </div>{# /.o-container #}
+    </div>{# /.c-product-enterprise__inner #}
+  </div>{# /.c-product-enterprise #}
+
+  <div class="o-container o-container--narrow">
+    <div class="try-leankit-cta__button" style="padding: 65.758px 0 16px; text-align: center;">
+      <a class='lite-edition__cta' href='/compare-editions/' onclick="ga('send', 'event', 'In Page', 'From Pricing', 'In-Page-Compare-Editions-CTA - Bottom Button');" title='Compare Editions'>
+        <span class='trial'>View LeanKit's Full Feature List</span>
+        <small>Compare all Editions in detail</small>
+      </a>{# .lite-edition__cta #}
+    </div>{# .try-leankit-cta__button #}
+    <div class='platform-leaderboard__video__play-cta' style="padding: 22.781px 0 65.758px; text-align: center;">
+      <a href="/product-demo/">
+        <span class='play-icon'>
+          <svg enable-background='new 0 0 32.7 48.2' id='Layer_1' version='1.1' viewBox='0 0 32.7 48.2' x='0px' xml:space='preserve' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns='http://www.w3.org/2000/svg' y='0px'>
+            <path d='M0,46.4V1.8c0-1.5,1.7-2.3,2.9-1.4L32,22.7c0.9,0.7,0.9,2.1,0,2.9L2.9,47.8C1.7,48.8,0,47.9,0,46.4z'>
+          </svg>
+        </span>
+        <span>Watch a Product Overview</span>
+      </a>
+    </div>{# /.platform-leaderboard__video__play-cta #}
+  </div>
+
+{% endblock content %}

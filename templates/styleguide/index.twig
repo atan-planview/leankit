@@ -1,0 +1,12 @@
+{% extends 'styleguide/_layout' %}
+
+{% set seomaticMeta = seomaticMeta | merge({
+  'seoTitle': 'The Style Guide',
+  'robots': 'noindex, nofollow',
+}) %}
+
+{% block content %}
+  <div class="o-container">
+    Hello, world!
+  </div>{# /.o-container #}
+{% endblock content %}

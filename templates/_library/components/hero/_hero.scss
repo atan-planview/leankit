@@ -1,0 +1,43 @@
+@include component('hero') {
+  align-items: center;
+  color: white;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  height: 190px;
+  justify-content: center;
+
+  @include small-tablet {
+    height: 260px;
+  }
+
+  @include tablet {
+    height: 50vh;
+    min-height: 280px;
+  }
+
+  @include modifier('fluid-height') {
+    height: auto;
+  }
+
+  @include modifier('image-top') {
+    background-position: top center;
+  }
+
+  @include element('inner') {
+    max-width: $container-max-box-width--narrow;
+    padding: ms(6) ($container-padding * 2);
+    text-align: center;
+
+    @include max-padded-container--narrow {
+      padding-left: $container-padding--max-narrow;
+      padding-right: $container-padding--max-narrow;
+    }
+
+    @include small-desktop {
+      padding-bottom: ms(11);
+      padding-top: ms(11);
+    }
+  }
+}

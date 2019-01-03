@@ -1,0 +1,182 @@
+{% extends 'styleguide/_layout' %}
+
+{% set seomaticMeta = seomaticMeta | merge({
+  'seoTitle': 'Elements',
+  'robots': 'noindex, nofollow',
+}) %}
+
+{% import 'styleguide/_macros' as sg %}
+
+{% block content %}
+  <div class="o-container">
+    <h2 class="h-beta">Elements</h2>
+
+    <h3 class="h-gamma">Images</h3>
+
+    {{ sg.example('elements/imgfig', 'Image Figure', {
+      alt: "There's Nothing Here",
+      caption: 'This is a caption with an <a href="https://google.com">HTML link</a>. Duis a libero et orci vehicula sollicitudin. Proin pharetra lacus dictum nisl auctor semper. Fusce ut tempor quam.',
+      src: 'https://placehold.it/400x600',
+      title: 'Placeholder Image'
+    }) }}
+
+    {{ sg.example('elements/imgfig', 'Image Figure (fluid)', {
+      alt: "There's Nothing Here",
+      caption: 'This is a caption with an <a href="https://google.com">HTML link</a>. Duis a libero et orci vehicula sollicitudin. Proin pharetra lacus dictum nisl auctor semper. Fusce ut tempor quam.',
+      fluid: true,
+      src: 'https://placehold.it/400x600',
+      title: 'Placeholder Image'
+    }) }}
+
+    <h3 class="h-gamma">Testimonials</h3>
+
+    {{ sg.example('elements/testimonial', 'Testimonial Card (URL to Logo)', {
+      author: 'Pascal Pinck',
+      company: 'Vertafore',
+      fluid: true,
+      logo: '/uploads/images/logos/_188xAUTO_fit_center-center/vertafore_logo@2x.png',
+      quote: "There's not a single tool out there that can solve every problem — especially given the high level of diversity at Vertafore. Using TFS and LeanKit together enables us to combine the value of both tools, minimizing effort without introducing complexity.",
+      role: 'Director of Product Development Capabilities'
+    }) }}
+
+    {{ sg.example('elements/testimonial', 'Testimonial Card (Asset as Logo)', {
+      author: 'Pascal Pinck',
+      company: 'Vertafore',
+      fluid: true,
+      logo: craft.assets.id(2070),
+      quote: "There's not a single tool out there that can solve every problem — especially given the high level of diversity at Vertafore. Using TFS and LeanKit together enables us to combine the value of both tools, minimizing effort without introducing complexity.",
+      role: 'Director of Product Development Capabilities'
+    }) }}
+
+    <h3 class="h-gamma">Buttons</h3>
+
+    <h4 class="h-delta">Standard</h4>
+
+    {{ sg.example('elements/button', 'Standard Button (type="submit")', {
+      label: 'Button Text'
+    }) }}
+
+    {{ sg.example('elements/button', 'Standard Button (link to URL)', {
+      href: 'https://google.com',
+      label: 'Button Text'
+    }) }}
+
+    {{ sg.example('elements/button', 'Standard Button (fluid)', {
+      fluid: true,
+      label: 'Button Text'
+    }) }}
+
+    {{ sg.example('elements/button', 'Standard Button (disabled)', {
+      disabled: true,
+      label: 'Button Text'
+    }) }}
+
+    {{ sg.example('elements/button', 'Standard Button (invalid)', {
+      invalid: true,
+      label: 'Button Text'
+    }) }}
+
+    {{ sg.example('elements/button', 'Standard Button (small)', {
+      label: 'Button Text',
+      modifiers: ['small']
+    }) }}
+
+
+    <h4 class="h-delta">Primary</h4>
+
+    {{ sg.example('elements/button', 'Primary Button (type="submit")', {
+      label: 'Button Text',
+      modifiers: ['primary']
+    }) }}
+
+    {{ sg.example('elements/button', 'Primary Button (link to URL)', {
+      href: 'https://google.com',
+      label: 'Button Text',
+      modifiers: ['primary']
+    }) }}
+
+    {{ sg.example('elements/button', 'Primary Button (fluid)', {
+      fluid: true,
+      label: 'Button Text',
+      modifiers: ['primary']
+    }) }}
+
+    {{ sg.example('elements/button', 'Primary Button (disabled)', {
+      disabled: true,
+      label: 'Button Text',
+      modifiers: ['primary']
+    }) }}
+
+    {{ sg.example('elements/button', 'Primary Button (invalid)', {
+      invalid: true,
+      label: 'Button Text',
+      modifiers: ['primary']
+    }) }}
+
+    {{ sg.example('elements/button', 'Primary Button (small)', {
+      label: 'Button Text',
+      modifiers: ['primary', 'small']
+    }) }}
+
+
+    <h4 class="h-delta">Highlight</h4>
+
+    {{ sg.example('elements/button', 'Highlight Button (type="submit")', {
+      label: 'Button Text',
+      modifiers: ['highlight']
+    }) }}
+
+    {{ sg.example('elements/button', 'Highlight Button (link to URL)', {
+      href: 'https://google.com',
+      label: 'Button Text',
+      modifiers: ['highlight']
+    }) }}
+
+    {{ sg.example('elements/button', 'Highlight Button (fluid)', {
+      fluid: true,
+      label: 'Button Text',
+      modifiers: ['highlight']
+    }) }}
+
+    {{ sg.example('elements/button', 'Highlight Button (disabled)', {
+      disabled: true,
+      label: 'Button Text',
+      modifiers: ['highlight']
+    }) }}
+
+    {{ sg.example('elements/button', 'Highlight Button (invalid)', {
+      invalid: true,
+      label: 'Button Text',
+      modifiers: ['highlight']
+    }) }}
+
+    {{ sg.example('elements/button', 'Highlight Button (small)', {
+      label: 'Button Text',
+      modifiers: ['highlight', 'small']
+    }) }}
+
+
+    <h4 class="h-delta">Etc</h4>
+
+    {{ sg.example('elements/button', 'Reset Button (type="reset")', {
+      label: 'Button Text',
+      type: 'reset'
+    }) }}
+
+    {{ sg.example('elements/button', 'Primary Button w/ custom class attributes', {
+      attr: {
+        class: 'class-name-1 class-name-2'
+      },
+      label: 'Button Text',
+      modifiers: ['primary']
+    }) }}
+
+    {{ sg.example('elements/button', 'Disabled, Primary, Small Button (link to URL)', {
+      disabled: true,
+      href: 'https://google.com',
+      label: 'Button Text',
+      modifiers: ['primary', 'small']
+    }) }}
+
+  </div>{# /.o-container #}
+{% endblock content %}

@@ -1,0 +1,78 @@
+/**
+ * Very similar to the media object, only the flag object allows
+ * for vertical alignment.
+ */
+
+@include object('flag') {
+  display: table;
+  @include clearfix;
+
+    @include modifier('bottom') {
+      @include modifies-element('body', 'figure') {
+        vertical-align: bottom;
+      }
+    }
+
+    @include modifier('rev') {
+      direction: rtl;
+
+      @include modifies-element('body', 'figure') {
+        direction: ltr;
+      }
+
+      @include modifies-element('figure') {
+        padding-left: ms();
+        padding-right: 0;
+      }
+    }
+
+    @include modifier('top') {
+      @include modifies-element('body', 'figure') {
+        vertical-align: top;
+      }
+    }
+
+  @include element('body') {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+
+    &,
+    > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @include element('figure') {
+    display: table-cell;
+    padding-right: ms();
+    vertical-align: middle;
+
+      > img {
+        display: block;
+        max-width: none;
+      }
+  }
+
+  @media screen and (max-width: #{$small-desktop - 1}) {
+    @include modifier('responsive') {
+      display: block;
+
+      @include modifies-element('body', 'figure') {
+        display: block;
+      }
+
+      @include modifies-element('figure') {
+        margin-bottom: ms();
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+
+        > img {
+          display: inline;
+          max-width: 100%;
+        }
+      }
+    }
+  }
+}

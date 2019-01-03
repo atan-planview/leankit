@@ -1,0 +1,146 @@
+{% extends '_layout' %}
+
+{% block content %}
+  <main role="main" class="c-main{% if entry.heroImage|length %} c-main--flush-top{% endif %}">
+    {% if entry.heroImage|length %}
+      <header class="c-header">
+        {% include '_library/components/hero' with {
+          image: entry.heroImage,
+          heading: entry.heading|striptags('<strong><b><u><em><i><a>')|raw,
+          subhead: entry.subhead|striptags('<strong><b><u><em><i>')|raw
+        } %}
+      </header>{# /.c-header #}
+    {% else %}
+      <header class="o-container o-container--narrow c-header">
+        <h1 class="h-alpha c-header__heading">
+          {{ entry.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+        </h1>
+        {% if entry.subhead is not empty %}
+          <div class="c-copy--hero">
+            {{ entry.subhead|striptags('<strong><b><u><em><i>')|raw }}
+          </div>
+        {% endif %}
+      </header>{# /.c-header #}
+    {% endif %}
+    <section class="o-2column">
+
+      <div class="o-2column__sidebar">
+        <div class="js-sticky-sidebar">
+          {% for entry in craft.entries.section('trainingModules') %}
+            {% if loop.first %}
+              <a href="/training/modules/">
+                <h2 class="h-delta">Modules</h2>
+              </a>
+              <ul class="o-vnav">
+            {% endif %}
+
+            <li class="o-vnav__item">
+              <a href="{{ entry.url }}" class="o-vnav__link">
+                {{ entry.title }}
+              </a>
+            </li>
+
+            {% if loop.last %}
+              </ul>{# /.o-vnav #}
+            {% endif %}
+          {% endfor %}
+        </div>{# /.js-sticky-sidebar #}
+      </div>{# /.o-2column__sidebar #}
+
+      <div class="o-2column__main">
+
+        {% if craft.request.isLivePreview %}
+          {% set blockData = entry.trainingModulesBody %}
+        {% else %}
+          {% set blockData = entry.trainingModulesBody.find({
+            with: [
+              ['image:image', { withTransforms: ['large'] }],
+              ['multiImage:images.image', { withTransforms: ['recommendedReading'] }]
+            ]
+          }) %}
+        {% endif %}
+
+        {% for block in blockData %}
+          {% if block.type == "heading" %}
+            <a name="{{ block.heading|trim|striptags|kebab }}" class="u-anchor"></a>
+            <div class="s-content">
+              <{{ block.headingLevel }}>
+                {{ block.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+              </{{ block.headingLevel }}>
+            </div>
+          {% elseif block.type == "text" %}
+            <div class="s-content">
+              {{ block.text }}
+            </div>
+          {% elseif block.type == "featuredText" %}
+            <div class="s-content c-copy--feature">
+              {{ block.text }}
+            </div>{# /.c-copy--feature #}
+          {% elseif block.type == "image" %}
+            <div>
+              {% include '_library/elements/imgfig' with {
+                attr: {
+                  class: 'c-figure c-figure--' ~ block.position
+                },
+                alt: block.altAttr,
+                caption: block.caption,
+                fluid: true,
+                imgClass: 'c-figure__image',
+                src: block.image,
+                title: block.titleAttr,
+                transform: 'large'
+              } %}
+            </div>
+          {% elseif block.type == "multiImage" %}
+            <div>
+              <div class="c-image-grid c-multi-image">
+                <div class="c-image-grid__inner">
+                  {% for row in block.images %}
+                    {% set el = { type: 'div', attr: '' } %}
+                    {% if row.resourceLink is not empty %}
+                      {% set el = {
+                        type: 'a',
+                        attr: "href='#{row.resourceLink.url}'"
+                      } %}
+                    {% endif %}
+                    <{{ el.type }} {{ el.attr|raw }} class="c-image-grid__item c-multi-image__item">
+                      {% include '_library/elements/imgfig' with {
+                          alt: row.altAttr,
+                          caption: row.caption,
+                          fluid: true,
+                          src: row.image,
+                          title: row.titleAttr,
+                          transform: block.sameAspectRatio ? 'recommendedReading' : null
+                      } %}
+                    </{{ el.type }}>{# /.c-image-grid__item #}
+                  {% endfor %}
+                </div>{# /.c-image-grid__inner #}
+              </div>{# /.c-image-grid #}
+            </div>
+          {% elseif block.type == "video" %}
+            <div>
+              <figure class="c-figure c-figure--{{ block.position }}{% if block.position == 'center' %} c-figure--narrow{% endif %}">
+                <div class="o-video-embed">
+                  {% set video = craft.embedder.url(block.video, {
+                    max_width: 1920,
+                    max_height: 1080
+                  }) %}
+                  {{ video.embed_code }}
+                </div>{# .o-video-embed #}
+              </figure>
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {% set next = craft.entries.positionedAfter(entry).order('lft asc').first() %}
+        {% if next %}
+          <div class="c-copy--feature u-centered-text">
+            Next up: <a href="{{ next.url }}">{{ next.title }}</a>
+          </div>
+        {% endif %}
+
+      </div>{# /.o-2column__main #}
+
+    </section>{# /.o-2column #}
+  </main>
+{% endblock content %}

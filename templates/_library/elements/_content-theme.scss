@@ -1,0 +1,115 @@
+@include component('content-theme') {
+  @include element('copy') {
+    padding-top: 2em;
+    padding-bottom: 2.5em;
+
+    & :last-child {
+      margin-bottom: 0;
+    }
+
+    &--blackOnGray {
+      background-color: #dbdfd8;
+      padding-left: 24px;
+      padding-right: 24px;
+
+      &,
+      p,
+      ul,
+      ol {
+        color: #6c6e68;
+      }
+    }
+
+    &--whiteOnGreen {
+      background-color: #96c93d;
+      padding-left: 24px;
+      padding-right: 24px;
+
+      &,
+      p,
+      ul,
+      ol {
+        color: #f4f8f1;
+      }
+    }
+
+    &--whiteOnBlack {
+      background-color: #272b24;
+      padding-left: 24px;
+      padding-right: 24px;
+
+      &,
+      p,
+      ul,
+      ol {
+        color: #f4f8f1;
+      }
+    }
+
+    &--whiteOnOrange {
+      background-color: #faa331;
+      padding-left: 24px;
+      padding-right: 24px;
+
+      &,
+      p,
+      ul,
+      ol {
+        color: #f4f8f1;
+      }
+    }
+  }
+  @include element('heading') {
+    &,
+    .global-content & {
+      margin: 0;
+      padding: 1.5em 0 0;
+
+      h2,
+      h3,
+      h4 {
+        margin-bottom: 0;
+      }
+    }
+
+    &--blackOnGray {
+      &,
+      .global-content & {
+        background-color: #dbdfd8;
+        color: #6c6e68;
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+
+    &--whiteOnGreen {
+      &,
+      .global-content & {
+        background-color: #96c93d;
+        color: #f4f8f1;
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+
+    &--whiteOnBlack {
+      &,
+      .global-content & {
+        background-color: #272b24;
+        color: #f4f8f1;
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+
+    &--whiteOnOrange {
+      &,
+      .global-content & {
+        background-color: #faa331;
+        color: #f4f8f1;
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+    }
+  }
+}

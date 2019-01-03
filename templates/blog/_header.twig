@@ -1,0 +1,19 @@
+<section class='global-section-navigation'>
+  <div class='module'>
+    <div class='global-section-navigation__container'>
+      <div class='global-section-navigation__title'>
+        <h2>Blog</h2>
+      </div>{# /.global-section-navigation__title #}
+      <div class="blog-search clearfix">
+        {% include 'blog/_search-form' %}
+
+        <select name="category" class="js-link-dropdown">
+          <option value="" selected disabled>Browse by Category</option>
+          {% nav category in craft.categories.group('blog') %}
+            <option value="{{ category.url }}">{{ category.title }}</option>
+          {% endnav %}
+        </select>
+      </div>{# /.blog-search #}
+    </div>{# /.global-section-navigation__container #}
+  </div>{# /.module #}
+</section>{# /.global-section-navigation #}

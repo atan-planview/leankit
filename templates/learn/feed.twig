@@ -1,0 +1,40 @@
+{% header "Content-Type: application/rss+xml" %}
+{% import '_macros' as macros %}
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+>
+  <channel>
+    <title>Learning Center | {{ siteName }}</title>
+    <link>{{ siteUrl }}learn/</link>
+    <atom:link href="{{ craft.request.url }}" rel="self" type="application/rss+xml" />
+    <description></description>
+    <language>en-us</language>
+    <pubDate>{{ now.rss }}</pubDate>
+    <lastBuildDate>{{ now.rss }}</lastBuildDate>
+
+    {% for entry in craft.entries
+      .section('learningCenter')
+      .limit(1000)
+      .type('lesson')
+      .order('postDate desc') %}
+      <item>
+        <title>{{ entry.title }}</title>
+        <link>{{ entry.url }}</link>
+        <pubDate>{{ entry.postDate.rss }}</pubDate>
+        <guid>{{ entry.url }}</guid>
+        <description><![CDATA[{% spaceless %}
+              {% if entry.longDescription is not empty %}
+                {{ macros.excerpt(entry.longDescription, 60) }}
+              {% else %}
+                {% set lcBodyBlock = entry.lcBody.type('text').first() %}
+                {% if lcBodyBlock %}
+                    {{ macros.excerpt(lcBodyBlock.text|striptags, 60) }}
+                {% endif %}
+              {% endif %}
+        {% endspaceless %}]]></description>
+      </item>
+    {% endfor %}
+  </channel>
+</rss>

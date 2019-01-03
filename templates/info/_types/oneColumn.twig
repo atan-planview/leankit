@@ -1,0 +1,229 @@
+{% extends '_layout' %}
+{% import '_macros' as macros %}
+{% block pageStyle %}
+<link href="{{ conf.cdnBaseUrl }}/assets/build/css/form.css?ver=4" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% set gtmId = 'TTDNTZ' %}
+{% set showTrustmarksFooter = false %}
+
+{% block globalHeader %}
+  <div class="site-header {% if not entry.heroImage|length %}site-header--no-hero{% endif %}">
+    <div class="site-header__content">
+      <h2 class="logo"><a href="https://leankit.com"><span>LeanKit</span></a></h2>
+      <div id="mobile-nav-toggle">
+        <input class="menu-open" id="menu-open" name="menu-open" type="checkbox"> <label class="menu-open-button" for="menu-open"></label>
+      </div>
+      <div class="sliding-panel-content">
+        &nbsp;
+      </div>
+      <div class="sliding-panel-fade-screen">
+        &nbsp;
+      </div>
+    </div>
+  </div>
+{% endblock globalHeader %}
+
+{% block content %}
+  {% cache globally using key craft.request.path for 1 year %}
+
+  <main role="main" class="c-main c-main--flush-bottom{% if entry.heroImage|length %} c-main--flush-top{% endif %}">
+    {% if entry.heroImage|length %}
+      <header class="c-header c-header--flush-bottom">
+        {% include '_library/components/hero' with {
+          image: entry.heroImage,
+          heading: entry.heading|striptags('<strong><b><u><em><i><a>')|raw,
+          subhead: entry.subhead|striptags('<strong><b><u><em><i>')|raw
+        } %}
+      </header>{# /.c-header #}
+    {% else %}
+      <header class="o-container o-container--narrow c-header">
+        <h1 class="h-alpha c-header__heading">
+          {{ entry.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+        </h1>
+        {% if entry.subhead is not empty %}
+          <div class="c-copy--hero">
+            {{ entry.subhead|striptags('<strong><b><u><em><i>')|raw }}
+          </div>
+        {% endif %}
+      </header>{# /.c-header #}
+    {% endif %}
+    <section class="c-content-theme c-content-theme--vertical-padding">
+
+      {% if craft.request.isLivePreview %}
+        {% set blockData = entry.lpBodyOneColumn %}
+      {% else %}
+        {% set blockData = entry.lpBodyOneColumn.find({
+          with: [
+            ['image:image', { withTransforms: ['large'] }],
+            ['multiImage:images.image', { withTransforms: ['recommendedReading'] }],
+            ['trustmarks:companyLogos', { withTransforms: ['trustmarksLogo'] }]
+          ]
+        }) %}
+      {% endif %}
+
+      {% for block in blockData %}
+        {% if block.type == "heading" %}
+          <div class="c-content-theme__heading c-content-theme__heading--{{ block.colorScheme }}">
+            <div class="o-container o-container--narrow s-content">
+              <{{ block.headingLevel }}>
+                {{ block.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+              </{{ block.headingLevel }}>
+            </div>{# /.o-container #}
+          </div>{# /.c-content-theme__heading #}
+        {% elseif block.type == "text" %}
+          <div class="c-content-theme__copy c-content-theme__copy--{{ block.colorScheme }}">
+            <div class="o-container o-container--narrow s-content">
+              {{ block.text }}
+            </div>{# /.o-container #}
+          </div>{# /.c-content-theme__copy #}
+        {% elseif block.type == "featuredText" %}
+          <div class="o-container o-container--narrow s-content c-copy--feature">
+            {{ block.text }}
+          </div>{# /.c-copy--feature #}
+        {% elseif block.type == "image" %}
+          <div class="o-container o-container--narrow">
+            {% include '_library/elements/imgfig' with {
+              attr: {
+                class: 'c-figure c-figure--' ~ block.position
+              },
+              alt: block.altAttr,
+              caption: block.caption,
+              fluid: true,
+              imgClass: 'c-figure__image',
+              src: block.image,
+              title: block.titleAttr,
+              transform: 'large'
+            } %}
+          </div>{# /.o-container #}
+        {% elseif block.type == "multiImage" %}
+          <div class="o-container o-container--narrow">
+            <div class="c-image-grid c-multi-image">
+              <div class="c-image-grid__inner">
+                {% for row in block.images %}
+                  {% set el = { type: 'div', attr: '' } %}
+                  {% if row.resourceLink is not empty %}
+                    {% set el = {
+                      type: 'a',
+                      attr: "href='#{row.resourceLink.url}'"
+                    } %}
+                  {% endif %}
+                  <{{ el.type }} {{ el.attr|raw }} class="c-image-grid__item c-multi-image__item">
+                    {% include '_library/elements/imgfig' with {
+                        alt: row.altAttr,
+                        caption: row.caption,
+                        fluid: true,
+                        src: row.image,
+                        title: row.titleAttr,
+                        transform: block.sameAspectRatio ? 'recommendedReading' : null
+                    } %}
+                  </{{ el.type }}>{# /.c-image-grid__item #}
+                {% endfor %}
+              </div>{# /.c-image-grid__inner #}
+            </div>{# /.c-image-grid #}
+          </div>{# /.o-container #}
+        {% elseif block.type == "video" %}
+          <div class="o-container o-container--narrow">
+            <figure class="c-figure c-figure--{{ block.position }}{% if block.position == 'center' %} c-figure--narrow{% endif %}">
+              <div class="o-video-embed">
+                {{ craft.embedder.embed(block.video, {
+                  force_https: true,
+                  max_width: 1920,
+                  max_height: 1080,
+                  vimeo_api: true,
+                  vimeo_color: '96c93d'
+                }) }}
+              </div>{# .o-video-embed #}
+            </figure>
+          </div>{# /.o-container #}
+        {% elseif block.type == "form" %}
+          {% if block.formSlug is not empty %}
+            <a name="{{ block.formSlug }}" class="u-anchor"></a>
+          {% endif %}
+          <div class="o-container o-container--narrow">
+            <div id="formContainer" class="c-ppc-form c-ppc-form--{{ block.position }}">
+              <h4 class="c-ppc-form__heading">{{ block.heading|default('Start Your 30-Day Free Trial') }}</h4>
+
+              {% include '_forms/' ~ block.eloquaForm with {
+                'submitLabel': block.submitButtonLabel,
+                'targetCompany': block.targetCompany
+              } only %}
+
+              {% if block.eloquaForm == '63' %}
+                <p class='c-ppc-form__disclaimer'>LeanKit is committed to protecting your information. Your information will be used in accordance with any applicable data privacy law, our internal policies and our <a href="https://leankit.com/privacy/" target="_blank">Privacy Policy</a> and will be held securely. By using this site, you agree that we can place cookies on your device.</p>
+              {% endif %}
+            </div>
+          </div>{# /.o-container #}
+        {% elseif block.type == "trustmarks" %}
+          <section class='global-trustmarks section--global'>
+            <div class='module--full-width'>
+              <div class='module'>
+                <div class='global-trustmarks__title section__title'>
+                  <h3>{{ block.heading|default("You're in good company.")|striptags('<strong><b><u><em><i>')|raw }}</h3>
+                  <p>
+                    {{ block.subhead|default("Our customers are the best.
+                    <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View Customer Page' href='/customers/'>Read their stories.</a>")|striptags('<strong><b><u><em><i><a>')|raw }}
+                  </p>
+                </div>
+                {% if block.companyLogos|length %}
+                  <a
+                    class='js-tracked-event c-trustmark-logos'
+                    data-event-location='Footer'
+                    data-event-target='Image'
+                    data-event-title='View Customer Page'
+                    href='/customers/'
+                  >
+                    {% for logo in block.companyLogos %}
+                      <div class="c-trustmark-logos__item">
+                        <span class="c-trustmark-logos__logo">
+                          {{ macros.inlineSvg(
+                            logo.image.first(),
+                            {
+                              attr: {
+                                alt: logo.altAttr,
+                                class: ''
+                              },
+                              recolor: 'white',
+                              transform: 'trustmarksLogo'
+                            }
+                          ) }}
+                        </span>{# /.c-trustmark-logos__image #}
+                      </div>{# /.c-trustmark-logos__item #}
+                    {% endfor %}
+                  </a>
+                {% else %}
+                  {# Legacy trustmark logos, for now used as default #}
+                  <div class='global-trustmarks__logos'>
+                    <a class='js-tracked-event' data-event-location='Footer' data-event-target='Image' data-event-title='View Customer Page' href='/customers/'>
+                      <div class='hero-trustmarks'>
+                        <div class='module'>
+                          <div class='hero__trustmarks'></div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </section>
+        {% elseif block.type == "buttonLink" %}
+          <div class="o-container o-container--narrow">
+            <div class="o-block u-centered-text">
+            {% include '_library/elements/button' with {
+                href: block.linkResource.url,
+                label: block.linkResource.text,
+                modifiers: [
+                  block.buttonType
+                ]
+              } %}
+            </div>{# /.c-button-block #}
+          </div>{# /.o-container #}
+        {% endif %}
+      {% endfor %}
+
+    </section>{# /.s-content #}
+  </main>
+
+  {% endcache %}
+{% endblock content %}
+{% block globalFooterSubscription %}{% endblock globalFooterSubscription %}

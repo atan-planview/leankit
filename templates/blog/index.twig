@@ -1,0 +1,187 @@
+{% extends craft.request.isAjax ? '_ajaxLayout' : '_layout' %}
+{% import '_macros' as macros %}
+
+{% set bodyClass = 'home blog leankit-blog infinite-scroll' %}
+{% set feeds = [
+  {
+    'title': "Blog Feed | #{siteName}",
+    'uri': 'blog/feed/',
+  }
+] %}
+
+{% set query = craft.request.getParam('s') %}
+
+{% if craft.request.segment(2) == 'author' %}
+  {% set author = craft.users.username(slug).first() %}
+  {% if author is empty %}
+    {#
+      Redirect from old WP-powered author URLs
+
+      Liz's username called out especially because she had an
+      author page in WP at `liz-llewellyn-maxwell` that needs
+      special redirection handling.
+    #}
+    {% if slug == 'liz-llewellyn-maxwell' %}
+      {% redirect "blog/author/liz.llewellyn-maxwell" 301 %}
+    {% elseif '-' in slug %}
+      {% redirect "blog/author/"~slug|replace('-', '.') 301 %}
+    {% endif %}
+
+    {# Fallback #}
+    {% exit 404 %}
+  {% endif %}
+{% endif %}
+
+{% includeCssFile 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' %}
+{% includeCssFile 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.css' %}
+{% includeCssFile 'https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials-theme-flat.css' %}
+
+{% block content %}
+
+  {% if not craft.request.isAjax %}
+    <main>
+      {% include 'blog/_header' %}
+
+      <div class='module'>
+        <div class='seo-main-content__container global-content global-content--single-column'>
+          <div id="primary" class="content-area">
+            <main id="main" class="site-main js-pageable-content" role="main">
+
+            {% if query %}
+
+              <header class="page-header">
+                <h3>You searched for <span class="search-term">{{ query }}</span>.</h3>
+              </header>
+
+            {% elseif category is defined %}
+
+              <header class="page-header">
+                <h3>{{ category.title }}</h3>
+              </header>
+
+            {% elseif author is defined %}
+
+              <header class="page-header">
+                <h3>Read posts by {{ author.fullName }}.</h3>
+              </header>
+
+            {% elseif year is defined %}
+
+              <header class="page-header">
+                <h3>Read posts from {{ month is defined ? date(year~'-'~month)|date('F ') : '' }}{{ year }}.</h3>
+              </header>
+
+            {% endif %}
+
+  {% endif %}
+
+  {% set after = null %}
+  {% set before = null %}
+
+  {% if month is defined %}
+    {% set after = year~'-'~month %}
+    {% set before = year~"-#{month+1}" %}
+  {% elseif year is defined %}
+    {% set after = year %}
+    {% set before = year + 1 %}
+  {% endif %}
+
+  {% paginate craft.entries({
+    after: after,
+    authorId: author is defined ? author.id : null,
+    before: before,
+    order: query ? 'score' : 'postDate desc',
+    search: query ? {
+        query: query
+    } : null,
+    section: 'blog',
+    limit: 7,
+    relatedTo: category is defined ? category : null,
+    with: [
+      ['featuredImage.image:image', { withTransforms: ['large'] }],
+      ['blogBody', { type: 'text, featuredText' }]
+    ]
+  }) as pageInfo, pageEntries %}
+
+  {% for entry in pageEntries %}
+
+    <article class="blog-post post type-post status-publish format-standard has-post-thumbnail hentry">
+      <header class="entry-header">
+        <h1 class="blog-post-title">
+          <a href="{{ entry.url }}" rel="bookmark">{{ entry.title }}</a>
+        </h1>
+
+        <div class="blog-post-meta">
+          <span class="blog-post-meta">
+            <time class="entry-date published" datetime="{{ entry.postDate.iso8601() }}">
+              {{ entry.postDate|date('F j, Y') }}
+            </time>
+            <time class="updated" datetime="{{ entry.dateUpdated.iso8601() }}">
+            {{ entry.dateUpdated|date('F j, Y') }}
+            </time>
+            <span class="byline"> by <span class="author vcard"><a class="url fn n" href="{{ url('blog/author/'~entry.author.username) }}">{{ entry.author.fullName }}</a></span></span>
+          </span>
+        </div>{# /.blog-post-meta #}
+      </header>{# /.entry-header #}
+
+      <div class="entry-content">
+
+        {% set featuredImageBlock = entry.featuredImage[0] ?? null %}
+        {% if featuredImageBlock and featuredImageBlock.image %}
+          <p>
+            <img
+              src="{{ featuredImageBlock.image[0] | retinafy('large') }}"
+              alt="{{ featuredImageBlock.altAttr }}"
+              {% if featuredImageBlock.titleAttr is not empty %}
+                title="{{ featuredImageBlock.titleAttr }}"
+              {% endif %}
+              class="aligncenter size-full"
+            >
+          </p>
+        {% endif %}
+
+        {% if entry.shortDescription is not empty %}
+          {{ entry.shortDescription }}
+        {% elseif entry.type == 'legacy' %}
+          <p>{{ macros.excerpt(entry.wordpressPostHtml, 60) }}</p>
+        {% else %}
+          {% set blogBodyBlock = entry.blogBody[0] ?? null %}
+          {% if blogBodyBlock %}
+              <p>{{ macros.excerpt(blogBodyBlock.text, 60) }}</p>
+          {% endif %}
+        {% endif %}
+
+        <p>
+          <a href="{{ entry.url }}" class="more-link"><span class="meta-nav btn btn-primary">Continue Reading</span></a>
+        </p>
+      </div>{# /.entry-content #}
+    </article>{# /.blog-post #}
+
+  {% else %}
+    {% if query %}
+      <p>Sorry, but nothing matched your search terms. Please try again with some different keywords.</p>
+    {% else %}
+      <p>Sorry, we couldn't find any posts.</p>
+    {% endif %}
+  {% endfor %}
+
+  {% if pageInfo.nextUrl %}
+    <div class="js-pagination-container">
+      <a href="{{ pageInfo.nextUrl }}{% if query %}?s={{ query }}{% endif %}" class="more-link js-show-more">
+        <span class="meta-nav btn btn-primary" style="text-align: center; width: 100%;">Load More Posts</span>
+      </a>
+    </div>{# /.js-pagination-container #}
+  {% endif %}
+
+  {% if not craft.request.isAjax %}
+
+            </main>{# /#main #}
+          </div>{# /#primary #}
+        </div>{# /.seo-main-content__container #}
+      </div>{# /.module #}
+
+    </main>
+
+  {% endif %}
+
+{% endblock content %}

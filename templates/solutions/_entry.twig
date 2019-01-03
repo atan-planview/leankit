@@ -1,0 +1,228 @@
+{% extends '_layout' %}
+
+{% set bodyClass = 'solutions' %}
+
+{% block content %}
+  {% cache globally using key craft.request.path for 1 year %}
+
+  <main role="main">
+    <article>
+      <section class='hero{% if entry.showVideo %} hero--with-video{% endif %}'{% if entry.heroImage|length %}style="background-image:url({{entry.heroImage.first().getUrl('hero')}})"{% endif %}>
+        <div class='module--full-width'>
+          <div class='hero__leaderboard'>
+
+          {% if entry.showVideo %}
+            <div class='hero__leaderboard-video'>
+              <div class='hero__leaderboard-embed-container'>
+                {{ craft.embedder.embed(entry.video, {
+                  force_https: true,
+                  vimeo_api: true,
+                  vimeo_color: '96c93d',
+                  vimeo_player_id: 'vim1'
+                }) }}
+              </div>
+            </div>
+            <br>
+            <div class='hero__leaderboard__messaging'>
+              <h1>{{ entry.heading|striptags('<strong><b><u><em><i><a>')|raw }}</h1>
+            </div>
+          {% else %}
+            <div class='hero__leaderboard__messaging'>
+              <h1>{{ entry.heading|striptags('<strong><b><u><em><i><a>')|raw }}</h1>
+              {% if entry.subhead is not empty %}
+                <p>{{ entry.subhead|striptags('<strong><b><u><em><i>')|raw }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+          </div>{# /.hero__leaderboard #}
+        </div>
+      </section>
+
+      <section>
+
+        {% for block in entry.solutionsBody %}
+          {% switch block.type %}
+
+            {% case "heading" %}
+
+              <div class='module'>
+                <div class='seo-main-content__container global-content'>
+                  <{{ block.headingLevel }}>
+                    {{ block.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+                  </{{ block.headingLevel }}>
+                </div>{# /.seo-main-content__container #}
+              </div>{# /.module #}
+
+              {% case "text" %}
+
+                <div class='module'>
+                  <div class='seo-main-content__container global-content'>
+                    {{ block.text }}
+                  </div>{# /.seo-main-content__container #}
+                </div>{# /.module #}
+
+              {% case "caseStudyCallout" %}
+
+                <div class='module'>
+                  <div class='seo-main-content__container global-content'>
+                    <div class='solution__blockquote global-blockquote--full'>
+                      <blockquote>
+                        {{ block.body }}
+                        <cite>
+                          <div class='cite__name'>{{ block.authorName }}</div>
+                          <div class='cite__context'>{{ block.authorRole }}</div>
+                        </cite>
+                      </blockquote>
+                      {% if block.buttonLink %}
+                        <a
+                          class='tertiary-path-cta'
+                          href='{{ block.buttonLink.url }}'
+                          onclick="ga('send', 'event', 'In Page', 'Button', '{{ block.buttonLink.text }}');"
+                        >{{ block.buttonLink.text }}</a>
+                      {% endif %}
+                    </div>
+                  </div>{# /.seo-main-content__container #}
+                </div>{# /.module #}
+
+              {% case "image" %}
+
+                {% if block.position == "full" %}
+                  <div class='module--full-width'>
+                    {% set transformedImage = craft.imager.transformImage(
+                      block.image.first(),
+                      [
+                        { height: 500 },
+                        { height: 1000 }
+                      ]
+                    ) %}
+                    <img
+                      src="{{ transformedImage[0].url }}"
+                      srcset="{{ craft.imager.srcset(transformedImage) }}"
+                      sizes="100vw"
+                      alt="{{ block.altAttr }}"
+                      title="{{ block.titleAttr }}"
+                      style="margin-bottom:2em"
+                    >
+                  </div>
+                {% endif %}
+
+              {% case "boardExamples" %}
+
+                <div class='module--full-width solutions__tabbable-templates'>
+                  <div class='global-content'>
+                    <div class='section__title'>
+                      <h3>{{ block.heading }}</h3>
+                    </div>
+                    <div class='section__intro'>
+                      <p>{{ block.subhead|striptags('<strong><b><u><em><i>')|raw }}</p>
+                    </div>
+                    <div class='module'>
+                      <ul class='accordion-tabs'>
+
+                        {% for row in block.sections %}
+
+                          <li class='tab-header-and-content'>
+                            <a class='tab-link' href='javascript:void(0)'>{{ row.sectionName }}</a>
+                            <div class='tab-content'>
+                              <ul>
+
+                                {% for block in row.images %}
+                                  {% if block.type == "image" %}
+
+                                    {% set transformedThumb = craft.imager.transformImage(
+                                      block.image.first(),
+                                      [
+                                        { width: 280 },
+                                        { width: 560 }
+                                      ]
+                                    ) %}
+                                    {% set transformedImage = craft.imager.transformImage(
+                                      block.image.first(),
+                                      [
+                                        { width: 900 },
+                                        { width: 1800 }
+                                      ]
+                                    ) %}
+
+                                    <li class='solution-template__block'>
+                                      <div class='modal'>
+                                        <label for='modal-{{ loop.parent.loop.index }}-{{ loop.index }}'>
+                                          <div class='modal-trigger'>
+                                            <img
+                                              src="{{ transformedThumb[0].url }}"
+                                              srcset="{{ craft.imager.srcset(transformedThumb) }}"
+                                              sizes="100vw"
+                                              height="{{ transformedThumb[0].height }}"
+                                              width="{{ transformedThumb[0].width }}"
+                                              alt='{{ block.altAttr }}'
+                                              title='{{ block.titleAttr }}'
+                                            >
+                                          </div>
+                                        </label>
+                                        <input class='modal-state' id='modal-{{ loop.parent.loop.index }}-{{ loop.index }}' type='checkbox'>
+                                        <div class='modal-fade-screen'>
+                                          <div class='modal-inner'>
+                                            <div class='modal-close' for='modal-{{ loop.parent.loop.index }}-{{ loop.index }}'>Close</div>
+                                            <div class='modal-content'>
+                                              <img
+                                                src="{{ transformedImage[0].url }}"
+                                                srcset="{{ craft.imager.srcset(transformedImage) }}"
+                                                sizes="100vw"
+                                                height="{{ transformedImage[0].height }}"
+                                                width="{{ transformedImage[0].width }}"
+                                                alt='{{ block.altAttr }}'
+                                                title='{{ block.titleAttr }}'
+                                              >
+                                              <p>{{ block.captionTitle }} Layout</p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <h4>{{ block.captionTitle }}</h4>
+                                      <p>{{ block.captionBody }}</p>
+                                    </li>{# /.solution-template__block #}
+
+                                  {% endif %}
+                                {% endfor %}
+
+                              </ul>
+                            </div>{# /.tab-content #}
+                          </li>{# /.tab-header-and-content #}
+
+                        {% endfor %}
+
+                      </ul>{# /.accordion-tabs #}
+                    </div>{# /.module #}
+                  </div>{# /.global-content #}
+                </div>{# /.solutions__tabbable-templates #}
+
+              {% case "cta" %}
+
+                <div class='module'>
+                  <div class='global-tour-trial-container'>
+                    <div class='global-tour-trial-cta'>
+                      <div class='global-tour-trial-cta__image'>
+                        <img src='{{ craft.config.cdnBaseUrl }}/assets/images/LK_Showcase_main_small.png'>
+                      </div>
+                      <div class='global-tour-trial-cta__callout'>
+                        <a class='primary-path-cta' href='{{ block.primaryButton.url }}' onclick="ga('send', 'event', 'In Page', 'Button', '{{ block.primaryButton.text }}');">{{ block.primaryButton.text }}</a>
+                        {% if block.secondaryLink is not empty %}
+                          <div class='text-cta'>
+                            or
+                            <a href='{{ block.secondaryLink.url }}' onclick="ga('send', 'event', 'In Page', 'Text', '{{ block.secondaryLink.text }}');">{{ block.secondaryLink.text }}</a>
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+          {% endswitch %}
+        {% endfor %}
+
+      </section>
+    </article>
+  </main>
+
+  {% endcache %}
+{% endblock content %}

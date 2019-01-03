@@ -1,0 +1,71 @@
+@include component('product-flag') {
+  margin-bottom: ms(7);
+
+  @include tablet {
+    margin-bottom: ms(10);
+  }
+
+  @include small-desktop {
+    margin-bottom: ms(11);
+  }
+
+  @include element('body') {
+    *zoom: 1;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: $container-padding;
+    padding-right: $container-padding;
+
+    @include large-mobile {
+      max-width: 420px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    @include small-desktop {
+      padding-left: 6.25vw;
+      padding-right: 3.5vw;
+
+      .o-flag--rev & {
+        padding-left: 3.5vw;
+        padding-right: 6.25vw;
+      }
+    }
+
+    p {
+      margin-bottom: ms(3);
+    }
+  }
+
+  @include element('figure') {
+    &.o-flag__figure {
+      margin-bottom: ms(2);
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    @include tablet(only) {
+      &.o-flag__figure {
+        margin-bottom: ms(5);
+      }
+    }
+
+    @include small-desktop {
+      &-inner {
+        width: 60vw;
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  @include element('heading') {
+    line-height: 1.25;
+    margin-bottom: ms();
+
+    @include tablet {
+      margin-bottom: ms(6);
+    }
+  }
+}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  {# Static Pages pulled over from Middleman #}
+  {% set staticPages = [
+    "",
+    "about",
+    "compare-editions",
+    "customers",
+    "fsgd",
+    "platform",
+    "platform/integrate",
+    "pricing",
+    "product",
+    "solutions",
+    "solutions/it-operations",
+    "solutions/project-manager",
+    "training/course-descriptions",
+    "training",
+    "why-leankit"
+  ] %}
+  {% for page in staticPages %}
+    <url>
+      <loc>{{ url(page) }}</loc>
+      <priority>0.7</priority>
+      <changefreq>weekly</changefreq>
+    </url>
+  {% endfor %}
+
+  {# Press Section #}
+  {% set pressReleases = craft.entries.section('pressReleases')
+    .order('dateUpdated desc').limit(null) %}
+  <url>
+    <loc>{{ url('press') }}</loc>
+    <lastmod>{{ pressReleases.first().dateUpdated.w3c() }}</lastmod>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  {% for entry in pressReleases %}
+    <url>
+        <loc>{{ entry.url }}</loc>
+        <lastmod>{{ entry.dateUpdated.w3c() }}</lastmod>
+        <priority>0.5</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+  {% endfor %}
+
+  {# Case Studies #}
+  {% set caseStudies = craft.entries.section('caseStudies')
+    .order('dateUpdated desc').limit(null) %}
+  {% for entry in caseStudies %}
+    <url>
+        <loc>{{ entry.url }}</loc>
+        <lastmod>{{ entry.dateUpdated.w3c() }}</lastmod>
+        <priority>0.5</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+  {% endfor %}
+
+</urlset>

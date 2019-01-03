@@ -1,0 +1,36 @@
+@include component('ppc-header') {
+  margin-top: ms(13);
+
+  @include small-desktop {
+    margin-top: ms(15);
+  }
+
+  @include element('heading') {
+    font-size: ms(8);
+    font-weight: $semibold-weight;
+    line-height: 1.1;
+    margin-top: 0;
+    text-transform: uppercase;
+
+    @include mobile-only {
+      font-size: 8vw;
+    }
+
+    @media screen and (max-width: 319px) {
+      font-size: 25px;
+    }
+  }
+
+  @include element('subheading') {
+    font-size: ms(2);
+    font-weight: $light-weight;
+    line-height: 1.2;
+    margin-bottom: 0;
+    margin-top: 0;
+
+    b,
+    strong {
+      font-weight: $semibold-weight;
+    }
+  }
+}

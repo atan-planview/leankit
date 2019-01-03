@@ -1,0 +1,17 @@
+@include component('ppc-module') {
+  @include medium-desktop {
+    display: flex;
+  }
+
+  @include element('content') {
+    @include medium-desktop {
+      order: 1;
+    }
+  }
+
+  @include element('sidebar') {
+    @include medium-desktop {
+      order: 2;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+@include component('imgfig') {
+  display: table;
+  margin: 0;
+  max-width: 300px;
+  text-align: center;
+
+  @include modifier('fluid') {
+    max-width: 100%;
+  }
+
+  @include element('caption') {
+    caption-side: bottom;
+    display: table-caption;
+    margin-top: ms(-2);
+    text-align: left;
+  }
+
+  @include element('image') {
+    &,
+    .global-content & {
+      display: table-cell;
+      margin-bottom: 0;
+      vertical-align: bottom;
+    }
+  }
+}

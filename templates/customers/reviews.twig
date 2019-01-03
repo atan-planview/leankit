@@ -1,0 +1,39 @@
+{% extends '_layout' %}
+
+{% set bodyClass = 'customers customers_index' %}
+
+{% block content %}
+        <main role="main">
+          <div
+            class="c-zub-hero"
+            itemscope
+            itemtype="http://schema.org/Product"
+            style="background-image: url('{{ craft.config.cdnBaseUrl }}/assets/images/zuberance_hero.jpg')"
+          >
+            <div class="c-zub-hero__inner">
+              <div class="c-zub-hero__header">
+                <h1 class="c-zub-hero__heading"><span itemprop="name">LeanKit</span> Reviews</h1>
+                <p class="c-zub-hero__subheading">
+                  Our customers help us get better!<br>
+                  Check out what they have to say.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <br>
+
+          <div class="module">
+            <div
+              class="seo-main-content__container global-content global-content--single-column"
+              style="margin-bottom: 3em;"
+            >
+              <div id="primary" class="content-area js-pageable-content">
+
+                <div style="width: 100%; height: 100%;"><script> (function () { var on = window.addEventListener ? function (m,c) { window.addEventListener(m,c,false); } : function (m,c) { window.attachEvent('on'+m,c); } , r = function (e) { if (e.origin !== "https://www.g2crowd.com") { return; } var d = document.getElementById('g2-crowd-widget-testimonial'); if(d){d.style.height = e.data}; r = function () {}; } ; on('message', r); }()); </script><iframe frameborder="0" height="100%" id="g2-crowd-widget-testimonial" scrolling="no" src="https://www.g2crowd.com/products/leankit/testimonials/9604.embed" style="width=100%;min-height=100%;overflow:hidden;" width="100%"></iframe></div>
+
+              </div>{# /#primary #}
+            </div>{# /.seo-main-content__container #}
+          </div>{# /.module #}
+        </main>
+{% endblock %}

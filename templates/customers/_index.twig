@@ -1,0 +1,140 @@
+{% extends '_layout' %}
+{% import '_macros' as macros %}
+
+{% set bodyClass = 'customers customers_index' %}
+
+{% block content %}
+  {% cache globally using key craft.request.path for 1 year %}
+
+  <main role="main">
+    <section class='customers-leaderboard global-leaderboard'>
+      <div class='module'>
+        <div class='customers-leaderboard__container global-leaderboard__container'>
+          <h1>{{ entry.heading|trim|striptags('<strong><b><u><em><i>')|raw }}</h1>
+          <p>{{ entry.intro|trim|striptags('<strong><b><u><em><i><a>')|raw }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="global-content">
+
+      <div class="module">
+
+        {% if craft.request.isLivePreview %}
+          {% set blockData = entry.customersBody %}
+        {% else %}
+          {% set blockData = entry.customersBody.find({
+            with: [
+              ['caseStudies:caseStudies.caseStudy.customerProfile.primaryLogo', {
+                  withTransforms: ['medium']
+              }],
+              ['logos:customers.primaryLogo', {
+                  withTransforms: ['medium']
+              }],
+              ['logos:customers.oneColorLogo', {
+                  withTransforms: ['medium']
+              }],
+              ['logos:customers.reversedOneColorLogo', {
+                  withTransforms: ['medium']
+              }]
+            ]
+          }) %}
+        {% endif %}
+
+        {% for block in blockData %}
+          {% switch block.type %}
+
+            {% case "heading" %}
+
+              <{{ block.headingLevel }}>
+                {{ block.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+              </{{ block.headingLevel }}>
+
+            {% case "text" %}
+
+              {{ block.text }}
+
+            {% case "caseStudies" %}
+
+              <div class='customers-content__case-studies__container'>
+
+                {% for row in block.caseStudies %}
+                  {% if row.caseStudy[0].type == 'pdf' %}
+                    {% set csUrl = row.caseStudy[0].csPdf.first().getUrl() %}
+                  {% else %}
+                    {% set csUrl = row.caseStudy[0].url %}
+                  {% endif %}
+                  <div class='customers-content__case-study__item'>
+                    <div class='customers-content__case-study__item__logo'>
+                      <a
+                        href='{{ csUrl }}'
+                        title='{{ row.caseStudy[0].customerProfile[0].title }}'
+                      >
+                        {% set image = row.caseStudy[0].customerProfile[0].primaryLogo[0] ?? null %}
+
+                        <img
+                          {% if image.mimeType == 'image/svg+xml' %}
+                            src="{{ image.url }}"
+                          {% else %}
+                            src="{{ image | retinafy('medium') }}"
+                          {% endif %}
+                          alt="{{ row.caseStudy[0].customerProfile[0].title }}"
+                        >
+                        <span class="u-visuallyhidden">{{ row.caseStudy[0].customerProfile[0].title }}</span>
+                      </a>
+                    </div>
+                    <div class='customers-content__case-study__item__text'>
+                      {{ row.teaser }}
+                      <div class='customers-content__case-study__item__link'>
+                        <a href='{{ csUrl }}'>{{ row.buttonLabel|default('Read the case study') }}</a>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+
+              </div>
+
+            {% case "logos" %}
+
+              <ul class="c-cs-logos">
+
+                {% for customer in block.customers %}
+                  <li class="c-cs-logos__item">
+                    <span class="c-cs-logos__logo">
+                      {{ macros.customerLogo(customer, 'black') }}
+                    </span>
+                  </li>
+                {% endfor %}
+
+              </ul>
+
+          {% endswitch %}
+        {% endfor %}
+      </div>{# /.module #}
+
+    </section>{# /.global-content #}
+
+    <section class='try-leankit-cta'>
+      <div class='module'>
+        <div class='try-leankit-cta__button'>
+          <a class='try-leankit__cta' href='https://leankit.com/get-leankit/' title='Get LeanKit'>
+            <span class='trial'>Try LeanKit free for 30 days</span>
+            <small>No credit card or obligation required</small>
+          </a>
+        </div>
+        <div class='try-leankit__info'>
+          <p>
+            You can purchase LeanKit within the application anytime during your trial, or continue with our free
+            <span class='more-info-tooltip more-info-tooltip--text'>
+              Lite Edition
+              <span class='more-info-tooltip__tip'>Lite edition is free for up to three users and comes with two kanban boards.</span>
+            </span>
+            at the end.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% endcache %}
+{% endblock content %}

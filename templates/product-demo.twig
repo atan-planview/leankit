@@ -1,0 +1,73 @@
+{% extends '_layout' %}
+
+{% set bodyClass = 'product-demo product-demo_index' %}
+
+{% block content %}
+  <main role="main">
+    <section class='product-section-navigation global-section-navigation'>
+      <div class='module'>
+        <div class='product-section-navigation__container'>
+          <div class='product-section-navigation__title'>
+            <h2>Product</h2>
+          </div>
+          <div class='product-section-navigation__links'>
+            <ul>
+              <li><a href="/product/">Overview</a></li>
+              <li><a href="/platform/">Platform</a></li>
+              <li><a href="/platform/integrate/">Integrations</a></li>
+              <li><a href="/product-demo/">Demo</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+      <section class='product-demo-leaderboard global-leaderboard'>
+        <div class='module'>
+          <div class='global-leaderboard__container'>
+            <h1>Watch a Product Overview</h1>
+            <br>
+            <div class='o-video-embed'>
+              <iframe src='https://player.vimeo.com/video/127233813' frameborder='0' webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+            </div>
+            <p>Ready to learn more about LeanKit? Join one of our product experts for a live walk-through and see how Lean management principles can increase your project delivery success.</p>
+            <div class='global-leaderboard__container__cta'>
+              {# {% include '_library/elements/button' with {
+                  href: 'https://go.leankit.com/product-demo.html',
+                  label: 'Register for a Live Demo',
+                  modifiers: [
+                      'highlight'
+                  ]
+              } %} #}
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class='product-demo__video'>
+        <div class='module'>
+          <div class='product-demo__video__container'>
+            <p>If you can't wait for the next live demonstration, watch this recording of a recent session.</p>
+            <div class='product-demo__video__iframe'>
+              <div class="o-video-embed">
+                <iframe allowfullscreen='' class='vimeo-player' data-progress='true' data-seek='true' frameborder='0' height='281' id='vimeo-player-1' mozallowfullscreen='' src='https://player.vimeo.com/video/127240245?api=1&amp;player_id=vimeo-player-1' webkitallowfullscreen='' width='500'></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class='try-leankit-cta'>
+        <div class='module'>
+          <div class='try-leankit-cta__button'>
+            <a class='try-leankit__cta' href='https://leankit.com/get-leankit/' title='Get LeanKit'>
+              <span class='trial'>Try LeanKit free for 30 days</span>
+              <small>No credit card or obligation required</small>
+            </a>
+          </div>
+          <div class='try-leankit-alt-path'>
+            or
+            <a class='try-leankit-alt-path__cta' href='http://leankit.com/compare-editions/' title='Compare Editions'>View Full Feature List</a>
+          </div>
+        </div>
+      </section>
+
+  </main>
+{% endblock content %}

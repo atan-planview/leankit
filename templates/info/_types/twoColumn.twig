@@ -1,0 +1,191 @@
+{% extends '_layout' %}
+
+{% set bodyClass = 'ppc ppc_index' %}
+{% block pageStyle %}
+<link href="{{ conf.cdnBaseUrl }}/assets/build/css/form.css?ver=4" rel="stylesheet" type="text/css">
+{% endblock %}
+{% set gtmId = 'TTDNTZ' %}
+
+{% block globalHeader %}
+  <div class="site-header {% if not entry.heroImage|length %}site-header--no-hero{% endif %}">
+    <div class="site-header__content">
+      <h2 class="logo"><a href="/"><span>LeanKit</span></a></h2>
+      <div class="main-navigation">
+        <ul>
+          <li class="trial-signup-button">
+            {% if entry.eloquaForm == '63' %}
+              <a href="https://leankit.com/get-leankit/">{{ entry.headerCtaLabel|default('Sign Up Free') }}</a>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+      <div id="mobile-nav-toggle">
+        <input class="menu-open" id="menu-open" name="menu-open" type="checkbox"> <label class="menu-open-button" for="menu-open"></label>
+      </div>
+      <div class="sliding-panel-content">
+        &nbsp;
+      </div>
+      <div class="sliding-panel-fade-screen">
+        &nbsp;
+      </div>
+    </div>
+  </div>
+{% endblock globalHeader %}
+
+{% block content %}
+  {% cache globally using key craft.request.path for 1 year %}
+
+  <main role="main">
+    {% if entry.heroImage|length %}
+      <section class="hero" style="background-image: url('{{ entry.heroImage.first().getUrl('hero') }}'); z-index: 5;">
+        <div class="module--full-width">
+          <div class="hero__leaderboard">
+            <div class="hero__leaderboard__messaging">
+              <h1 class="page-heading">{{ entry.heading|striptags('<strong><b><u><em><i><a>')|raw }}</h1>
+              {% if entry.subhead is not empty %}
+                <h2 style="margin-left: 4px">{{ entry.subhead|striptags('<strong><b><u><em><i>')|raw }}</h2>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </section>
+    {% else %}
+      <div class="o-container o-container--narrow">
+        <header class="c-header c-ppc-header">
+          <h1 class="c-header__heading c-ppc-header__heading">
+            {{ entry.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+          </h1>
+          {% if entry.subhead is not empty %}
+            <h2 class="c-ppc-header__subheading">
+              {{ entry.subhead|striptags('<strong><b><u><em><i>')|raw }}
+            </h2>
+          {% endif %}
+        </header>
+      </div>
+    {% endif %}
+    <section class="ppc-main-content" style="z-index: 10;">
+      <div class="module c-ppc-module">
+        <div class="ppc-sidebar {% if not entry.heroImage|length %}ppc-sidebar--no-hero{% endif %} c-ppc-module__sidebar">
+          <div id="formContainer">
+            <h4 class="">{{ entry.formHeading|default('Start Your 30-Day Free Trial') }}</h4>
+
+            {% include '_forms/' ~ entry.eloquaForm with {
+              'submitLabel': entry.formSubmitButtonLabel,
+              'targetCompany': entry.eloquaFormTargetCompany
+            } only %}
+
+            {% if entry.eloquaForm == '63' %}
+              <p class='formFooter'>LeanKit is committed to protecting your information. Your information will be used in accordance with any applicable data privacy law, our internal policies and our <a href="https://www.planview.com/legal/privacy-statement/" target="_blank">Privacy Policy</a> and will be held securely. By using this site, you agree that we can place cookies on your device.</p>
+            {% endif %}
+          </div>
+
+          {% if entry.testimonial|length %}
+            {% set testimonial = entry.testimonial.first() %}
+            {% embed "_embeds/testimonial" %}
+                {% block heading %}
+                    {{ testimonial.heading }}
+                {% endblock %}
+                {% block quote %}
+                    {{ testimonial.body }}
+                {% endblock %}
+                {% block rating %}
+                    {{ testimonial.rating }}
+                {% endblock %}
+                {% block authorName %}
+                    {{ testimonial.authorName }}
+                {% endblock %}
+                {% block authorJobTitle %}
+                    {{ testimonial.authorJobTitle }}
+                {% endblock %}
+                {% block authorCompany %}
+                    {{ testimonial.authorCompany }}
+                {% endblock %}
+                {% block authorCompanyUrl %}
+                    {{ testimonial.authorCompanyUrl }}
+                {% endblock %}
+            {% endembed %}
+          {% endif %}
+
+        </div>{# /.c-ppc-module__sidebar #}
+        <div class="ppc-content global-content c-content-theme c-ppc-module__content">
+
+          {% if craft.request.isLivePreview %}
+            {% set blockData = entry.lpBody %}
+          {% else %}
+            {% set blockData = entry.lpBody.find({
+            with: [
+              ['image:image', { withTransforms: ['medium','large'] }],
+              ['multiImage:images.image', { withTransforms: ['recommendedReading'] }]
+            ]
+          }) %}
+          {% endif %}
+
+          {% for block in blockData %}
+            {% if block.type == "heading" %}
+              <{{ block.headingLevel }} class="c-content-theme__heading c-content-theme__heading--{{ block.colorScheme }}">{{ block.heading|striptags('<strong><b><u><em><i><a>')|raw }}</{{ block.headingLevel }}>
+            {% elseif block.type == "text" %}
+              <div class="c-content-theme__copy c-content-theme__copy--{{ block.colorScheme }}">
+                {{ block.text }}
+              </div>
+            {% elseif block.type == "featuredText" %}
+              <div class="c-copy--feature">
+                {{ block.text }}
+              </div>
+            {% elseif block.type == "image" %}
+              {% set class = 'c-figure' %}
+              {% if loop.first %}
+                {% set class = class ~ ' c-figure--top' %}
+                {% set transform = 'medium' %}
+              {% else %}
+                {% set class = class ~ ' c-figure--' ~block.position %}
+                {% set transform = 'large' %}
+              {% endif %}
+              {% include '_library/elements/imgfig' with {
+                attr: {
+                  class: class
+                },
+                alt: block.altAttr,
+                caption: block.caption,
+                fluid: true,
+                imgClass: 'c-figure__image',
+                src: block.image,
+                title: block.titleAttr,
+                transform: transform
+              } %}
+            {% elseif block.type == "multiImage" %}
+              <div class="c-image-grid c-multi-image">
+                <div class="c-image-grid__inner">
+                  {% for row in block.images %}
+                    {% set el = { type: 'div', attr: '' } %}
+                    {% if row.resourceLink is not empty %}
+                      {% set el = {
+                        type: 'a',
+                        attr: "href='#{row.resourceLink.url}'"
+                      } %}
+                    {% endif %}
+                    <{{ el.type }} {{ el.attr|raw }} class="c-image-grid__item c-multi-image__item">
+                      {% include '_library/elements/imgfig' with {
+                          alt: row.altAttr,
+                          caption: row.caption,
+                          fluid: true,
+                          src: row.image,
+                          title: row.titleAttr,
+                          transform: block.sameAspectRatio ? 'recommendedReading' : null
+                      } %}
+                    </{{ el.type }}>{# /.c-image-grid__item #}
+                  {% endfor %}
+                </div>{# /.c-image-grid__inner #}
+              </div>{# /.c-image-grid #}
+            {% endif %}
+          {% endfor %}
+
+        </div>{# /.c-ppc-module__content #}
+      </div>{# /.c-ppc-module #}
+    </section>
+  </main>
+
+  {% endcache %}
+{% endblock content %}
+
+{% block globalFooterSubscription %}{% endblock globalFooterSubscription %}
+{% block globalFooterMenu %}{% endblock globalFooterMenu %}

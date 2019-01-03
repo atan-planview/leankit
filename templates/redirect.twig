@@ -1,0 +1,9 @@
+{#
+  Redirect utility for links formatted like so:
+  https://leankit.com/redirect?url=/blog/2013/12/myth-multi-tasking-saves-time
+#}
+{% if craft.request.getQuery('url') %}
+  {% redirect craft.request.getQuery('url') %}
+{% else %}
+  {% exit 404 %}
+{% endif %}

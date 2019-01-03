@@ -1,0 +1,16 @@
+@include component('header') {
+  margin: 0 auto ms(8);
+  text-align: center;
+
+  @include tablet {
+    margin-bottom: ms(9);
+  }
+
+  @include small-desktop {
+    margin-bottom: ms(13);
+  }
+
+  @include modifier('flush-bottom') {
+    margin-bottom: 0;
+  }
+}

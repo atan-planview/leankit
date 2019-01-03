@@ -1,0 +1,400 @@
+{% spaceless %}
+{% if not craft.request.isLivePreview %}
+  {% hook 'renderAdminBar' %}
+{% endif %}
+
+{% set conf = craft.config %}
+{% set entry = entry is defined ? entry : conf.entryDefaults %}
+{% set sharing = sharing is defined ? sharing : {} %}
+{% set showTrustmarksFooter = showTrustmarksFooter is defined ? showTrustmarksFooter : true %}
+
+<!DOCTYPE html>
+{# IE conditional comments are only supported through IE9 #}
+<!--[if lte IE 9]><html class="ie9-nb"><![endif]-->
+<!--[if !IE]> --><html><!-- <![endif]-->
+<head>
+  
+  <!-- OneTrust Cookies Consent Notice (Production Standard, leankit.com, en-GB) start -->
+ {# <script src="https://optanon.blob.core.windows.net/consent/2b9e4992-85fa-4a8e-aa4f-fd06c34fec0a.js" type="text/javascript" charset="UTF-8"></script> #}
+  <script type="text/javascript">
+  function OptanonWrapper() {
+    {% if not currentUser or not currentUser.can('accessCp') %}
+      Optanon.InsertScript('https://cdn.optimizely.com/js/341765241.js', 'head', null, null, 2);
+    {% endif %}
+  }
+  </script>
+  <!-- OneTrust Cookies Consent Notice (Production Standard, leankit.com, en-GB) end -->
+  
+
+  <meta charset="utf-8">
+  <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3" name="viewport">
+
+  {% set seomaticTemplatePath = '_seo_meta' %} {% hook 'seomaticRender' %}
+
+  {% if feeds is defined and feeds is iterable %}
+    {% for feed in feeds %}
+      <link rel="{{ feed.rel|default('alternate') }}" type="application/rss+xml" title="{{ feed.title }}" href="{{ siteUrl }}{{ feed.uri }}">
+    {% endfor %}
+  {% endif %}
+
+  <link rel='stylesheet' id='planview-fonts-css'  href='//fast.fonts.net/cssapi/09ff86dc-664a-4b55-b9ac-75e9cac7d8aa.css?ver=4.9.8' type='text/css' media='all' />
+  <link href="{{ conf.cdnBaseUrl }}/assets/build/css/main.css?v=7" rel="stylesheet" type="text/css">
+  {{ block('pageStyle') }}
+
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ conf.cdnBaseUrl }}/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="{{ conf.cdnBaseUrl }}/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="{{ conf.cdnBaseUrl }}/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="{{ conf.cdnBaseUrl }}/manifest.json">
+  <link rel="mask-icon" href="{{ conf.cdnBaseUrl }}/safari-pinned-tab.svg" color="#96C93D">
+  <meta name="theme-color" content="#272b24">
+
+  {# For the adminbar #}
+  {% if currentUser and currentUser.can('accessCp') and not craft.request.isLivePreview %}
+    <style>
+      html,
+      .ppc .site-header,
+      .site-fixed-header.fixed {
+        margin-top: {% if craft.config.devMode %}53px{% else %}49px{% endif %} !important;
+      }
+      @media (min-width: 601px) {
+        html,
+        .ppc .site-header,
+        .site-fixed-header.fixed {
+          margin-top: {% if craft.config.devMode %}43px{% else %}39px{% endif %} !important;
+        }
+      }
+    </style>
+  {% endif %}{# if currentUser and currentUser.can('accessCp') #}
+  
+  <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-{{ gtmId|default('TTDNTZ') }}');
+  </script> 
+  <!-- End Google Tag Manager -->
+  
+
+
+  {{ getHeadHtml() }}
+  
+  
+</head>
+<body{% if bodyClass is defined %} class="{{ bodyClass }}"{% endif %}>
+  {% if not currentUser or not currentUser.can('accessCp') %}
+    <!-- Google Tag Manager -->
+    <noscript><iframe height="0" src="//www.googletagmanager.com/ns.html?id=GTM-{{ gtmId|default('TTDNTZ') }}" style="display:none;visibility:hidden" width="0"></iframe></noscript>
+    
+
+  {% endif %}{# if not currentUser or not currentUser.can('accessCp') #}
+
+  {% block globalHeader %}
+    {% cache globally using key 'global-header' for 1 year %}
+      <header class='site-header'>
+        <div class='site-header__content'>
+          <h2 class="logo">
+            <a class='js-tracked-event' data-event-location='Top Nav' data-event-target='Logo' data-event-title='View Home Page' href='/'>
+              <span>LeanKit</span>
+            </a>
+          </h2>
+          <nav class='main-navigation'>
+            <ul>
+              <li class='dropdown-menu'>
+                <a href='#' class='js-noclick'>Product</a>
+                <ul>
+                  <li>
+                    <a class='js-tracked-event' data-event-location='Top Nav' data-event-target='Text #2' data-event-title='View Product Page' href='/product/'>Overview</a>
+                  </li>
+                  <li>
+                    <a class='js-tracked-event' data-event-location='Top Nav' data-event-target='Text' data-event-title='View Product Platform Page' href='/platform/'>Platform</a>
+                  </li>
+                  <li>
+                    <a class='js-tracked-event' data-event-location='Top Nav' data-event-target='Text' data-event-title='View Product Integrations Page' href='/platform/integrate/'>Integrations</a>
+                  </li>
+                  <li>
+                    <a class='js-tracked-event' data-event-location='Top Nav' data-event-target='Text' data-event-title='View Product Demo Page' href='/product-demo/'>Demo</a>
+                  </li>
+                </ul>
+              </li>
+              <li class='dropdown-menu'>
+                <a href='#' class='js-noclick'>Solutions</a>
+                <ul>
+                  {% for entry in craft.entries.section('solutions') %}
+                    <li>
+                      <a
+                        class='js-tracked-event'
+                        data-event-location='Top Nav'
+                        data-event-target='Text'
+                        data-event-title='View {{ entry.navMenuLabel|default(entry.title) }} Solution Page'
+                        href='{{ entry.url }}'
+                      >{{ entry.navMenuLabel|default(entry.title) }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Top Nav' data-event-target='Text' data-event-title='View Pricing Page' href='/pricing/'>Pricing</a>
+              </li>
+              <li class='dropdown-menu'>
+                <a href='#' class='js-noclick'>Customers</a>
+                <ul>
+                  <li>
+                    <a class='js-tracked-event' data-event-location='Top Nav' data-event-target='Text #2' data-event-title='View Case Studies' href='/customers/'>Case Studies</a>
+                  </li>
+                  <li>
+                    <a class='js-tracked-event' data-event-location='Top Nav' data-event-target='Text' data-event-title='View Customer Reviews' href='/customers/reviews/'>Reviews</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Top Nav' data-event-target='Text' data-event-title='View Learn Page' href='https://resources.leankit.com'>Learn</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Top Nav' data-event-target='Text' data-event-title='Read Blog Page' href='/blog/'>Blog</a>
+              </li>
+              <li class='trial-signup-button'>
+                <a class='js-tracked-event' data-event-location='Top Nav' data-event-target='Button' data-event-title='Start 30-Day Trial' href='https://leankit.com/get-leankit/'>Sign Up Free</a>
+              </li>
+              <li class='login-button'>
+                <a class='js-tracked-event' data-event-location='Top Nav' data-event-target='Button' data-event-title='View Login Page' href='https://login.leankit.com/Account/Membership/Login'>Login</a>
+              </li>
+            </ul>
+          </nav>
+          <div id='mobile-nav-toggle'>
+            <input class='menu-open' id='menu-open' name='menu-open' type='checkbox'>
+            <label class='menu-open-button' for='menu-open'>
+              <span class='hamburger hamburger-1'></span>
+              <span class='hamburger hamburger-2'></span>
+              <span class='hamburger hamburger-3'></span>
+            </label>
+          </div>
+          <div class='sliding-panel-content'></div>
+          <div class='sliding-panel-fade-screen'></div>
+        </div>
+      </header>
+    {% endcache %}
+  {% endblock %}
+
+  {{ block('content') }}
+
+  {% if showTrustmarksFooter != false %}
+  <section class='global-trustmarks section--global'>
+    <div class='module--full-width'>
+      <div class='module'>
+        <div class='global-trustmarks__title section__title'>
+          <h3>You're in good company.</h3>
+          <p>
+            Our customers are the best.
+            <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View Customer Page' href='/customers/'>Read their stories.</a>
+          </p>
+        </div>
+        <div class='global-trustmarks__logos'>
+          <a class='js-tracked-event' data-event-location='Footer' data-event-target='Image' data-event-title='View Customer Page' href='/customers/'>
+            <div class='hero-trustmarks'>
+              <div class='module'>
+                <div class='hero__trustmarks'></div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% block globalFooterSubscription %}
+    <section class='global-newsletter-subscribe section--global'>
+      {% if entry.section.handle != 'landingPages' %}
+        <div class='module--full-width'>
+          {% include '_library/elements/button' with {
+              href: '/product/',
+              label: 'Learn More about LeanKit',
+              modifiers: [
+                  'primary'
+              ]
+          } %}<br><br><br>
+        </div>
+      {% endif %}
+    </section>
+  {% endblock %}
+  {% block globalFooterMenu %}
+    <footer class='global-footer'>
+      <div class='module'>
+        <div class='global-footer__logo global-footer__column'>
+          <span>LeanKit</span>
+        </div>
+        <div class='global-footer__link-map global-footer__column'>
+          <div class='global-footer__link-map__title global-footer__heading'>
+            <h4>Learn More</h4>
+          </div>
+          <div class='global-footer__link-map__list'>
+            <ul>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View Product Page' href='/product/'>Product Tour</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View Product Demo Page' href='/product-demo/'>Product Demo</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View Customers Page' href='/customers/'>Case Studies</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View Board Examples Page' href='/learn/kanban/kanban-board-examples-for-development-and-operations/'>Board Examples</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View New Features Posts' href='/blog/category/products-and-features/'>New Features</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class='global-footer__link-map global-footer__column'>
+          <div class='global-footer__link-map__title global-footer__heading'>
+            <h4>Support</h4>
+          </div>
+          <div class='global-footer__link-map__list'>
+            <ul>
+              <li>
+                <a class='js-tracked-event' target="_blank" data-event-location='Footer' data-event-target='Text' data-event-title='View Learning Center Page' href='https://info.planview.com/leankit-reach-out-_contact-us_gen_en_reg.html'>Contact Us</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' target="_blank" data-event-location='Footer' data-event-target='Text' data-event-title='View Help Center Page' href='https://success.planview.com/Planview_Communities_and_Programs/Special_Programs/Customer_Care'>Customer Care</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' target="_blank" data-event-location='Footer' data-event-target='Text' data-event-title='View Knowledge Base Page' href='https://success.planview.com/Planview_LeanKit'>Customer Success Center</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' target="_blank" data-event-location='Footer' data-event-target='Text' data-event-title='View Learning Center Page' href='https://resources.leankit.com'>Learning Center</a>
+              </li>
+              <li>
+                <a href="javascript:" onclick="Optanon.ToggleInfoDisplay()">Cookie Settings</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class='global-footer__link-map global-footer__column'>
+          <div class='global-footer__link-map__title global-footer__heading'>
+            <h4>About</h4>
+          </div>
+          <div class='global-footer__link-map__list'>
+            <ul>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View About Page' href='/about/'>Company</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View Jobs Page' href='https://info.planview.com/work-at-planview-_contact-us_gen_en_view.html' target="_blank">Jobs</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View Why LeanKit Page' href='/why-leankit/'>Why LeanKit</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='Read Blog Page' href='/blog/'>Blog</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View Press Page' href='/press/'>Press</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class='global-footer__social global-footer__link-map global-footer__column'>
+          <div class='global-footer__link-map__list global-footer__social__list'>
+            <ul>
+              <li class='fb'>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Button' data-event-title='Go to Facebook Page' href='https://www.facebook.com/PlanviewCo'>Facebook</a>
+              </li>
+              <li class='tw'>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Button' data-event-title='Go to Twitter Page' href='https://twitter.com/LeanKit'>Twitter</a>
+              </li>
+              <li class='in'>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Button' data-event-title='Go to LinkedIn Page' href='https://www.linkedin.com/company/leankit'>LinkedIn</a>
+              </li>
+              <li class='yt'>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Button' data-event-title='Go to YouTube Page' href='https://www.youtube.com/c/PlanviewSolutions'>Youtube</a>
+              </li>
+							<!--
+              <li class='gp'>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Button' data-event-title='Go to Google + Page' href='https://plus.google.com/u/0/+LeanKitInc/posts'>Google+</a>
+              </li>
+							-->
+            </ul>
+          </div>
+          <div class='global-footer__contact-info'>
+            <p class='vcard'>
+              <span class='fn org'>
+                <span class='organization-name'>LeanKit Inc.</span>
+              </span>
+              <br>
+              <span class='adr'>
+                <span class='street-address'>236 2nd Ave S</span>
+                <br>
+                <span class='locality'>Franklin,</span>
+                <span class='region'>TN</span>&nbsp;
+                <span class='postal-code'>37064</span>
+                <br>
+                <span class='tel'>
+                  <span class='value'>1-844-LEANKIT</span>
+                </span>
+                <br>
+                <span class='tel'>
+                  <span class='type'>
+                    <strong>Support:</strong>&nbsp;
+                  </span>
+                  <span class='value'>(615) 219-7424</span>
+                </span>
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="global-footer__colophon">
+          <a href="https://app-eu.onetrust.com/app/#/webform/722e3c00-70f6-425c-b619-f0a700b4ce7f" target="_blank">All Data Subject Access Requests (DSARs) must be submitted through the Planview DSAR portal located here</a>.
+        </div>
+        <div class='global-footer__colophon'>
+          <span>Copyright &copy; {{ "now"|date("Y") }} Planview, Inc. All Rights Reserved.</span>
+          <div class='global-footer__link-map__list'>
+            <ul>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View Subscription Agreement Page' href='https://www.planview.com/legal/agreements/' target="_blank">Subscription Agreement</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View Privacy Policy Page' href='/privacy/'>Privacy Policy</a>
+              </li>
+              <li>
+                <a class='js-tracked-event' data-event-location='Footer' data-event-target='Text' data-event-title='View Refund Policy Page' href='/refund-policy/'>Refund Policy</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  {% endblock %}
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="{{ conf.cdnBaseUrl }}/assets/vendor/jquery/jquery.1.11.2.min.js">\x3C/script>')</script>
+  {% block munchkinScript%}
+    {% if not currentUser or not currentUser.can('accessCp') %}
+      <script>
+        $.ajax({
+          url: '//munchkin.marketo.net/munchkin.js',
+          dataType: 'script',
+          cache: true,
+          success: function() {
+            Munchkin.init('456-QCH-520');
+          }
+        });
+      </script>
+    {% endif %}
+  {% endblock %}
+  <script src="{{ conf.cdnBaseUrl }}/assets/build/js/all.min.{{ conf.jsVersion }}.js"></script>
+  <script src="{{ conf.cdnBaseUrl }}/assets/build/js/cl.min.{{ conf.jsVersion }}.js"></script>
+
+  <!--[if lt IE 9]>
+    <script src="{{ conf.cdnBaseUrl }}/assets/vendor/selectivizr/selectivizr.js"></script>
+    <script src="{{ conf.cdnBaseUrl }}/assets/vendor/respond/respond.min.js"></script>
+  <![endif]-->
+
+  {{ getFootHtml() }}
+</body>
+</html>
+{% endspaceless %}

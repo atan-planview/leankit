@@ -1,0 +1,7 @@
+@include component('product-hero') {
+  margin-bottom: ms(6);
+
+  @include medium-desktop {
+    margin-bottom: ms(8);
+  }
+}

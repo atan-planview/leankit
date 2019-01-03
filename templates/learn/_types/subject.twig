@@ -1,0 +1,172 @@
+{% extends '_layout' %}
+
+{% if
+  (
+    entry.uri == 'learn/agile'
+    or entry.uri == 'learn/lean'
+    or entry.uri == 'learn/project-management'
+  )
+  and not craft.request.isLivePreview()
+%}
+  {% redirect 'learn/kanban' %}
+{% endif %}
+
+{% set bodyClass = 'page page-parent page-template page-template-page-learning-center page-template-page-learning-center-php leankit-learn' %}
+{% set feeds = [
+  {
+    'title': "Learning Center Feed | #{siteName}",
+    'uri': 'learn/feed/',
+    'rel': 'home'
+  }
+] %}
+
+{% set myCss %}
+  .page-template-page-learning-center-php article header {
+    background-image: url("{{ entry.heroImage.first().getUrl({width: 800}) }}");
+  }
+  @media (min-width: 992px) {
+    .page-template-page-learning-center-php article header {
+      background-image: url("{{ entry.heroImage.first().getUrl({width: 1600}) }}");
+    }
+  }
+{% endset %}
+{% includeCss myCss %}
+
+{% block content %}
+
+  <main>
+
+    <article class="page type-page status-publish hentry">
+
+      <header>
+        <div class="container">
+          <h1>{{ entry.title }}</h1>
+          <p>{{ entry.subhead }}</p>
+        </div>
+      </header>{# /.entry-header #}
+
+      <div class='module'>
+        <div class='learning-center-main-content__container global-content'>
+
+          <div class="featured-content container">
+
+            {% for course in entry.getChildren().type('course').limit(3) %}
+
+              <div class="col-md-4 featured-section">
+                <div class="well">
+                  <div class="category_badge">
+                    <a href="{{ course.url }}">
+                      {% set transformedImages = craft.imager.transformImage(
+                        course.icon.first(),
+                        [
+                          { width: 212 },
+                          { width: 424 }
+                        ]
+                      ) %}
+                      <img
+                        src="{{ transformedImages[0].url }}"
+                        srcset="{{ craft.imager.srcset(transformedImages) }}"
+                        sizes="100vw"
+                        height="{{ transformedImages[0].height }}"
+                        width="{{ transformedImages[0].width }}"
+                        alt="{{ course.title }}"
+                      >
+                    </a>
+                  </div>
+                  <h1>
+                    <a href="{{ course.url }}">{{ course.title }}</a>
+                  </h1>
+                  <p class="featured-short-description">{{ course.shortDescription|striptags('<strong><b><u><em><i>')|raw }}</p>
+
+                  <div class="posts">
+                    <h4>Top Links:</h4>
+                    <ul>
+                      {% for topLink in course.getChildren().limit(3) %}
+                        <li>
+                          {% if topLink.type == 'link' %}
+                            <a
+                              href="{{ topLink.lcLink.url }}"
+                              {% if topLink.lcLink.target is not empty %}
+                                target="{{ topLink.lcLink.target }}"
+                              {% endif %}
+                            >{{ topLink.title }}</a>
+                          {% else %}
+                            <a href="{{ topLink.url }}">{{ topLink.title }}</a>
+                          {% endif %}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="cta">
+                    <a class="btn btn-info btn-block btn-lg" href="{{ course.url }}">
+                      Explore <em>{{ course.title }}</em>
+                    </a>
+                  </div>
+                </div>
+              </div>{# /.featured-section #}
+
+            {% endfor %}
+
+          </div>{# /.featured-content #}
+
+          <div class="entry-content container fold-content">
+            <div class="col-md-8 resource-main">
+
+              {% for ebook in entry.ebookCta %}
+
+                <aside class="ebook-cta">
+                  <div class="row">
+                    <div class="ebook-cta__image">
+                      <a href="{{ ebook.cta.url }}">
+                        {% set transformedImages = craft.imager.transformImage(
+                          ebook.illustration.first(),
+                          [
+                            { width: 255 },
+                            { width: 510 }
+                          ]
+                        ) %}
+                        <img
+                          src="{{ transformedImages[0].url }}"
+                          srcset="{{ craft.imager.srcset(transformedImages) }}"
+                          sizes="100vw"
+                          width="{{ transformedImages[0].width }}"
+                          alt="{{ ebook.title }}"
+                        >
+                      </a>
+                    </div>
+                    <div class="ebook-cta__copy">
+
+                      <div>
+                        <a href="{{ ebook.cta.url }}">
+                          {% if ebook.prePostTitle.position == 'pre' %}
+                            <span class="aside-byline">{{ ebook.prePostTitle.text }}</span>
+                          {% endif %}
+                          <span class="aside-title">{{ ebook.title }}</span>
+                          {% if ebook.prePostTitle.position == 'post' %}
+                            <span class="aside-byline">{{ ebook.prePostTitle.text }}</span>
+                          {% endif %}
+                        </a>
+                      </div>
+                      <p class="aside-description">{{ ebook.body|striptags('<strong><b><u><em><i><a>')|raw  }}</p>
+                      <a href="{{ ebook.cta.url }}" class="cta-link">
+                        {{ ebook.cta.text }}
+                      </a>
+                    </div>
+                  </div>
+                </aside>
+
+              {% endfor %}
+
+            </div>{# /.resource-main #}
+
+            {% include 'learn/_sidebar' %}
+
+          </div>{# /.entry-content #}
+
+        </div>{# /.learning-center-main-content__container #}
+      </div>{# /.module #}
+    </article>
+
+  </main>{# /main #}
+
+{% endblock content %}

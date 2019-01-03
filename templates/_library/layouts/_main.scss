@@ -1,0 +1,16 @@
+@include component('main') {
+  margin-bottom: ms(10);
+  margin-top: ms(11);
+
+  @include small-desktop {
+    margin-top: ms(11);
+  }
+
+  @include modifier('flush-bottom') {
+    margin-bottom: 0;
+  }
+
+  @include modifier('flush-top') {
+    margin-top: 0;
+  }
+}

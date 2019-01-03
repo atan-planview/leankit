@@ -1,0 +1,14 @@
+{
+  "totalReviews": "84",
+  "averageRating": "4.5",
+  "ratings": [
+    {
+      "rating": "5",
+      "reviews": "44"
+    },
+    {
+      "rating": "4",
+      "reviews": "40"
+    }
+  ]
+}

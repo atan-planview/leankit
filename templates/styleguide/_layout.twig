@@ -1,0 +1,87 @@
+{% spaceless %}
+
+{% set conf = craft.config %}
+{% set entry = entry is defined ? entry : conf.entryDefaults %}
+{% set sharing = sharing is defined ? sharing : {} %}
+
+
+{# Require login if in production. #}
+{% if
+  conf.env == 'prod' and
+  (not currentUser or not currentUser.can('accessCp'))
+%}
+  {% exit 404 %}
+{% endif %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3" name="viewport">
+
+  {% set seomaticTemplatePath = '_seo_meta' %} {% hook 'seomaticRender' %}
+
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ conf.cdnBaseUrl }}/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="{{ conf.cdnBaseUrl }}/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="{{ conf.cdnBaseUrl }}/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="{{ conf.cdnBaseUrl }}/manifest.json">
+  <link rel="mask-icon" href="{{ conf.cdnBaseUrl }}/safari-pinned-tab.svg" color="#96C93D">
+  <meta name="theme-color" content="#272b24">
+
+  <link href="https://cloud.typography.com/6972354/770768/css/fonts.css" rel="stylesheet" type="text/css">
+  <link href="{{ conf.cdnBaseUrl }}/assets/build/css/all.min.{{ conf.cssVersion }}.css" rel="stylesheet" type="text/css">
+  {{ getHeadHtml() }}
+</head>
+
+<body>
+  <div class="o-container">
+    <header>
+      <h1 class="h-alpha">The Style Guide</h1>
+    </header>
+  </div>{# /.o-container #}
+
+  <div class="o-container">
+    <nav>
+      <ul class="o-hnav">
+        <li class="o-hnav__item">
+          <a href="/styleguide/" class="o-hnav__link">Home</a>
+        </li>
+        <li class="o-hnav__item">
+          <a href="/styleguide/elements/" class="o-hnav__link">Elements</a>
+        </li>
+        <li class="o-hnav__item">
+          <a href="/styleguide/components/" class="o-hnav__link">Components</a>
+        </li>
+        <li class="o-hnav__item">
+          <a href="/styleguide/compositions/" class="o-hnav__link">Compositions</a>
+        </li>
+        <li class="o-hnav__item">
+          <a href="/styleguide/layouts/" class="o-hnav__link">Layouts</a>
+        </li>
+        <li class="o-hnav__item">
+          <a href="/styleguide/typography/" class="o-hnav__link">Typography</a>
+        </li>
+      </ul>
+    </nav>
+  </div>{# /.o-container #}
+
+  <main>
+    {{ block('content') }}
+  </main>
+
+  <div class="o-container">
+    <footer>
+      &copy; {{ "now"|date("Y") }} LeanKit Inc. All rights reserved.
+    </footer>
+  </div>{# /.o-container #}
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="{{ conf.cdnBaseUrl }}/assets/vendor/jquery/jquery.1.11.2.min.js">\x3C/script>')</script>
+  <script src="{{ conf.cdnBaseUrl }}/assets/build/js/all.min.{{ conf.jsVersion }}.js"></script>
+  <script src="{{ conf.cdnBaseUrl }}/assets/build/js/cl.min.{{ conf.jsVersion }}.js"></script>
+  {{ getFootHtml() }}
+</body>
+
+</html>
+{% endspaceless %}

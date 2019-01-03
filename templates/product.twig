@@ -1,0 +1,143 @@
+{% extends '_layout' %}
+
+{% set bodyClass = 'product product_index' %}
+
+{% set myCss %}
+  .try-leankit-cta__button .lite-edition__cta {
+    width: auto;
+  }
+  .try-leankit-cta__button .lite-edition__cta:focus, .try-leankit-cta__button .lite-edition__cta:hover {
+    border: 1px solid #faa331;
+  }
+{% endset %}
+{% includeCss myCss %}
+
+{% includeJsFile craft.config.cdnBaseUrl ~ '/assets/build/js/vimeo.ga.multi.min.' ~ craft.config.jsVersion ~ '.js' %}
+{% includeJsFile craft.config.cdnBaseUrl ~ '/assets/build/js/product-page-autoplay.min.' ~ craft.config.jsVersion ~ '.js' %}
+
+{% block content %}
+  <main role="main">
+    <div class='global-leaderboard-background product-leaderboard-background'>
+      <section class='product-section-navigation global-section-navigation'>
+        <div class='module'>
+          <div class='product-section-navigation__container'>
+            <div class='product-section-navigation__title'>
+              <h2>Product</h2>
+            </div>
+            <div class='product-section-navigation__links'>
+              <ul>
+                <li><a href="/product/">Overview</a></li>
+                <li><a href="/platform/">Platform</a></li>
+                <li><a href="/platform/integrate/">Integrations</a></li>
+                <li><a href="/product-demo/">Demo</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class='platform-leaderboard global-leaderboard platform-leaderboard--product'>
+        <div class='module'>
+          <div class='platform-leaderboard__container global-leaderboard__container'>
+            <h1>Optimize Your Business Flow to Deliver More Value</h1>
+          </div>
+          <div class='platform-leaderboard__video'>
+            <div class='platform-leaderboard__video__play-cta'>
+              <button>
+                <span class='play-icon'>
+                  <svg enable-background='new 0 0 32.7 48.2' id='Layer_1' version='1.1' viewBox='0 0 32.7 48.2' x='0px' xml:space='preserve' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns='http://www.w3.org/2000/svg' y='0px'>
+                    <path d='M0,46.4V1.8c0-1.5,1.7-2.3,2.9-1.4L32,22.7c0.9,0.7,0.9,2.1,0,2.9L2.9,47.8C1.7,48.8,0,47.9,0,46.4z'>
+                  </svg>
+                </span>
+                <span>Watch a Product Overview</span>
+              </button>
+            </div>
+            <div class='platform-leaderboard__video__iframe' style='display: block; visibility: hidden;'>
+              <iframe allowfullscreen='' class='vimeo-player' data-progress='true' data-seek='true' frameborder='0' height='281' id='vim1' mozallowfullscreen='' src='https://player.vimeo.com/video/221503499?api=1&amp;player_id=vim1' webkitallowfullscreen='' width='500'></iframe>
+              <div class='platform-leaderboard__video__demo-cta'>
+                Ready to check out a
+                <a href='/product-demo/'>full demo?</a>
+              </div>
+            </div>
+            <div class='platform-leaderboard__video__demo-cta'>
+              Or ready to check out a
+              <a href='/product-demo/'>full demo?</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <section class='platform-value-prop platform-value-prop--picture'>
+      <div class='module'>
+        <div class='platform-value-prop__container'>
+          <h3>See The Big Picture</h3>
+          <p>
+            LeanKit supports the implementation of Lean principles, practices, and work methodologies across all business functions, to help organizations create an environment of continuous improvement and innovation to deliver customer value, faster.  By visualizing your work as it flows through your process, LeanKit provides a big-picture understanding of the work that helps teams work together more effectively.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class='platform-value-prop platform-value-prop--evolve'>
+      <div class='module'>
+        <div class='platform-value-prop__container'>
+          <h3>Evolve As You Go</h3>
+          <p>
+            See how work flows through your team’s process using virtual Kanban boards. LeanKit lets you define and evolve your process without restricting the way you work. Use vertical lanes to visualize each step in your flow and horizontal swimlanes to represent parallel processes on the same board. As your process changes, easily modify your board layout to ensure that it accurately reflects the steps your team follows to get work done.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class='platform-value-prop platform-value-prop--context'>
+      <div class='module'>
+        <div class='platform-value-prop__container'>
+          <h3>Work in Context</h3>
+          <p>
+            LeanKit provides a go-to place that helps teams stay connected and informed, regardless of whether you’re in the same room or geographically distributed. Reduce the risk of misunderstandings, oversights, and handoff delays with built-in collaboration features that make it easy to ask questions and share status updates. Many teams also display their LeanKit boards on a touchscreen monitor to collaborate on work planning and execution.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class='platform-value-prop platform-value-prop--insight'>
+      <div class='module'>
+        <div class='platform-value-prop__container'>
+          <h3>Business in Sight</h3>
+          <p>
+            Powerful reporting and analytics help you identify opportunities for continuous improvement. Measure the effectiveness of your process using insightful metrics such as flow, quality, throughput and lead time. Understand who did what and when with audit trail details. Both team level and enterprise roll-up reporting is available, with the option to combine LeanKit data with other company data to support custom reporting needs.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class='platform-value-prop platform-value-prop--aligned'>
+      <div class='module'>
+        <div class='platform-value-prop__container'>
+          <h3>Stay Transparent & Aligned</h3>
+          <p>
+            Coordinate the flow of work within and across connected teams to improve the delivery of customer value. LeanKit gives all team members and project stakeholders a shared understanding of the work, providing the right level of visibility and detail to track progress and identify potential problems --even when a project spans multiple teams and boards.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class='platform-value-prop platform-value-prop--anytime'>
+      <div class='module'>
+        <div class='platform-value-prop__container'>
+          <h3>Anytime, Anywhere</h3>
+          <p>
+            Status updates and new information can happen at any time, making it crucial to stay informed and immediately communicate changes to your team. LeanKit can be easily accessed anytime, anywhere from the browser on your mobile device, letting you check status, make updates and add comments while you’re on the go. Any changes made from your mobile device are instantly visible to the entire team.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class='platform-value-prop platform-value-prop--demo-cta'>
+      <div class='module'>
+        <h4>Learn more about LeanKit<br> and get your questions answered</h4>
+        <a href='/product-demo/'>Watch the full demo</a>
+        <br><br>
+        <div class="try-leankit-cta__button">
+          <a class='lite-edition__cta' href='/compare-editions/' onclick="ga('send', 'event', 'In Page', 'From Pricing', 'In-Page-Compare-Editions-CTA - Bottom Button');" title='Compare Editions'>
+            <span class='trial'>View LeanKit's Full Feature List</span>
+            <small>Compare all Editions in detail</small>
+          </a>{# .lite-edition__cta #}
+        </div>{# .try-leankit-cta__button #}
+      </div>
+    </section>
+  </main>
+{% endblock content %}

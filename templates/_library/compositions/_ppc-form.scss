@@ -1,0 +1,68 @@
+@include component('ppc-form') {
+  background: #dfe0de;
+  margin-bottom: ms(4);
+  padding: 1.5em;
+
+  @include modifier('center') {
+    max-width: 470px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @include modifier('left') {
+    width: 100%;
+
+    @include small-tablet {
+      float: left;
+      margin-bottom: ms();
+      margin-right: ms();
+      min-width: 270px;
+      width: 30%;
+    }
+  }
+
+  @include modifier('right') {
+    width: 100%;
+
+    @include small-tablet {
+      float: right;
+      margin-bottom: ms();
+      margin-left: ms();
+      min-width: 270px;
+      width: 30%;
+    }
+  }
+
+  /**
+   * This is the output from legacy _ppc.scss to account for
+   * a mixin we don't have access to here. Needs to be converted to
+   * our standard button, but this is FSGD.
+   */
+  input[type="submit"] {
+    -webkit-appearance:none;-moz-appearance:none;appearance:none;-webkit-font-smoothing:antialiased;background-color:#96c93d;border-radius:3px;border:1px solid #96c93d;color:#445a1b;text-transform:uppercase;cursor:pointer;display:inline-block;font-size:.75019em;font-weight:500;line-height:1;padding:1.5em 2.25em;text-decoration:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;vertical-align:middle;white-space:nowrap;-webkit-transition:all .1s linear;transition:all .1s linear;letter-spacing:1px;font-size:.8em!important;display:block;width:100%!important
+  }
+
+  label {
+    font-size: .8em !important;
+  }
+
+  @include element('disclaimer') {
+    &,
+    .s-content & {
+      font-size: 8px;
+      margin-bottom: 8.4px;
+      margin-top: 3em;
+    }
+  }
+
+  @include element('heading') {
+    &,
+    .s-content & {
+      font-size: ms(3);
+      margin-top: 0;
+      text-transform: uppercase;
+      margin-bottom: ms(5);
+      font-weight: 400;
+    }
+  }
+}

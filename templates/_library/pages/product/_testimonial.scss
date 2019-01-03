@@ -1,0 +1,9 @@
+@include component('product-testimonial') {
+  margin-bottom: ms(6);
+  margin-top: ms(10);
+
+  @include tablet {
+    margin-bottom: ms(8);
+    margin-top: 0;
+  }
+}

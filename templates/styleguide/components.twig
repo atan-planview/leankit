@@ -1,0 +1,31 @@
+{% extends 'styleguide/_layout' %}
+
+{% set seomaticMeta = seomaticMeta | merge({
+  'seoTitle': 'Components',
+  'robots': 'noindex, nofollow',
+}) %}
+
+{% import 'styleguide/_macros' as sg %}
+
+{% block content %}
+  <div class="o-container">
+    <h2 class="h-beta">Components</h2>
+  </div>{# /.o-container #}
+
+  {{ sg.example('components/hero', 'Hero (Image Only)', {
+    image: '/assets/images/product/hero.svg'
+  }) }}
+
+  {{ sg.example('components/hero', 'Hero (Image Only, Image Top Aligned)', {
+    image: '/assets/images/product/hero.svg',
+    modifiers: [
+      'image-top'
+    ]
+  }) }}
+
+  {{ sg.example('components/hero', 'Hero (with Text)', {
+    image: '/uploads/images/hero/home_hero_row_together.jpg',
+    heading: 'Kanban Learning Center',
+    subhead: 'Your go-to resource for learning, adopting, and practicing Kanban'
+  }) }}
+{% endblock content %}

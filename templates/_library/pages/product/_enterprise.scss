@@ -1,0 +1,123 @@
+@include component('product-enterprise') {
+  background-color: #272B24;
+  color: white;
+
+  @include element('btn-int') {
+    margin-bottom: ms();
+    width: 100%;
+
+    @include large-mobile {
+      margin-bottom: ms(6);
+    }
+
+    @include large-desktop {
+      margin-bottom: 75px;
+    }
+
+    @include x-large-desktop {
+      margin-bottom: 87px;
+    }
+  }
+
+  @include element('btn-plt') {
+    width: 100%;
+  }
+
+  @include element('btn-wrapper') {
+    display: block;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @include element('copy') {
+    font-size: ms(2);
+    line-height: 1.6;
+    margin-bottom: ms(6);
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+
+    @include large-desktop {
+      margin-bottom: 70px;
+      width: 760px;
+    }
+
+    @include x-large-desktop {
+      margin-bottom: 94px;
+    }
+  }
+
+  @include element('heading') {
+    font-size: ms(6);
+    line-height: 1.125;
+    margin-bottom: 110px;
+    text-align: center;
+
+    @include large-mobile {
+      margin-bottom: 150px;
+      padding-top: ms();
+    }
+
+    @include small-tablet {
+      font-size: ms(7);
+      margin-bottom: 180px;
+      padding-top: ms(4);
+    }
+
+    @include tablet {
+      font-size: ms(8);
+      margin-bottom: 250px;
+      padding-top: ms(8);
+    }
+
+    @include medium-desktop {
+      font-size: ms(10);
+      margin-bottom: 320px;
+      padding-top: ms(13);
+    }
+
+    @include large-desktop {
+      font-size: ms(8);
+      margin-bottom: 48px;
+      padding-top: ms(15);
+    }
+
+  }
+
+  @include element('inner') {
+    background-position: center 21.5%;
+    background-repeat: no-repeat;
+    max-width: 320px;
+    margin: 0 auto;
+    padding: ms(12) 0;
+
+    @include large-mobile {
+      background-position: center top;
+      padding: ms(2) 0 ms(6);
+      max-width: $large-mobile;
+    }
+
+    @include small-tablet {
+      max-width: $small-tablet;
+    }
+
+    @include tablet {
+      max-width: $tablet;
+    }
+
+    @include medium-desktop {
+      max-width: $medium-desktop;
+    }
+
+    @include large-desktop {
+      height: 652px;
+      max-width: $large-desktop;
+    }
+
+    @include x-large-desktop {
+      height: 696px;
+      max-width: $x-large-desktop;
+    }
+  }
+}

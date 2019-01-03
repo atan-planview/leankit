@@ -1,0 +1,65 @@
+{% extends '_layout' %}
+
+{% set bodyClass = 'compare-editions compare-editions_index' %}
+{% block pageStyle %}
+<link href="{{ conf.cdnBaseUrl }}/assets/build/css/compare-editions.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+  <main role="main">
+    <section class='compare-editions-leaderboard global-leaderboard'>
+      <div class='module'>
+        <div class='compare-editions-leaderboard__container global-leaderboard__container'>
+          <h1>{{ entry.heading|trim|striptags('<strong><b><u><em><i>')|raw }}</h1>
+          <p>{{ entry.subhead|striptags('<strong><b><u><em><i><a>')|raw }}</p>
+        </div>
+      </div>
+    </section>
+    {% set blockData = entry.editionBody %}
+    <section class='compare-editions-tables'>
+      <div class='module'>
+        <div class='editions-matrix global-content table-responsive'>
+          {% for block in blockData %}
+            {% if block.type == 'feature' %}
+              <ul class="edition-table table-heading">
+                <li class="section-title"><span class="glyphicon {{block.icon}}"></span> {{block.featureTitle}}</li>
+                <li class='edition'><small>Leankit for</small> {{block.edition1}}</li>
+                <li class='edition'><small>Leankit for</small> {{block.edition2}}</li>
+                <li class='edition'><small>Leankit for</small> {{block.edition3}}</li>
+              </ul>
+            {% endif %}
+            {% if block.type == 'featureItem' %}
+              <ul class="edition-table table-body">
+                <li class='feature'>
+                  {{block.FeatureName}}
+                  <span class='more-info-tooltip'>
+                    <span class='more-info-tooltip__tip'>{{block.popupDescription}}</span>
+                  </span>
+                </li>
+                <li class='check'>{{block.leankitTeams | raw}}</li>
+                <li class='check'>{{block.leankitScaledTeams | raw}}</li>
+                <li class='check'>{{block.leankitEnterprise | raw}}</li>
+              </ul>
+            {% endif %}
+          {% endfor %}
+
+        </div>
+      </div>
+    </section>
+    <section class='try-leankit-cta'>
+      <div class='module'>
+        <div class='try-leankit-cta__button'>
+          <a class='try-leankit__cta' href='https://leankit.com/get-leankit/' title='Get LeanKit'>
+            <span class='trial'>Try LeanKit free for 30 days</span>
+            <small>No credit card or obligation required</small>
+          </a>
+        </div>
+        <div class='try-leankit__info'>
+          <p>
+            Purchase LeanKit within the application anytime during your 30-day trial.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock content %}

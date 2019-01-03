@@ -1,0 +1,17 @@
+/**
+ * Styles the Matrix block "Multi-Image"
+ */
+
+@include component('multi-image') {
+  @include element('item') {
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+      &,
+      .s-content & {
+        color: black;
+      }
+    }
+  }
+}

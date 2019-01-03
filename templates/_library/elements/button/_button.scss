@@ -1,0 +1,183 @@
+@include component('button') {
+  $box-shadow-depth: ms(-12);
+  $box-shadow-depth--small: ms(-14);
+
+  @mixin invalid($bg-color) {
+    &,
+    &:focus,
+    &:hover,
+    &:active {
+      background: $bg-color;
+      border-width: 0;
+      box-shadow: none;
+      color: white;
+      margin-top: 0;
+      opacity: 1;
+      padding-bottom: ms(-1);
+    }
+
+    &.c-button--small,
+    &:focus.c-button--small,
+    &:hover.c-button--small,
+    &:active.c-button--small {
+      padding-bottom: ms(-2);
+    }
+  }
+
+  background-color: $medium-gray;
+  border-color: transparent;
+  border-radius: 5px;
+  box-shadow: 0 -#{$box-shadow-depth} 0 $dark-gray inset;
+  display: inline-block;
+  font-family: $gotham;
+  font-size: ms(-1);
+  font-weight: $medium-weight;
+  letter-spacing: 2px;
+  line-height: 1;
+  padding: ms(-1) ms(7) (ms(-2) + $box-shadow-depth);
+  text-align: center;
+  text-transform: uppercase;
+
+  &,
+  &:focus,
+  &:hover,
+  &:active {
+    border-width: 0;
+    color: white;
+    opacity: 1;
+  }
+
+  &:focus,
+  &:hover {
+    background-color: #7F7F7F;
+    box-shadow: 0 -#{$box-shadow-depth} 0 $darker-gray inset;
+    cursor: pointer;
+  }
+
+  &:active {
+    background-color: $dark-gray;
+    box-shadow: none;
+    margin-top: $box-shadow-depth;
+    padding-bottom: ms(-2);
+  }
+
+  @include state('disabled') {
+    &,
+    &:focus,
+    &:hover,
+    &:active,
+    &.c-button--small,
+    &:focus.c-button--small,
+    &:hover.c-button--small,
+    &:active.c-button--small {
+      background: #CCCCCC;
+      border-width: 0;
+      box-shadow: none;
+      color: #7F7F7F;
+      cursor: not-allowed;
+      margin-top: 0;
+      opacity: 1;
+      padding-bottom: ms(-1);
+    }
+
+    &.c-button--small,
+    &:focus.c-button--small,
+    &:hover.c-button--small,
+    &:active.c-button--small {
+      padding-bottom: ms(-2);
+    }
+  }
+
+  @include state('invalid') {
+    @include invalid(#B3B3B3);
+  }
+
+  @include modifier('fluid') {
+    text-align: center;
+    width: 100%;
+  }
+
+  @include modifier('highlight') {
+    background-color: #FE9E0A;
+    box-shadow: 0 -#{$box-shadow-depth} 0 #B16E06 inset;
+
+    &:focus,
+    &:hover {
+      background-color: #D88608;
+      box-shadow: 0 -#{$box-shadow-depth} 0 #8B5605 inset;
+    }
+
+    &:active {
+      background-color: #B16E06;
+      box-shadow: none;
+    }
+
+    &.c-button--small {
+      box-shadow: 0 -#{$box-shadow-depth--small} 0 #B16E06 inset;
+    }
+
+    &:focus.c-button--small,
+    &:hover.c-button--small {
+      box-shadow: 0 -#{$box-shadow-depth--small} 0 #8B5605 inset;
+    }
+
+    &:active.c-button--small {
+      box-shadow: none;
+    }
+
+    @include state('invalid') {
+      @include invalid(#FEB647);
+    }
+  }
+
+  @include modifier('primary') {
+    background-color: #96C93D;
+    box-shadow: 0 -#{$box-shadow-depth} 0 #688C2A inset;
+
+    &:focus,
+    &:hover {
+      background-color: #7FAB33;
+      box-shadow: 0 -#{$box-shadow-depth} 0 #526E21 inset;
+    }
+
+    &:active {
+      background-color: #688C2A;
+      box-shadow: none;
+    }
+
+    &.c-button--small {
+      box-shadow: 0 -#{$box-shadow-depth--small} 0 #688C2A inset;
+    }
+
+    &:focus.c-button--small,
+    &:hover.c-button--small {
+      box-shadow: 0 -#{$box-shadow-depth--small} 0 #526E21 inset;
+    }
+
+    &:active.c-button--small {
+      box-shadow: none;
+    }
+
+    @include state('invalid') {
+      @include invalid(#A6D25C);
+    }
+  }
+
+  @include modifier('small') {
+    box-shadow: 0 -#{$box-shadow-depth--small} 0 $dark-gray inset;
+    font-size: ms(-2);
+    letter-spacing: 1px;
+    padding: ms(-2) ms(-1) (ms(-3) + $box-shadow-depth--small);
+
+    &:focus,
+    &:hover {
+      box-shadow: 0 -#{$box-shadow-depth--small} 0 $darker-gray inset;
+    }
+
+    &:active {
+      box-shadow: none;
+      margin-top: $box-shadow-depth--small;
+      padding-bottom: ms(-3);
+    }
+  }
+}

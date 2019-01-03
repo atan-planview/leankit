@@ -1,0 +1,27 @@
+<div id="resource-sidebar" class="col-lg-4 col-md-4 resource-sidebar" role="complementary">
+  {% if craft.request.isLivePreview %}
+    {% set linkBlockData = entry.sidebarLinks %}
+  {% else %}
+    {% set linkBlockData = entry.sidebarLinks.find({
+    with: ['link:item']
+  }) %}
+  {% endif %}
+
+  {% for linkBlock in linkBlockData %}
+    <aside>
+      <h4>{{ linkBlock.title }}</h4>
+      <div>
+        <ul>
+          {% for block in linkBlock.links %}
+            {% if block.type == "link" %}
+              <li>
+                <a href="{{ block.item.url }}">{{ block.item.text }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </aside>
+  {% endfor %}
+</div>{# /.resource-sidebar #}
+

@@ -1,0 +1,29 @@
+{% extends '_layout' %}
+
+{% set bodyClass = 'about about_index' %}
+{% block pageStyle %}
+<link href="{{ conf.cdnBaseUrl }}/assets/build/css/free-trial.css?v=2" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+  <main role="main">
+    <section class="form-heading">
+      <div class="module">
+        <h1>Try Leankit Free for 30 Days</h1>
+        <h2>No Obligation or Credit Card Requested.</h2>
+      </div>
+    </section>
+    <section class="form-content">
+      <div class="module">
+        <div class="text-content">
+          <p>Purchase LeanKit within the application anytime during your trial.</p>
+          <img class="img-thumb" src="{{ craft.config.cdnBaseUrl }}/assets/images/LK_Showcase_main.png"></img>
+        </div>
+        <div id="formContainer">
+          <h2>Start Your Trial</h2>
+          {% include '_forms/63.twig' only %}
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock content %}
+

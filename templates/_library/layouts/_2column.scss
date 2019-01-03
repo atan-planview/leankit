@@ -1,0 +1,43 @@
+@include object('2column') {
+  $gutter-width: ms(2);
+  $sidebar-width: 250px;
+  $container-max-content-width: 800px + $sidebar-width;
+
+  // For min breakpoint at which padded container's content is at max width
+  $container-max-box-width: round($container-max-content-width / ((100 - (2 * $container-padding--x-large-desktop))/ 100%));
+  // For side padding applied to container's max box width.
+  $container-padding--max: ($container-max-box-width - $container-max-content-width) / 2;
+
+  *zoom: 1;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: $container-max-box-width;
+  padding-left: $container-padding;
+  padding-right: $container-padding;
+  transition: padding 0.25s $timing-default;
+
+  @include tablet {
+    display: flex;
+  }
+
+  @include max-padded-container {
+    padding-left: $container-padding--max;
+    padding-right: $container-padding--max;
+  }
+
+  @include element('main') {
+    @include tablet {
+
+    }
+  }
+
+  @include element('sidebar') {
+    margin-bottom: ms(2);
+
+    @include tablet {
+      flex: 0 0 $sidebar-width;
+      margin-bottom: 0;
+      margin-right: $gutter-width;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{% macro example(name, heading, vars) %}
+  <div class="o-island c-sg-example">
+    <div class="c-sg-example__heading">{{ heading }}</div>
+
+    <div class="c-sg-example__element">
+      {% if vars is not empty %}
+        {% include '_library/' ~ name with vars only %}
+      {% else %}
+        {% include '_library/' ~ name %}
+      {% endif %}
+    </div>{# /.c-sg-example__element #}
+
+    <pre class="c-sg-example__code">&#123;% include '_library/{{ name }}'{% if vars is not empty %} with {{
+      vars
+      | json_encode(constant('JSON_PRETTY_PRINT') b-or constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE'))
+      | replace("/(['])/", "\\'")
+      | replace('/"(.+)":/', '$1:')
+      | replace('/"(.+)"/', "'$1'")
+      | replace('/(\\\\["])/', '"')
+    }}{% endif %} %&#125;</pre>
+  </div>{# /.c-sg-example #}
+{% endmacro %}

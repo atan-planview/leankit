@@ -1,0 +1,21 @@
+/*
+ * A vertical list of navigation elements (e.g. nav menu).
+ */
+
+@include object('vnav') {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  @include element('item') {
+    display: block;
+    margin-bottom: ms(-4);
+    zoom: 1;
+  }
+
+  @include element('link') {
+    display: block;
+    line-height: 1.3;
+    zoom: 1;
+  }
+}

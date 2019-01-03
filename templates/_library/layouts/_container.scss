@@ -1,0 +1,88 @@
+/*
+ * Page container, may not apply to wider elements like
+ * the hero banner.
+ */
+
+@include object('container') {
+  *zoom: 1;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: $container-max-box-width;
+  padding-left: $container-padding;
+  padding-right: $container-padding;
+  transition: padding 0.25s $timing-default;
+
+  @include tablet {
+    padding-left: $container-padding--tablet;
+    padding-right: $container-padding--tablet;
+  }
+
+  @include small-desktop {
+    padding-left: $container-padding--small-desktop;
+    padding-right: $container-padding--small-desktop;
+  }
+
+  @include medium-desktop {
+    padding-left: $container-padding--medium-desktop;
+    padding-right: $container-padding--medium-desktop;
+  }
+
+  @include large-desktop {
+    padding-left: $container-padding--large-desktop;
+    padding-right: $container-padding--large-desktop;
+  }
+
+  @include x-large-desktop {
+    padding-left: $container-padding--x-large-desktop;
+    padding-right: $container-padding--x-large-desktop;
+  }
+
+  @include max-padded-container {
+    padding-left: $container-padding--max;
+    padding-right: $container-padding--max;
+  }
+
+  @include modifier('narrow') {
+    max-width: $container-max-box-width--narrow;
+
+    @include max-padded-container--narrow {
+      padding-left: $container-padding--max-narrow;
+      padding-right: $container-padding--max-narrow;
+    }
+  }
+
+  @include modifier('wide') {
+    padding-left: 0;
+    padding-right: 0;
+
+    @include small-tablet {
+      padding-left: $container-padding / 3;
+      padding-right: $container-padding / 3;
+    }
+
+    @include tablet {
+      padding-left: $container-padding--tablet / 3;
+      padding-right: $container-padding--tablet / 3;
+    }
+
+    @include small-desktop {
+      padding-left: $container-padding--small-desktop / 3;
+      padding-right: $container-padding--small-desktop / 3;
+    }
+
+    @include medium-desktop {
+      padding-left: $container-padding--medium-desktop / 3;
+      padding-right: $container-padding--medium-desktop / 3;
+    }
+
+    @include large-desktop {
+      padding-left: $container-padding--large-desktop / 3;
+      padding-right: $container-padding--large-desktop / 3;
+    }
+
+    @include x-large-desktop {
+      padding-left: $container-padding--x-large-desktop / 3;
+      padding-right: $container-padding--x-large-desktop / 3;
+    }
+  }
+}

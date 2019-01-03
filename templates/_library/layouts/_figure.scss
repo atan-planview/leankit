@@ -1,0 +1,44 @@
+@include component('figure') {
+  margin: 0;
+  margin-bottom: ms(6);
+
+  @include modifier('center') {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @include modifier('full') {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @include modifier('left') {
+    float: left;
+    margin-bottom: ms();
+    margin-right: ms();
+    min-width: 125px;
+    width: 30%;
+  }
+
+  @include modifier('narrow') {
+    @include small-tablet {
+      max-width: 70%;
+    }
+  }
+
+  @include modifier('right') {
+    float: right;
+    margin-bottom: ms();
+    margin-left: ms();
+    min-width: 125px;
+    width: 30%;
+  }
+
+  @include modifier('top') {
+    margin: 0 auto;
+
+    @include medium-desktop {
+      margin-top: -#{ms(16)};
+    }
+  }
+}

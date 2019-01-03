@@ -1,0 +1,37 @@
+{% extends '_layout' %}
+
+{% set bodyClass = 'fsgd fsgd_index' %}
+
+{% block content %}
+  <main role="main">
+    <section class='global-leaderboard' style='padding-bottom: 2em;'>
+      <div class='module'>
+        <div class='global-leaderboard__container'>
+          <h1>
+            <strong>FSGD:</strong>
+            A LeanKit Way to Work
+          </h1>
+          <p>
+            <strong>
+              <a class='primary-path-cta' href='{{ conf.cdnBaseUrl }}/blog/wp-content/uploads/2015/07/2015.08-FSGD-Webinar1.pdf' onclick="ga('send', 'event', 'In Page', 'From FSGD', 'In-Page-Content-Download - FSGD PDF Button');">Download the PDF</a>
+            </strong>
+            <div style='border: 0; margin-top: 20px; height: 20px;'>
+              <a class='twitter-share-button' data-text='Frequent, Small, Good, Decoupled. FSGD: A LeanKit Way to Work' data-url='https://leankit.com/fsgd/' data-via='leankit' href='https://twitter.com/share'>Tweet</a>
+              <script>
+                !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+              </script>
+            </div>
+          </p>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class='module'>
+        <div style='display: block; text-align: center'>
+          <iframe allowfullscreen='' frameborder='0' height='377' marginheight='0' marginwidth='0' scrolling='no' src='//www.slideshare.net/slideshow/embed_code/key/vHhDhllSE7rTHx' style='border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;' width='600'></iframe>
+        </div>
+      </div>
+      <div style='margin-bottom:3em;'></div>
+    </section>
+  </main>
+{% endblock content %}

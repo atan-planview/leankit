@@ -1,0 +1,170 @@
+{% extends '_layout' %}
+{% import '_macros' as macros %}
+
+{% set bodyClass = 'platform platform_integrate platform_integrate_index' %}
+
+{% includeJsFile craft.config.cdnBaseUrl ~ '/assets/build/js/vimeo.ga.multi.min.' ~ craft.config.jsVersion ~ '.js' %}
+
+{% block content %}
+  <main role="main">
+    <div class='global-leaderboard-background integrations-leaderboard-background'>
+      <section class='product-section-navigation global-section-navigation'>
+        <div class='module'>
+          <div class='product-section-navigation__container'>
+            <div class='product-section-navigation__title'>
+              <h2>Product</h2>
+            </div>
+            <div class='product-section-navigation__links'>
+              <ul>
+                <li><a href="/product/">Overview</a></li>
+                <li><a href="/platform/">Platform</a></li>
+                <li><a href="/platform/integrate/">Integrations</a></li>
+                <li><a href="/product-demo/">Demo</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class='platform-leaderboard platform-leaderboard--integrations global-leaderboard'>
+        <div class='module'>
+          <div class='platform-leaderboard__container'>
+            <div class='platform-leaderboard__heading'>
+              <span class='h1'>
+                {{ entry.heading|trim|striptags('<strong><b><u><em><i>')|raw }}
+              </span>
+              <p>
+                {{ entry.subhead|trim|striptags('<strong><b><u><em><i><a>')|raw }}
+              </p>
+            </div>
+            <div class='platform-leaderboard__video'>
+              <div class="o-video-embed">
+                <iframe allowfullscreen='' class='vimeo-player' data-progress='true' data-seek='true' frameborder='0' id='vim1' mozallowfullscreen='' src='{{ entry.video }}?api=1&amp;player_id=vim1&amp;color=96c93d' webkitallowfullscreen=''></iframe>
+              </div>{# /.o-video-embed #}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class='platform-value-prop integrations-logos'>
+
+      {% for block in entry.integrationsBody %}
+        {% if block.type == "multiImage" %}
+          <div class="module">
+            <div class="c-image-grid c-multi-image">
+              <div class="c-image-grid__inner">
+                {% for row in block.images %}
+                  {% set el = { type: 'div', attr: '' } %}
+                  {% if row.resourceLink is not empty %}
+                    {% set el = {
+                      type: 'a',
+                      attr: "href='#{row.resourceLink.url}'"
+                    } %}
+                  {% endif %}
+                  <{{ el.type }} {{ el.attr|raw }} class="c-image-grid__item c-multi-image__item">
+                    {% include '_library/elements/imgfig' with {
+                        alt: row.altAttr,
+                        caption: row.caption,
+                        centeredCaption: true,
+                        fluid: true,
+                        src: row.image,
+                        title: row.titleAttr,
+                        transform: block.sameAspectRatio ? 'recommendedReading' : null
+                    } %}
+                  </{{ el.type }}>{# /.c-image-grid__item #}
+                {% endfor %}
+              </div>{# /.c-image-grid__inner #}
+            </div>{# /.c-image-grid #}
+          </div>{# /.o-container #}
+        {% elseif block.type == "integrations" %}
+          {% set logoIds = craft.entries.section('integrationLogos').ids() %}
+          {% for category in craft.categories.group('integrations').relatedTo({ sourceElement: logoIds }) %}
+            <div class='module'>
+              <div class='platform-value-prop__container'>
+                <h3>{{ category.title }}</h3>
+                {{ category.shortDescription }}
+              </div>
+              <div class='platform-value-prop__image'>
+                <ul class='category-logos c-integrations-logos'>
+                  {% for logo in craft.entries({
+                    order: 'title',
+                    relatedTo: category,
+                    section: 'integrationLogos'
+                  }) %}
+                    <li class="c-integrations-logos__item">
+                      <span class="c-integrations-logos__logo">
+                        {{ macros.inlineSvg(
+                          logo.integrationLogo[0],
+                          {
+                            attr: {
+                              alt: logo.title,
+                              title: logo.title
+                            },
+                            transform: 'medium'
+                          }
+                        ) }}
+                        <span class="u-visuallyhidden">{{ logo.title }}</span>
+                      </span>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>{# /.module #}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    </section>
+    <section class='platform-value-prop integrations-main-content'>
+      <div class='module'>
+        <div class='platform-value-prop__container'>
+          <p>
+            Optimize your delivery process by creating a single, virtual system that automates work handoffs while letting each team use its tool of choice.  Every team member sees the same information at the same time, enabling you to improve collaboration, remove process waste and reduce delivery delays.
+          </p>
+          <ul class='platform-value-prop__list--check'>
+            <li>Speed up your cycle time by reducing the number of people handoffs.</li>
+            <li>Improve communication between functional teams to overcome silos.</li>
+            <li>Reduce the complexity of delivery processes across multiple teams and tools.</li>
+          </ul>
+          <p>
+            LeanKit’s integrations are powered by Tasktop and provide fully-automated, bi-directional synchronization between LeanKit and a broad range of enterprise applications. Our hub approach makes it easy to create, maintain and monitor your integrations in a single place.
+          </p>
+        </div>
+        <div class='platform-value-prop__image'>
+          <div class='global-testimonial global-testimonial--orange'>
+            <div class='global-testimonial__container'>
+              <div class='global-testimonial__blockquote'>
+                <span>There’s not a single tool out there that can solve every problem &mdash; especially given the high level of diversity at Vertafore. Using TFS and LeanKit together enables us to combine the value of both tools, minimizing effort without introducing complexity.</span>
+              </div>
+              <div class='global-testimonial__attribution'>
+                <div class='global-testimonial__attribution__name'>
+                  <span>Pascal Pinck</span>
+                </div>
+                <div class='global-testimonial__attribution__att-title'>
+                  <span>
+                    Director of Product Development Capabilities
+                    <br>
+                    <a href='/customers/case-study/vertafore/'>
+                      <img alt='Vertafore' src='{{ craft.config.cdnBaseUrl }}/assets/images/customers/vert.gif'>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class='platform-value-prop platform-value-prop--integrations-cta'>
+      <div class='module'>
+        <div class='platform-value-prop__container'>
+          <h3>Integrating LeanKit with your tools and applications enables value delivery, faster.</h3>
+          <p>Try it for free today. No credit card required.</p>
+          <a href='https://leankit.com/get-leankit/'>Start your trial</a>
+        </div>
+        <div class='platform-value-prop__image'>
+          <img src='{{ craft.config.cdnBaseUrl }}/assets/images/LK_Showcase_main.png'>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock content %}

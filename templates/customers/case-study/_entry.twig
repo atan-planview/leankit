@@ -1,0 +1,5 @@
+{% if entry.type == 'pdf' %}
+  {% redirect entry.csPdf.first().getUrl() 301 %}
+{% else %}
+  {% include 'customers/case-study/_types/' ~ entry.type %}
+{% endif %}

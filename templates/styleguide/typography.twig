@@ -1,0 +1,92 @@
+{% extends 'styleguide/_layout' %}
+
+{% set seomaticMeta = seomaticMeta | merge({
+  'seoTitle': 'Typography',
+  'robots': 'noindex, nofollow',
+}) %}
+
+{% block content %}
+  <div class="o-container">
+
+    <h2 class="h-beta">Typography</h2>
+
+    <div class="s-content">
+      <p>
+        To loosely quote <a href="http://rizzo.lonelyplanet.com/styleguide/design-elements/typography">Lonely Planet's style guide</a>:
+      </p>
+
+      <blockquote>
+        <p>
+          We achieve styling through opt-in classes and do not style elements globally. This is to reduce the frequency of style collisions across projects. The usual typographic elements can inherit styles from <code>.s-content</code>, and the more specialized styles can be applied directly.
+        </p>
+
+        <p>
+          Most typographic elements <strong>do not come with any margins attached to them</strong> in order to make them more flexible in where they can be used.
+        </p>
+      </blockquote>
+
+      <p>
+        This means we also separate the semantic meaning of heading elements&mdash;<code>h1</code>, <code>h2</code>, etc.&mdash;from the stylistic representation by using class names that correspond to the first several letters of the Greek alphabet.
+      </p>
+
+      <p>
+        In short, use classes to style all text. Do not rely on HTML element types.
+      </p>
+
+    </div>{# /.s-content #}
+
+    <h3 class="h-gamma">Headings</h3>
+
+    <div class="o-island c-sg-example">
+      <code>.h-alpha</code>
+      <h1 class="h-alpha" title=".h-alpha">If disruption is inevitable, are you ready for a digital transformation?</h1>
+
+      <code>.h-beta</code>
+      <h2 class="h-beta" title=".h-beta">If disruption is inevitable, are you ready for a digital transformation?</h2>
+
+      <code>.h-gamma</code>
+      <h3 class="h-gamma" title=".h-gamma">If disruption is inevitable, are you ready for a digital transformation?</h3>
+
+      <code>.h-delta</code>
+      <h4 class="h-delta" title=".h-delta">If disruption is inevitable, are you ready for a digital transformation?</h4>
+
+      <code>.h-epsilon</code>
+      <h5 class="h-epsilon" title=".h-epsilon">If disruption is inevitable, are you ready for a digital transformation?</h5>
+    </div>{# /.c-sg-example #}
+
+    <h3 class="h-gamma">Copy/Content Scope</h3>
+
+    <div class="o-island c-sg-example s-content">
+      <p class="c-copy--hero" title=".c-copy--hero">
+        Hero text: Applied using the <code>.c-copy--hero</code> class.
+      </p>
+      <p class="c-copy--feature" title=".c-copy--feature">
+        Feature text: typically used for intro paragraphs. It is applied using the <code>.c-copy--feature</code> class.
+      </p>
+      <p title=".s-content">
+        Here lies a bunch of body copy in the content scope (<code>.s-content</code>) which can be inherited from a parent or applied direct to any element. In this instance it is inherited. It defines the styles that represent our main text content. <a href="#">Link styling in the content scope is inherited</a>.
+      </p>
+      <ul>
+        <li>
+          This is how our unordered lists look.
+        </li>
+        <li>
+          This is a second item in the list, and it has a long sentence to demonstrate line-height.
+        </li>
+        <li>
+          They are inherited from <code>.s-content</code>.
+        </li>
+      </ul>
+      <div class="c-copy--meta" title=".c-copy--meta">
+        Meta copy is used for styling ancillary content, usually in the details panel, that represents details about the content rather than the actual content itself.
+      </div><br>
+      <div class="c-copy--caption" title=".c-copy--caption">
+        Caption text is used primarily below images and on our cards.
+      </div><br>
+      <div class="c-copy--small" title=".c-copy--small">
+        Small text is used for disclaimers, legal, copyright text.
+      </div>
+    </div>{# /.c-sg-example #}
+
+  </div>{# /.o-container #}
+{% endblock content %}

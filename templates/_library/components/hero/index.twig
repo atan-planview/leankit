@@ -1,0 +1,35 @@
+{% set attr = attr is defined ? { class: '' } | merge(attr) : { class: '' } %}
+{% set modifiers = modifiers is defined ? modifiers : [] %}
+
+{% set defaultClass = 'c-hero' %}
+{% if heading is defined or subhead is defined %}
+  {% set defaultClass = defaultClass ~ ' c-hero--fluid-height' %}
+{% endif %}
+{% for item in modifiers %}
+  {% set defaultClass = defaultClass ~ ' c-hero--' ~ item %}
+{% endfor %}
+
+<div
+  {% for key,value in attr %}
+    {{ key }}="{% if key == 'class' %}{{ defaultClass }} {% endif %}{{ value }}"
+  {% endfor %}
+
+  {% if image is iterable %}
+      style="background-image: url({{ image[0].getUrl('hero') }});"
+  {% else %}
+      style="background-image: url({{ image }});"
+  {% endif %}
+>
+  <div class="c-hero__inner">
+    {% if heading is defined %}
+      <h1 class="h-alpha c-hero__heading">
+        {{ heading|raw }}
+      </h1>
+    {% endif %}
+    {% if subhead is defined %}
+      <div class="h-epsilon">
+        {{ subhead|raw }}
+      </div>
+    {% endif %}
+  </div>{# /.c-hero__inner #}
+</div>{# /.c-hero #}

@@ -1,0 +1,66 @@
+@include component('cs-heading') {
+  align-content: stretch;
+  align-items: center;
+  color: white;
+  display: flex;
+  flex: 1 1 0;
+  flex-wrap: wrap;
+  font-size: ms(6);
+  font-weight: 300;
+  justify-content: center;
+  margin: 0;
+  position: relative;
+
+  @include tablet {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    min-height: ms(20);
+
+    &:before {
+        border-left: 1px solid white;
+        bottom: 0;
+        content: "";
+        left: 50%;
+        position: absolute;
+        top: 0;
+        transform: translate(-50%);
+    }
+  }
+
+  @include small-desktop {
+    font-size: ms(9);
+  }
+
+  @include element('logo') {
+    margin-bottom: ms(-2);
+    width: 100%;
+
+    @include tablet {
+      margin-bottom: 0;
+      width: 50%;
+    }
+
+    img,
+    svg {
+      display: block;
+      height: auto;
+      margin: 0 auto;
+      max-width: 200px;
+
+      @include small-desktop {
+        max-width: 250px;
+      }
+    }
+  }
+
+  @include element('text') {
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    width: 100%;
+
+    @include tablet {
+      width: 50%;
+    }
+  }
+}

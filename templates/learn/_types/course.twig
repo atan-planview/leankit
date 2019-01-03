@@ -1,0 +1,156 @@
+{% extends '_layout' %}
+
+{% set excerptLength = 34 %}
+{% set bodyClass = 'archive category category-adopting-kanban leankit-learn' %}
+{% set feeds = [
+  {
+    'title': "Learning Center Feed | #{siteName}",
+    'uri': 'learn/feed/',
+    'rel': 'home'
+  }
+] %}
+
+{% block content %}
+
+  <main>
+
+    <section id="primary" class="content-area">
+      <div class='module'>
+        <div class='learning-center-main-content__container global-content'>
+
+          <header class="page-header row">
+            <div class="container">
+
+              <div class="col-xs-12 col-sm-9 col-md-9 col-lg-10">
+                <h1>
+                  {{ entry.title }}
+                </h1>
+
+                {% if entry.longDescription|length %}
+                  <p class="taxonomy-description">
+                    {{ entry.longDescription|striptags('<strong><b><u><em><i><a>')|raw }}
+                  </p>
+                {% endif %}
+              </div>
+            </div>{# /.container #}
+          </header>{# /.page-header #}
+
+          <div id="topArticles">
+            <div class="container">
+              {% for topLessons in entry.getChildren().limit(3) %}
+                <div class="col-md-4">
+                  <div class="well">
+
+                    <article class="featured post type-post status-publish format-link hentry category-learning-kanban post_format-post-format-link">
+                      <header class="entry-header">
+                        <h1>
+                          {% if topLessons.type == 'link' %}
+                            <a
+                              href="{{ topLessons.lcLink.url }}"
+                              {% if topLessons.lcLink.target is not empty %}
+                                target="{{ topLessons.lcLink.target }}"
+                              {% endif %}
+                            >{{ topLessons.title }}</a>
+                          {% else %}
+                            <a href="{{ topLessons.url }}">{{ topLessons.title }}</a>
+                          {% endif %}
+                        </h1>
+                      </header>{# /.entry-header #}
+
+                      <div class="entry-content">
+                        <p>
+                          {% if topLessons.longDescription|length %}
+                            {{ topLessons.longDescription|striptags('<strong><b><u><em><i><a>')|raw }}
+                          {% else %}
+                            {% set excerpt = topLessons.lcBody.type('text').first().text %}
+                            {% if excerpt | striptags | split(" ") | length > excerptLength %}
+                              {{ excerpt | replace({'</p><p>': ' '}) | striptags | split(" ") | slice(0, excerptLength) | join(" ") | raw }}&hellip;
+                            {% else %}
+                              {{ excerpt|striptags|raw }}
+                            {% endif %}
+                          {% endif %}
+                        </p>
+
+                        <div class="text-right">
+                          {% if topLessons.type == 'link' %}
+                            <a
+                              href="{{ topLessons.lcLink.url }}"
+                              {% if topLessons.lcLink.target is not empty %}
+                                target="{{ topLessons.lcLink.target }}"
+                              {% endif %}
+                              class="btn btn-default button-xs"
+                            >
+                              <span class="glyphicon glyphicon-book"></span> &nbsp;Read the full article
+                            </a>
+                          {% else %}
+                            <a href="{{ topLessons.url }}" class="btn btn-default button-xs">
+                              <span class="glyphicon glyphicon-book"></span> &nbsp;Read the full article
+                            </a>
+                          {% endif %}
+                        </div>
+                      </div>{# /.entry-content #}
+
+                      <footer class="entry-footer">
+                      </footer>{# /.entry-footer #}
+                    </article>
+
+                  </div>
+                </div>
+              {% endfor %}
+            </div>{# /.container #}
+          </div>{# /#topArticles #}
+
+          <div class="container fold-content">
+            <div class="col-md-8 resource-main">
+
+              {% for lessons in entry.getChildren().offset(3) %}
+                <article class="blog-post post type-post status-publish format-link hentry category-learning-kanban post_format-post-format-link">
+                  <header class="entry-header">
+                    <h1>
+                      {% if lessons.type == 'link' %}
+                        <a
+                          href="{{ lessons.lcLink.url }}"
+                          {% if lessons.lcLink.target is not empty %}
+                            target="{{ lessons.lcLink.target }}"
+                          {% endif %}
+                        >{{ lessons.title }}</a>
+                      {% else %}
+                        <a href="{{ lessons.url }}">{{ lessons.title }}</a>
+                      {% endif %}
+                    </h1>
+                  </header>{# /.entry-header #}
+
+                  <div class="entry-content">
+                    <p>
+                      {% if lessons.longDescription|length %}
+                        {{ lessons.longDescription|striptags('<strong><b><u><em><i><a>')|raw }}
+                      {% else %}
+                        {% set excerpt = lessons.lcBody.type('text').first().text %}
+                        {% if excerpt | striptags | split(" ") | length > excerptLength %}
+                          {{ excerpt | replace({'</p><p>': ' '}) | striptags | split(" ") | slice(0, excerptLength) | join(" ") | raw }}&hellip;
+                        {% else %}
+                          {{ excerpt|striptags|raw }}
+                        {% endif %}
+                      {% endif %}
+                    </p>
+                  </div>{# /.entry-summary #}
+                </article>
+              {% endfor %}
+
+            </div>{# /.resource-main #}
+
+            {% include 'learn/_sidebar' %}
+
+            {# TODO: Add pagination. #}
+            {# <?php leankitresource_paging_nav(); ?> #}
+
+          </div>{# /.container #}
+
+        </div>{# /.learning-center-main-content__container #}
+      </div>{# /.module #}
+
+    </section>{# /#primary #}
+
+  </main>{# /#main #}
+
+{% endblock content %}

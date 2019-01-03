@@ -1,0 +1,27 @@
+@include component('trustmark-logos') {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  @include element('item') {
+    align-items: center;
+    display: flex;
+    height: 105px;
+    justify-content: center;
+    width: 290px;
+  }
+
+  @include element('logo') {
+    img {
+      display: block;
+    }
+
+    svg {
+      display: block;
+      max-height: 78px;
+      width: 230px;
+    }
+  }
+}

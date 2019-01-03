@@ -1,0 +1,250 @@
+{% extends '_layout' %}
+
+{% set bodyClass = 'page page-child page-template page-template-template-kanban page-template-template-kanban-php leankit-learn kanban' %}
+{% set feeds = [
+  {
+    'title': "Learning Center Feed | #{siteName}",
+    'uri': 'learn/feed/',
+    'rel': 'home'
+  }
+] %}
+
+{% set myCss %}
+  {% if entry.heroImage.first() is not empty %}
+    .hero:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: -moz-linear-gradient(top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+      background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(0,0,0,0.7)), color-stop(100%, rgba(0,0,0,0.3)));
+      background: -webkit-linear-gradient(top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+      background: -o-linear-gradient(top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+      background: -ms-linear-gradient(top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+    }
+  {% endif %}
+{% endset %}
+{% includeCss myCss %}
+
+{% block content %}
+
+  <main>
+
+    <article>
+
+      <section class="hero"{% if entry.heroImage.first() is not empty %} style="background-image:url('{{ entry.heroImage.first().url }}');"{% endif %}>
+        <div class="module--full-width">
+          <div class="hero__leaderboard">
+          <div class="hero__leaderboard__messaging">
+            <h1>{{ entry.title }}</h1>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="seo-main-content">
+        <div class="module">
+          <div class="seo-main-content__container global-content">
+
+            {% if craft.request.isLivePreview %}
+              {% set blockData = entry.lcBody %}
+            {% else %}
+              {% set blockData = entry.lcBody.find({
+              with: [
+                ['image:image', { withTransforms: ['large', 'xLarge'] }],
+                'blogRecommendation:screenshot'
+              ]
+            }) %}
+            {% endif %}
+
+            {% for block in blockData %}
+              {% if block.type == "heading" %}
+                <{{ block.headingLevel }} id="{{ block.heading|striptags|kebab }}">
+                  {{ block.heading|striptags('<strong><b><u><em><i><a>')|raw }}
+                </{{ block.headingLevel }}>
+              {% elseif block.type == "text" %}
+                {{ block.text }}
+              {% elseif block.type == "image" %}
+                {% set image = block.image[0] %}
+                {% if block.position == "full" %}
+                  <div class="seo-main-content__full-image">
+                    <div class="seo-main-content__image__caption">
+                      <p>
+                        <img
+                          src="{{ image | retinafy('xLarge') }}"
+                          alt="{{ block.altAttr }}"
+                          {% if block.titleAttr is not empty %}
+                            title="{{ block.titleAttr }}"
+                          {% endif %}
+                          class="aligncenter size-large"
+                        >
+                      </p>
+                      {% if block.caption is not empty %}
+                        <p>{{ block.caption }}</p>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% elseif block.position == "center" %}
+                  <p>
+                    <img
+                      {% if image.width > 2 * image.getWidth('large') %}
+                        src="{{ image | retinafy('large') }}"
+                      {% else %}
+                        src="{{ image | retinafy }}"
+                      {% endif %}
+                      alt="{{ block.altAttr }}"
+                      {% if block.titleAttr is not empty %}
+                        title="{{ block.titleAttr }}"
+                      {% endif %}
+                      class="center-block"
+                    >
+                  </p>
+                  {% if block.caption is not empty %}
+                    <div class="text-center" style="margin-bottom: 1.8em; text-align: center;">
+                      <em>{{ block.caption }}</em>
+                    </div>
+                  {% endif %}
+                {% endif %}
+              {% elseif block.type == "ctaButton" %}
+                <p>
+                  <a
+                    class="btn btn-success btn-lg"
+                    {% if block.titleAttr is not empty %}
+                      title="{{ block.titleAttr }}"
+                    {% endif %}
+                    href="{{ block.resourceLink.url }}"
+                  >{{ block.resourceLink.text }}</a>
+                </p>
+              {% elseif block.type == "blogRecommendation" %}
+                <h2 id="{{ block.blogTitle|lower }}">{{ block.blogTitle }}</h2>
+                <p>
+                  <a href="{{ block.blogUrl.url }}">{{ block.blogUrl.url }}</a>
+                </p>
+                {% set image = craft.imager.transformImage(block.screenshot[0], {
+                  width: 660
+                }) %}
+                <p>
+                  <img
+                    class="aligncenter size-full"
+                    src="{{ image.url }}"
+                    width="{{ image.width }}"
+                    height="{{ image.height }}"
+                  >
+                </p>
+                <p>
+                  <strong>Blogger:</strong>
+                  {{ block.shortAuthorBio|striptags('<strong><b><u><em><i><a>')|raw }}
+                </p>
+                <p>
+                  <strong>Why Read:</strong>
+                  {{ block.whyRead|striptags('<strong><b><u><em><i><a>')|raw }}
+                </p>
+              {% elseif block.type == "table" %}
+
+                {% set showColumn2 = false %}
+                {% if block.header.column2 is not empty %}
+                  {% set showColumn2 = true %}
+                {% endif %}
+                {% for row in block.contents %}
+                  {% if row.column2 is not empty %}
+                    {% set showColumn2 = true %}
+                  {% endif %}
+                {% endfor %}
+
+                {% set showColumn3 = false %}
+                {% if block.header.column3 is not empty %}
+                  {% set showColumn3 = true %}
+                {% endif %}
+                {% for row in block.contents %}
+                  {% if row.column3 is not empty %}
+                    {% set showColumn3 = true %}
+                  {% endif %}
+                {% endfor %}
+
+                <div class="table-responsive">
+                  <table class="table table-striped" style="font-size: .9em;">
+                    <tbody>
+                      <tr>
+                        <th>{{ block.header.column1 }}</th>
+                        {% if showColumn2 %}
+                          <th>{{ block.header.column2 }}</th>
+                        {% endif %}
+                        {% if showColumn3 %}
+                          <th>{{ block.header.column3 }}</th>
+                        {% endif %}
+                      </tr>
+                      {% for row in block.contents %}
+                        <tr>
+                          <td valign="top">{{ row.column1|striptags('<strong><b><u><em><i><a><ul><ol><li><hr>')|raw }}</td>
+                          {% if showColumn2 %}
+                            <td valign="top">{{ row.column2|striptags('<strong><b><u><em><i><a><ul><ol><li><hr>')|raw }}</td>
+                          {% endif %}
+                          {% if showColumn3 %}
+                            <td valign="top">{{ row.column3|striptags('<strong><b><u><em><i><a><ul><ol><li><hr>')|raw }}</td>
+                          {% endif %}
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              {% endif %}
+            {% endfor %}
+
+          </div>
+        </div>
+
+        <div style="margin: 20px 0 50px; text-align:center;">
+          {% include '_library/elements/button' with {
+              href: 'https://leankit.com/get-leankit/',
+              label: 'Try LeanKit Free!',
+              modifiers: [
+                  'primary'
+              ]
+          } %}
+        </div>
+
+      </section>
+
+    </article>
+
+    {% set showRecommendedReading = false %}
+    {% for block in entry.recommendedReading %}
+      {% if block.type == "resourceLink" and block.item.url is not empty %}
+        {% set showRecommendedReading = true %}
+      {% endif %}
+    {% endfor %}
+
+    {% if showRecommendedReading %}
+      <aside class="seo-main-content__more-reading">
+        <div class="module">
+          <div class="seo-main-content__more-reading__container">
+            <h3>Recommended Reading</h3>
+            <nav class="seo-main-content__more-reading__links" role='complementary'>
+              <ul>
+                {% for block in entry.recommendedReading %}
+                  {% if block.type == "resourceLink" and block.item.url is not empty %}
+                    <li>
+                      <a
+                        href="{{ block.item.url }}"
+                        {% if block.item.target is not empty %}
+                          target="{{ block.item.target }}"
+                        {% endif %}
+                      >
+                        {{ block.item.text }}
+                      </a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </aside>
+    {% endif %}
+
+  </main>{# /#main #}
+
+{% endblock content %}

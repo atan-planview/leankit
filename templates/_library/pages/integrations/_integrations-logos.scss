@@ -1,0 +1,49 @@
+@include component('integrations-logos') {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+
+  &,
+  .platform_integrate .integrations-logos .platform-value-prop__image & {
+    list-style-type: none;
+    list-style-image: none;
+    margin: 10px 0;
+  }
+
+  @include element('item') {
+    align-items: center;
+    display: flex;
+    height: 90px;
+    justify-content: center;
+    width: 50%;
+
+    @include large-mobile {
+      width: 33%;
+    }
+
+    @include tablet {
+      width: 25%;
+    }
+  }
+
+  @include element('logo') {
+    max-width: 80%;
+
+    img {
+      display: block;
+      margin-bottom: 0;
+      max-height: 60px;
+
+      &[src$=".svg"] {
+        width: 100%;
+      }
+    }
+
+    svg {
+      display: block;
+      max-height: 60px;
+      width: 100%;
+    }
+  }
+}
