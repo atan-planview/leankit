@@ -6,7 +6,11 @@
  * All of your system's general configuration settings go in here.
  * You can see a list of the default settings in craft/app/etc/config/defaults/general.php
  */
-$root = 'http://localhost';
+$secure = isset($_SERVER['HTTPS']) && (strcasecmp($_SERVER['HTTPS'],'on')===0 || $_SERVER['HTTPS']==1)
+			|| isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'],'https')===0;
+$protocol = $secure ? 'https://' : 'http://';
+$host = $_SERVER['HTTP_HOST'];
+$root = $protocol . $host . '/';
 $uploadsBasePath = '../html/uploads/';
 return array(
 
